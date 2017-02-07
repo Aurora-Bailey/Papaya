@@ -1,5 +1,7 @@
 <template>
   <div class="app-nav">
+    <div class="toolbar-placeholder"></div>
+
     <md-whiteframe id="webapp-toolbar" md-tag="md-toolbar" md-elevation="2">
       <md-button class="md-icon-button sidebar-toggle" @click="$refs.sidenav.toggle()">
         <md-icon>menu</md-icon>
@@ -19,7 +21,7 @@
       <md-toolbar class="sidebar-logo md-theme-white">
         <router-link to="/">
           <img src="../assets/logo.png" alt="Vue">
-          <!-- <span>Connect Now</span> -->
+          <!-- <span>Text Logo</span> -->
         </router-link>
       </md-toolbar>
 
@@ -31,7 +33,6 @@
         <md-list-item @click="$router.push('/')" :class="{'md-accent': $route.path === '/'}">
           <md-icon>contacts</md-icon> <span>Home</span>
         </md-list-item>
-
       </md-list>
     </md-sidenav>
   </div>
@@ -48,8 +49,33 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss" scoped>
+
+// The toolbar is floating and needs somthing to hold the default place
+.toolbar-placeholder {
+  height: 64px;
+}
+</style>
+
+// Global
 <style lang="scss">
+$sidebar-width: 260px;
+$sidebar-stay-open: 1281px;
+
+#webapp-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 #webapp-sidebar {
+  .md-sidenav-content {
+    width: $sidebar-width;
+    display: flex;
+    flex-flow: column;
+    overflow: hidden;
+  }
   .sidebar-logo {
     min-height: 172px;
     border-bottom:1px solid rgba(0,0,0,.12);
@@ -68,15 +94,9 @@ export default {
       color: inherit;
       text-decoration: none;
   }
-  .md-sidenav-content {
-    width: 260px;
-    display: flex;
-    flex-flow: column;
-    overflow: hidden;
-  }
 }
 
-@media (min-width: 1281px) {
+@media (min-width: $sidebar-stay-open) {
   #webapp-sidebar {
     .md-sidenav-content {
       top: 0;
@@ -90,13 +110,25 @@ export default {
     }
   }
   #webapp-toolbar {
+    left: $sidebar-width;
+
     .sidebar-toggle {
       display: none;
     }
     .toolbar-title {
-      margin-left: 16px;
-      margin-left: 260px;
+      margin-left: 48px;
     }
   }
 }
+
+// Global
+.using-sidebar {
+  margin-left: 0;
+  transition: margin-left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  @media (min-width: $sidebar-stay-open) {
+    margin-left: $sidebar-width;
+  }
+}
+
 </style>

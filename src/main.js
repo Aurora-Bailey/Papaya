@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 
 // Plugins
+import BodyScroll from './plugins/BodyScroll'
 import Router from './plugins/Router'
 import './plugins/Material'
 import './plugins/Resource'
@@ -15,5 +16,10 @@ new Vue({
   el: '#app',
   router: Router,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  data () {
+    return {
+      scroll: BodyScroll
+    }
+  }
 })

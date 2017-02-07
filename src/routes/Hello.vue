@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="hello using-sidebar">
     <img src="../assets/logo.png">
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
@@ -37,6 +37,7 @@ export default {
 .hello {
   text-align: center;
   margin-top: 60px;
+  overflow: auto;
 }
 h1, h2 {
   font-weight: normal;

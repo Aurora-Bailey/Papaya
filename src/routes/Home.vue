@@ -1,6 +1,12 @@
 <template>
-  <div class="home page">
-    Homepage
+  <div class="home using-sidebar">
+    <div v-for="i in 50">
+      Home {{i}}
+    </div>
+    {{$root.$data.scroll}}
+    <div v-for="i in 50">
+      Home {{i}}
+    </div>
   </div>
 </template>
 <script>

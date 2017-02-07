@@ -11,19 +11,9 @@ Vue.material.registerTheme({
     accent: 'deep-orange',
     background: 'white'
   },
-  'default-dark': {
-    primary: {
-      color: 'blue',
-      hue: 600
-    },
-    accent: 'deep-orange'
-  },
-  invert: {
-    primary: 'deep-orange',
-    accent: 'blue'
-  },
   white: {
     primary: 'white',
-    accent: 'deep-orange'
+    accent: 'deep-orange',
+    background: 'white'
   }
 })
