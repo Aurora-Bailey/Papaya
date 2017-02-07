@@ -11,11 +11,48 @@
         <h2 class="md-title toolbar-title" style="flex: 1">{{$route.name}}</h2>
 
         <md-button class="md-icon-button">
-          <md-icon>search</md-icon>
+          <md-icon>mail</md-icon>
         </md-button>
-        <md-button class="md-icon-button">
-          <md-icon>more_vert</md-icon>
-        </md-button>
+
+        <md-menu md-size="4" md-direction="bottom left">
+          <md-button md-menu-trigger class="md-icon-button">
+            <md-icon>more_vert</md-icon>
+          </md-button>
+
+          <md-menu-content>
+            <div class="author-card">
+              <md-avatar class="md-large">
+                <img src="https://placeimg.com/300/300/people/3" alt="Marcos Moura">
+              </md-avatar>
+
+              <div class="author-card-info">
+                <span>Marcos Moura</span>
+                <div class="author-card-links">
+                  <router-link to="/profile">View Profile</router-link>
+                </div>
+              </div>
+            </div>
+
+            <md-menu-item>
+              <router-link to="/my-people">
+                <md-icon>group</md-icon>
+                <span>My People</span>
+              </router-link>
+            </md-menu-item>
+            <md-menu-item>
+              <router-link to="/settings">
+                <md-icon>settings</md-icon>
+                <span>Settings</span>
+              </router-link>
+            </md-menu-item>
+            <md-menu-item>
+              <router-link to="/login/logout">
+                <md-icon>power_settings_new</md-icon>
+                <span>Log Out</span>
+              </router-link>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
       </md-whiteframe>
     </div>
 
@@ -28,12 +65,20 @@
       </md-toolbar>
 
       <md-list>
-        <md-list-item @click="$router.push('/hello')" :class="{'md-accent': $route.path === '/hello'}">
-          <md-icon>public</md-icon> <span>Hello</span>
+        <md-list-item @click="$router.push('/home')" :class="{'md-accent': $route.path === '/home'}">
+          <md-icon>home</md-icon> <span>Home</span>
         </md-list-item>
-
-        <md-list-item @click="$router.push('/')" :class="{'md-accent': $route.path === '/'}">
-          <md-icon>contacts</md-icon> <span>Home</span>
+        <md-list-item @click="$router.push('/people')" :class="{'md-accent': $route.path === '/people'}">
+          <md-icon>person_add</md-icon> <span>People</span>
+        </md-list-item>
+        <md-list-item @click="$router.push('/events')" :class="{'md-accent': $route.path === '/events'}">
+          <md-icon>event</md-icon> <span>Events</span>
+        </md-list-item>
+        <md-list-item @click="$router.push('/my-events')" :class="{'md-accent': $route.path === '/my-events'}">
+          <md-icon>event_available</md-icon> <span>My Events</span>
+        </md-list-item>
+        <md-list-item @click="$router.push('/tags')" :class="{'md-accent': $route.path === '/tags'}">
+          <md-icon>loyalty</md-icon> <span>Tags</span>
         </md-list-item>
       </md-list>
     </md-sidenav>
@@ -63,6 +108,35 @@ export default {
 <style lang="scss">
 $sidebar-width: 260px;
 $sidebar-stay-open: 1281px;
+
+
+.author-card {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+
+  .md-avatar {
+    margin-right: 16px;
+  }
+
+  .author-card-info {
+    display: flex;
+    flex-flow: column;
+    flex: 1;
+  }
+
+  span {
+    font-size: 16px;
+  }
+
+  .author-card-links {
+    display: flex;
+
+    a + a {
+      margin-left: 8px;
+    }
+  }
+}
 
 #toolbar-floating-wrapper {
   display: flex; // This is to solve the IE off center toolbar buttons
