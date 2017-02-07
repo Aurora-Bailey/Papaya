@@ -2,12 +2,18 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+
+// Plugins
+import Router from './plugins/Router'
+import './plugins/Material'
+import './plugins/Resource'
+import './plugins/API'
+import './plugins/Style.scss'
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
+  router: Router,
   template: '<App/>',
   components: { App }
 })
