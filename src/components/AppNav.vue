@@ -24,11 +24,11 @@
       </md-toolbar>
 
       <md-list>
-        <md-list-item @click="$refs.sidenav.close(); $router.push('/hello')" :class="{'md-accent': $route.path === '/hello'}">
+        <md-list-item @click="$router.push('/hello')" :class="{'md-accent': $route.path === '/hello'}">
           <md-icon>public</md-icon> <span>Hello</span>
         </md-list-item>
 
-        <md-list-item @click="$refs.sidenav.close(); $router.push('/')" :class="{'md-accent': $route.path === '/'}">
+        <md-list-item @click="$router.push('/')" :class="{'md-accent': $route.path === '/'}">
           <md-icon>contacts</md-icon> <span>Home</span>
         </md-list-item>
 
@@ -39,7 +39,11 @@
 
 <script>
 export default {
-  name: 'app-nav'
+  name: 'app-nav',
+  beforeRouteLeave (to, from, next) {
+    this.$refs.sidenav.close()
+    next()
+  }
 }
 </script>
 
