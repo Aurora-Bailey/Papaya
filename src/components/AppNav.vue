@@ -134,6 +134,10 @@ $sidebar-stay-open: 1281px;
     overflow: auto;
   }
   .md-account-header {
+    background-image: url('../assets/nav_back_dark.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     color: #fff;
 
     .md-list-text-container > :nth-child(2) {
