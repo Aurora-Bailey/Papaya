@@ -10,9 +10,9 @@
 
         <h2 class="md-title toolbar-title" style="flex: 1">{{$route.name}}</h2>
 
-        <md-button class="md-icon-button">
+        <router-link class="md-button md-icon-button" to="/mail">
           <md-icon>mail</md-icon>
-        </md-button>
+        </router-link>
 
         <md-menu md-size="4" md-direction="bottom left">
           <md-button md-menu-trigger class="md-icon-button">
@@ -65,20 +65,30 @@
       </md-toolbar>
 
       <md-list>
-        <md-list-item @click="$router.push('/home')" :class="{'md-accent': $route.path === '/home'}">
-          <md-icon>home</md-icon> <span>Home</span>
+        <md-list-item :class="{'md-accent': $route.path === '/'}" >
+          <router-link to="/">
+            <md-icon>home</md-icon> <span>Home</span>
+          </router-link>
         </md-list-item>
-        <md-list-item @click="$router.push('/people')" :class="{'md-accent': $route.path === '/people'}">
-          <md-icon>person_add</md-icon> <span>People</span>
+        <md-list-item :class="{'md-accent': $route.path === '/people'}">
+          <router-link to="/people">
+            <md-icon>person_add</md-icon> <span>People</span>
+          </router-link>
         </md-list-item>
-        <md-list-item @click="$router.push('/events')" :class="{'md-accent': $route.path === '/events'}">
-          <md-icon>event</md-icon> <span>Events</span>
+        <md-list-item :class="{'md-accent': $route.path === '/events'}">
+          <router-link  to="/events">
+            <md-icon>event</md-icon> <span>Events</span>
+          </router-link>
         </md-list-item>
-        <md-list-item @click="$router.push('/my-events')" :class="{'md-accent': $route.path === '/my-events'}">
-          <md-icon>event_available</md-icon> <span>My Events</span>
+        <md-list-item :class="{'md-accent': $route.path === '/my-events'}">
+          <router-link to="/my-events">
+            <md-icon>event_available</md-icon> <span>My Events</span>
+          </router-link>
         </md-list-item>
-        <md-list-item @click="$router.push('/tags')" :class="{'md-accent': $route.path === '/tags'}">
-          <md-icon>loyalty</md-icon> <span>Tags</span>
+        <md-list-item :class="{'md-accent': $route.path === '/tags'}">
+          <router-link to="/tags">
+            <md-icon>loyalty</md-icon> <span>Tags</span>
+          </router-link>
         </md-list-item>
       </md-list>
     </md-sidenav>
