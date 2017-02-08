@@ -10,7 +10,7 @@ import FindPeople from 'routes/FindPeople'
 import MyFollowers from 'routes/MyFollowers'
 import MyPeople from 'routes/MyPeople'
 import FindEvents from 'routes/FindEvents'
-import MyEvents from 'routes/MyEvents'
+import PlanningEvents from 'routes/PlanningEvents'
 import PastEvents from 'routes/PastEvents'
 import Mail from 'routes/Mail'
 import Profile from 'routes/Profile'
@@ -39,7 +39,7 @@ export default new Router({
     { path: '/people/followers', name: 'My Followers', components: { default: MyFollowers, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsPeople } },
     { path: '/events', redirect: '/events/find' },
     { path: '/events/find', name: 'Find Events', components: { default: FindEvents, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsEvents } },
-    { path: '/events/my', name: 'My Events', components: { default: MyEvents, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsEvents } },
+    { path: '/events/planning', name: 'Planning Events', components: { default: PlanningEvents, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsEvents } },
     { path: '/events/past', name: 'Past Events', components: { default: PastEvents, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsEvents } },
     { path: '/mail', name: 'Mail', components: { default: Mail, drawer: DrawerMain, toolbar: ToolbarMain } },
     { path: '/profile', name: 'Profile', components: { default: Profile, drawer: DrawerMain, toolbar: ToolbarMain } },
