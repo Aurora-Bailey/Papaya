@@ -19,7 +19,8 @@ new Vue({
   components: { App },
   data () {
     return {
-      scroll: BodyScroll
+      scroll: BodyScroll,
+      drawerOpen: false
     }
   }
 })
