@@ -7,13 +7,13 @@ Vue.use(Material)
 // Theme
 Vue.material.registerTheme({
   default: {
-    primary: 'blue',
-    accent: 'deep-orange',
+    primary: 'blue-grey',
+    accent: 'orange',
     background: 'white'
   },
   white: {
     primary: 'white',
-    accent: 'deep-orange',
+    accent: 'orange',
     background: 'white'
   }
 })
