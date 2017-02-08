@@ -19,3 +19,6 @@ export default {
 .home {
 }
 </style>
+
+<style lang="scss">
+</style>

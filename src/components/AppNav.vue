@@ -4,7 +4,7 @@
 
     <div id="toolbar-floating-wrapper">
       <md-whiteframe id="webapp-toolbar" md-tag="md-toolbar" md-elevation="2">
-        <md-button class="md-icon-button sidebar-toggle" @click="$refs.sidenav.toggle()">
+        <md-button class="md-icon-button sidebar-toggle" @click.native="$refs.sidenav.toggle()">
           <md-icon>menu</md-icon>
         </md-button>
 
