@@ -7,7 +7,7 @@ Vue.use(Material)
 // Theme
 Vue.material.registerTheme({
   default: {
-    primary: 'blue-grey',
+    primary: 'blue',
     accent: 'orange',
     background: 'white'
   },

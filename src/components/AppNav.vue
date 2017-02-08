@@ -9,85 +9,75 @@
         </md-button>
 
         <h2 class="md-title toolbar-title" style="flex: 1">{{$route.name}}</h2>
-
-        <router-link class="md-button md-icon-button" to="/mail">
-          <md-icon>mail</md-icon>
-        </router-link>
-
-        <md-menu md-size="4" md-direction="bottom left">
-          <md-button md-menu-trigger class="md-icon-button">
-            <md-icon>more_vert</md-icon>
-          </md-button>
-
-          <md-menu-content>
-            <div class="author-card">
-              <md-avatar class="md-large">
-                <img src="https://placeimg.com/300/300/people/3" alt="Marcos Moura">
-              </md-avatar>
-
-              <div class="author-card-info">
-                <span>Marcos Moura</span>
-                <div class="author-card-links">
-                  <router-link to="/profile">View Profile</router-link>
-                </div>
-              </div>
-            </div>
-
-            <md-menu-item>
-              <router-link to="/my-people">
-                <md-icon>group</md-icon>
-                <span>My People</span>
-              </router-link>
-            </md-menu-item>
-            <md-menu-item>
-              <router-link to="/settings">
-                <md-icon>settings</md-icon>
-                <span>Settings</span>
-              </router-link>
-            </md-menu-item>
-            <md-menu-item>
-              <router-link to="/login/logout">
-                <md-icon>power_settings_new</md-icon>
-                <span>Log Out</span>
-              </router-link>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
       </md-whiteframe>
     </div>
 
-    <md-sidenav id="webapp-sidebar" md-theme="white" class="md-left md-fixed" ref="sidenav">
-      <md-toolbar class="sidebar-logo md-theme-white">
-        <router-link to="/">
-          <img src="../assets/logo.png" alt="Vue">
-          <!-- <span>Text Logo</span> -->
-        </router-link>
+    <md-sidenav id="webapp-sidebar" md-theme="default" class="md-left md-fixed" ref="sidenav">
+      <md-toolbar class="md-account-header">
+        <md-list class="md-transparent">
+          <md-list-item class="md-avatar-list">
+            <md-avatar class="md-large">
+              <img src="https://placeimg.com/64/64/people/8" alt="People">
+            </md-avatar>
+
+            <span style="flex: 1"></span>
+
+            <md-avatar>
+              <img src="https://placeimg.com/40/40/people/3" alt="People">
+            </md-avatar>
+
+            <md-avatar>
+              <img src="https://placeimg.com/40/40/people/4" alt="People">
+            </md-avatar>
+          </md-list-item>
+
+          <md-list-item>
+            <div class="md-list-text-container">
+              <span>John Doe</span>
+              <span>johndoe@email.com</span>
+            </div>
+
+            <md-button class="md-icon-button md-list-action">
+              <md-icon>arrow_drop_down</md-icon>
+            </md-button>
+          </md-list-item>
+        </md-list>
       </md-toolbar>
 
       <md-list>
-        <md-list-item :class="{'md-accent': $route.path === '/'}" >
+        <md-list-item :class="{'md-primary': $route.path === '/'}" >
           <router-link to="/">
             <md-icon>home</md-icon> <span>Home</span>
           </router-link>
         </md-list-item>
-        <md-list-item :class="{'md-accent': $route.path === '/people'}">
+        <md-list-item :class="{'md-primary': $route.path === '/people'}">
           <router-link to="/people">
-            <md-icon>person_add</md-icon> <span>People</span>
+            <md-icon>group</md-icon> <span>People</span>
           </router-link>
         </md-list-item>
-        <md-list-item :class="{'md-accent': $route.path === '/events'}">
+        <md-list-item :class="{'md-primary': $route.path === '/events'}">
           <router-link  to="/events">
             <md-icon>event</md-icon> <span>Events</span>
           </router-link>
         </md-list-item>
-        <md-list-item :class="{'md-accent': $route.path === '/my-events'}">
-          <router-link to="/my-events">
-            <md-icon>event_available</md-icon> <span>My Events</span>
+        <md-list-item :class="{'md-primary': $route.path === '/profile'}">
+          <router-link to="/profile">
+            <md-icon>account_circle</md-icon> <span>Profile</span>
           </router-link>
         </md-list-item>
-        <md-list-item :class="{'md-accent': $route.path === '/tags'}">
+        <md-list-item :class="{'md-primary': $route.path === '/mail'}" >
+          <router-link to="/mail">
+            <md-icon>mail</md-icon> <span>Mail</span>
+          </router-link>
+        </md-list-item>
+        <md-list-item :class="{'md-primary': $route.path === '/tags'}">
           <router-link to="/tags">
             <md-icon>loyalty</md-icon> <span>Tags</span>
+          </router-link>
+        </md-list-item>
+        <md-list-item :class="{'md-primary': $route.path === '/settings'}">
+          <router-link to="/settings">
+            <md-icon>settings</md-icon> <span>Settings</span>
           </router-link>
         </md-list-item>
       </md-list>
@@ -119,35 +109,6 @@ export default {
 $sidebar-width: 260px;
 $sidebar-stay-open: 1281px;
 
-
-.author-card {
-  padding: 8px 16px;
-  display: flex;
-  align-items: center;
-
-  .md-avatar {
-    margin-right: 16px;
-  }
-
-  .author-card-info {
-    display: flex;
-    flex-flow: column;
-    flex: 1;
-  }
-
-  span {
-    font-size: 16px;
-  }
-
-  .author-card-links {
-    display: flex;
-
-    a + a {
-      margin-left: 8px;
-    }
-  }
-}
-
 #toolbar-floating-wrapper {
   display: flex; // This is to solve the IE off center toolbar buttons
   position: fixed;
@@ -157,6 +118,7 @@ $sidebar-stay-open: 1281px;
 }
 #webapp-toolbar {
   flex: 1;
+  color: #fff;
 
   .sidebar-toggle {
     opacity: 1;
@@ -169,25 +131,14 @@ $sidebar-stay-open: 1281px;
     width: $sidebar-width;
     display: flex;
     flex-flow: column;
-    overflow: hidden;
+    overflow: auto;
   }
-  .sidebar-logo {
-    min-height: 172px;
-    border-bottom:1px solid rgba(0,0,0,.12);
-    font-size: 24px;
-  }
-  .sidebar-logo img {
-      width: 160px;
-      margin-bottom: 16px;
-  }
-  .sidebar-logo a {
-      width: 100%;
-      display: flex;
-      flex-flow: column;
-      justify-content: center;
-      align-items: center;
-      color: inherit;
-      text-decoration: none;
+  .md-account-header {
+    color: #fff;
+
+    .md-list-text-container > :nth-child(2) {
+      color: rgba(#fff, .54);
+    }
   }
 }
 
