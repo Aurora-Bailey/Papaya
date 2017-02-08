@@ -67,7 +67,7 @@
         </md-list-item>
         <md-list-item :class="{'md-primary': $route.path === '/mail'}" >
           <router-link to="/mail">
-            <md-icon>mail</md-icon> <span>Mail</span>
+            <md-icon>mail</md-icon> <span>Mail</span> <span class="sidenav-notification primary-background">4 new</span>
           </router-link>
         </md-list-item>
         <md-list-item :class="{'md-primary': $route.path === '/tags'}">
@@ -143,6 +143,14 @@ $sidebar-stay-open: 1281px;
     .md-list-text-container > :nth-child(2) {
       color: rgba(#fff, .54);
     }
+  }
+
+  .sidenav-notification {
+    font-size: 12px;
+    color: white;
+    height: 24px;
+    line-height: 12px;
+    padding: 6px 8px;
   }
 }
 

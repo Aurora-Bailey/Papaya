@@ -1,2 +1,12 @@
+$primary: #2196f3;
+
 body {
+}
+
+.primary-background {
+  background-color: $primary;
+}
+
+.primary-text {
+  color: $primary;
 }
