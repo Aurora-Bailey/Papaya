@@ -1,7 +1,7 @@
 <template>
   <div class="home using-sidebar">
     <div v-for="i in 50">
-      Home {{i}}
+      Home ASDF {{i}}
     </div>
     {{$root.$data.scroll}}
     <div v-for="i in 50">
