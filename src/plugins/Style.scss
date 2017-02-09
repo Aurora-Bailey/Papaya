@@ -10,3 +10,8 @@ body {
 .primary-text {
   color: $primary;
 }
+
+.page {
+  flex: 1;
+  overflow: auto;
+}

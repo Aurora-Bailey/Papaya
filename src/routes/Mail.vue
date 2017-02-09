@@ -1,5 +1,5 @@
 <template>
-  <div class="mail using-sidebar">
+  <div class="mail page using-sidebar">
     <div v-for="i in 50">
       Mail {{i}}
     </div>

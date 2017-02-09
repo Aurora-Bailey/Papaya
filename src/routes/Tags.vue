@@ -1,5 +1,5 @@
 <template>
-  <div class="tags using-sidebar">
+  <div class="tags page using-sidebar">
     <div v-for="i in 50">
       Tags {{i}}
     </div>

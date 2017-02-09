@@ -1,5 +1,5 @@
 <template>
-  <div class="profile using-sidebar">
+  <div class="profile page using-sidebar">
     <div v-for="i in 50">
       Profile {{i}}
     </div>

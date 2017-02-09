@@ -1,5 +1,5 @@
 <template>
-  <div class="landing-page">
+  <div class="landing-page page">
     <div v-for="i in 50">
       Landing Page {{i}}
     </div>

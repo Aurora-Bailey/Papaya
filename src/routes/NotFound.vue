@@ -1,5 +1,5 @@
 <template>
-  <div class="not-found using-sidebar">
+  <div class="not-found page using-sidebar">
     Page not found!
   </div>
 </template>
