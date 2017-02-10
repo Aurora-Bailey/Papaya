@@ -21,6 +21,7 @@ import NotFound from 'routes/NotFound'
 // Nav
 import DrawerMain from 'navigation/DrawerMain'
 import ToolbarMain from 'navigation/ToolbarMain'
+import ToolbarLanding from 'navigation/ToolbarLanding'
 import TabsEvents from 'navigation/TabsEvents'
 import TabsPeople from 'navigation/TabsPeople'
 
@@ -36,8 +37,8 @@ export default new Router({
     }
   },
   routes: [
-    { path: '/', name: 'Landing Page', components: { default: LandingPage } },
-    { path: '/Sign', name: 'Sign', components: { default: Sign, drawer: DrawerMain, toolbar: ToolbarMain } },
+    { path: '/', name: 'Landing Page', components: { default: LandingPage, toolbar: ToolbarLanding } },
+    { path: '/sign', name: 'Sign', components: { default: Sign, drawer: DrawerMain, toolbar: ToolbarMain } },
     { path: '/setup', name: 'Setup', components: { default: Setup, drawer: DrawerMain, toolbar: ToolbarMain } },
     { path: '/home', name: 'Home', components: { default: Home, drawer: DrawerMain, toolbar: ToolbarMain } },
     { path: '/people', redirect: '/people/find' },

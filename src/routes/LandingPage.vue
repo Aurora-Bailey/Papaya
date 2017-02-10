@@ -1,6 +1,7 @@
 <template>
   <div class="landing-page">
     <div v-for="i in 50">
+      {{$root.$data.scroll.windowHeight}}
       Landing Page {{i}}
     </div>
     {{$root.$data.scroll}}

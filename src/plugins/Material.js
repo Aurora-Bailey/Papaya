@@ -13,7 +13,7 @@ Vue.material.registerTheme({
   },
   white: {
     primary: 'white',
-    accent: 'orange',
+    accent: 'white',
     background: 'white'
   },
   red: {
