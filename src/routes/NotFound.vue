@@ -5,7 +5,12 @@
 </template>
 <script>
 export default {
-  name: 'not-found'
+  name: 'not-found',
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      vm.$material.setCurrentTheme('purple')
+    })
+  }
 }
 </script>
 

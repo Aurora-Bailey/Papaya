@@ -11,7 +11,12 @@
 </template>
 <script>
 export default {
-  name: 'my-followers'
+  name: 'my-followers',
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      vm.$material.setCurrentTheme('green')
+    })
+  }
 }
 </script>
 

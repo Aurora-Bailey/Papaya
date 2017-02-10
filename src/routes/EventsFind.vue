@@ -11,7 +11,12 @@
 </template>
 <script>
 export default {
-  name: 'find-events'
+  name: 'find-events',
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      vm.$material.setCurrentTheme('orange')
+    })
+  }
 }
 </script>
 

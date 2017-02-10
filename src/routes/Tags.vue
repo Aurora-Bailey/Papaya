@@ -11,7 +11,12 @@
 </template>
 <script>
 export default {
-  name: 'tags'
+  name: 'tags',
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      vm.$material.setCurrentTheme('teal')
+    })
+  }
 }
 </script>
 

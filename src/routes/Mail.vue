@@ -11,7 +11,12 @@
 </template>
 <script>
 export default {
-  name: 'mail'
+  name: 'mail',
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      vm.$material.setCurrentTheme('red')
+    })
+  }
 }
 </script>
 

@@ -11,7 +11,12 @@
 </template>
 <script>
 export default {
-  name: 'find-people'
+  name: 'find-people',
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      vm.$material.setCurrentTheme('green')
+    })
+  }
 }
 </script>
 

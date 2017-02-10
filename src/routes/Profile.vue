@@ -11,7 +11,12 @@
 </template>
 <script>
 export default {
-  name: 'profile'
+  name: 'profile',
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      vm.$material.setCurrentTheme('cyan')
+    })
+  }
 }
 </script>
 

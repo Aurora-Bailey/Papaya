@@ -11,7 +11,12 @@
 </template>
 <script>
 export default {
-  name: 'landing-page'
+  name: 'landing-page',
+  beforeRouteEnter (to, from, next) {
+    next((vm) => {
+      vm.$material.setCurrentTheme('blue')
+    })
+  }
 }
 </script>
 

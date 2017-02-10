@@ -1,6 +1,6 @@
 <template>
   <div class="drawer-main">
-    <md-sidenav id="webapp-sidebar" md-theme="default" class="md-left md-fixed" @close="sidebarClosing" ref="sidenav">
+    <md-sidenav id="webapp-sidebar" class="md-left md-fixed" @close="sidebarClosing" ref="sidenav">
       <md-toolbar class="md-account-header">
         <md-list class="md-transparent">
 
@@ -54,7 +54,7 @@
         </md-list-item>
         <md-list-item>
           <router-link to="/mail">
-            <md-icon>mail</md-icon> <span>Mail</span> <span class="sidenav-notification primary-background">4 new</span>
+            <md-icon>mail</md-icon> <span>Mail</span> <md-button md-theme="red" class="md-raised md-primary mod-md-button-badge">4 new</md-button>
           </router-link>
         </md-list-item>
         <md-list-item>
@@ -94,64 +94,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-</style>
-
-// Global
-<style lang="scss">
-$sidebar-width: 260px;
-$sidebar-stay-open: 1281px;
-
-#webapp-sidebar {
-  .md-sidenav-content {
-    width: $sidebar-width;
-    display: flex;
-    flex-flow: column;
-    overflow: auto;
-  }
-  .md-account-header {
-    background-image: url('../assets/nav_back_dark.jpg');
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: #fff;
-
-    .md-list-text-container > :nth-child(2) {
-      color: rgba(#fff, .54);
-    }
-  }
-
-  .sidenav-notification {
-    font-size: 12px;
-    color: white;
-    height: 24px;
-    line-height: 12px;
-    padding: 6px 8px;
-  }
-}
-
-@media (min-width: $sidebar-stay-open) {
-  #webapp-sidebar {
-    .md-sidenav-content {
-      top: 0;
-      pointer-events: auto;
-      transform: translateZ(0);
-      box-shadow: 0 1px 5px rgba(0,0,0,.2), 0 2px 2px rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.12);
-    }
-    .md-backdrop {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-}
-
-// Global
-.using-sidebar {
-  margin-left: 0;
-  transition: margin-left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-  @media (min-width: $sidebar-stay-open) {
-    margin-left: $sidebar-width;
-  }
-}
-
 </style>
