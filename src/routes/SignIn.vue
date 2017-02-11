@@ -72,10 +72,6 @@ export default {
   text-align: center;
   color: rgba(0, 0, 0, 0.54);
 }
-.center-button {
-  text-align: center;
-  padding: 10px 0;
-}
 </style>
 
 <style lang="scss">

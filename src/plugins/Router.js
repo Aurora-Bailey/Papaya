@@ -43,7 +43,7 @@ export default new Router({
     { path: '/signup', name: 'SignUp', components: { default: SignUp } },
     { path: '/signin', name: 'SignIn', components: { default: SignIn } },
     { path: '/signout', name: 'SignOut', components: { default: SignOut } },
-    { path: '/setup', name: 'Setup', components: { default: Setup, drawer: DrawerMain, toolbar: ToolbarMain } },
+    { path: '/setup', name: 'Setup', components: { default: Setup } },
     { path: '/home', name: 'Home', components: { default: Home, drawer: DrawerMain, toolbar: ToolbarMain } },
     { path: '/people', redirect: '/people/find' },
     { path: '/people/find', name: 'Find People', components: { default: PeopleFind, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsPeople } },

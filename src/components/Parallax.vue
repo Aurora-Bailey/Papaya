@@ -29,7 +29,6 @@ export default {
       let percent = (1 / visibleScroll) * (bottomOfScreen - this.scrollTop)
       if (percent > 1) percent = 1
       if (percent < 0) percent = 0
-      console.log(percent)
       return percent
     }
   },

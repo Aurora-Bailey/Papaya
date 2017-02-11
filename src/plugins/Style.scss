@@ -118,7 +118,7 @@ $sidebar-stay-open: 1281px;
   max-width: 100%;
 }
 
-// Html Mods
+// Custom elements
 .hr-or {
   position: relative;
   padding: 30px 0;
@@ -155,6 +155,71 @@ $sidebar-stay-open: 1281px;
   }
 }
 
+.center-button {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.chip {
+  height: 32px;
+  padding: 0 12px;
+  margin: 2px;
+  display: inline-block;
+  border-radius: 32px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-size: 0; // Hide the spaces between the elements
+  line-height: 32px;
+  white-space: nowrap;
+  background-color: rgba(0, 0, 0, .12);
+
+  .chip-text, .chip-highlight-text, .chip-button {
+    font-size: 13px; // Reset the space hide thing
+  }
+
+  .chip-button {
+    width: 0;
+    min-width: 0;
+    height: 24px;
+    min-height: 24px;
+    margin: 0;
+    padding: 0;
+    border-radius: 24px;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: rgba(0, 0, 0, 0);
+    overflow: visible;
+    pointer-events: none;
+
+    .md-icon {
+      width: 20px;
+      min-width: 20px;
+      height: 20px;
+      min-height: 20px;
+      margin: 0;
+      font-size: 20px;
+    }
+  }
+
+  &.buttons-visible {
+    padding-right: 4px;
+
+    .chip-button {
+      width: 24px;
+      min-width: 24px;
+      margin: 4px 0;
+      color: rgba(0, 0, 0, .38);
+      pointer-events: auto;
+    }
+  }
+  &.chip-highlight {
+    background-color: red;
+    color: white;
+
+    &.buttons-visible .chip-button {
+      color: white;
+    }
+  }
+}
+
 // Material Mods
 .mod-md-button-badge {
   margin: 0;
@@ -164,6 +229,10 @@ $sidebar-stay-open: 1281px;
   height: 22px;
   line-height: 22px;
   font-size: 10px;
+  color: white !important;
+}
+
+.mod-md-text-white {
   color: white !important;
 }
 
