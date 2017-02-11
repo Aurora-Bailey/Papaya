@@ -8,7 +8,7 @@
           <span class="logo-text"> Papaya</span>
         </div>
         <div class="toolbar-buttons">
-          <router-link to="/sign">
+          <router-link to="/signup">
             <md-button md-theme="white" class="md-primary">Sign Up</md-button>
           </router-link>
 

@@ -3,7 +3,9 @@ import Router from 'vue-router'
 
 // Routes
 import LandingPage from 'routes/LandingPage'
-import Sign from 'routes/Sign'
+import SignUp from 'routes/SignUp'
+import SignIn from 'routes/SignIn'
+import SignOut from 'routes/SignOut'
 import Setup from 'routes/Setup'
 import Home from 'routes/Home'
 import PeopleFind from 'routes/PeopleFind'
@@ -38,7 +40,9 @@ export default new Router({
   },
   routes: [
     { path: '/', name: 'Landing Page', components: { default: LandingPage, toolbar: ToolbarLanding } },
-    { path: '/sign', name: 'Sign', components: { default: Sign, drawer: DrawerMain, toolbar: ToolbarMain } },
+    { path: '/signup', name: 'SignUp', components: { default: SignUp } },
+    { path: '/signin', name: 'SignIn', components: { default: SignIn } },
+    { path: '/signout', name: 'SignOut', components: { default: SignOut } },
     { path: '/setup', name: 'Setup', components: { default: Setup, drawer: DrawerMain, toolbar: ToolbarMain } },
     { path: '/home', name: 'Home', components: { default: Home, drawer: DrawerMain, toolbar: ToolbarMain } },
     { path: '/people', redirect: '/people/find' },

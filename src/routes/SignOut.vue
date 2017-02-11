@@ -1,5 +1,5 @@
 <template>
-  <div class="sign using-sidebar">
+  <div class="sign">
     <div v-for="i in 50">
       Sign in/up/out {{i}}
     </div>
