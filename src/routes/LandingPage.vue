@@ -30,11 +30,6 @@
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae fringilla justo. Quisque pulvinar mollis.
     </parallax>
 
-    <section class="dense-section">
-      <h1>Lorem ipsum dolor sit amet</h1>
-      <p>Pellentesque lacinia magna sem, a mollis augue dignissim tempor. Maecenas aliquet erat turpis, non efficitur mauris vulputate ac. Phasellus tincidunt velit in facilisis dignissim. Praesent tempor suscipit dui. Integer eget nulla est. Suspendisse sagittis molestie pretium. Aliquam erat volutpat. Maecenas consectetur arcu sed lacinia malesuada. Nulla vestibulum tortor maximus quam pellentesque posuere.</p>
-    </section>
-
     <footer class="landing-footer">
       <span>Papaya © 2017</span>
     </footer>
@@ -60,10 +55,6 @@ export default {
 
 .full-section {
   padding: 25vh 10vw;
-}
-
-.dense-section {
-  padding: 10vh 10vw;
 }
 
 .split-section {
