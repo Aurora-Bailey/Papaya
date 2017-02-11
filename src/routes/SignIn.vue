@@ -24,7 +24,7 @@
     </div>
     <div class="hr-or"></div>
     <div class="center-button">
-      <router-link to="/signup"><md-button class="md-primary md-raised">Create account</md-button></router-link>
+      <router-link to="/signup"><md-button class="md-primary">Create account</md-button></router-link>
     </div>
   </div>
 </div>

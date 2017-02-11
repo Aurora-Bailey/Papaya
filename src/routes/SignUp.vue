@@ -94,7 +94,7 @@
     </div>
     <div class="hr-or"></div>
     <div class="center-button">
-      <router-link to="/signin"><md-button class="md-primary md-raised">Sign In</md-button></router-link>
+      <router-link to="/signin"><md-button class="md-primary ">Sign In</md-button></router-link>
     </div>
   </div>
 </div>
