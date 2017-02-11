@@ -1,18 +1,51 @@
 <template>
   <div class="landing-page">
-    <div v-for="i in 50">
-      {{$root.$data.scroll.windowHeight}}
-      Landing Page {{i}}
-    </div>
-    {{$root.$data.scroll}}
-    <div v-for="i in 50">
-      Landing Page {{i}}
-    </div>
+    <section class="full-section">
+      <h1>Lorem ipsum dolor sit amet</h1>
+      <p>Pellentesque lacinia magna sem, a mollis augue dignissim tempor. Maecenas aliquet erat turpis, non efficitur mauris vulputate ac. Phasellus tincidunt velit in facilisis dignissim. Praesent tempor suscipit dui. Integer eget nulla est. Suspendisse sagittis molestie pretium. Aliquam erat volutpat. Maecenas consectetur arcu sed lacinia malesuada. Nulla vestibulum tortor maximus quam pellentesque posuere.</p>
+    </section>
+
+    <parallax title="Lorem ipsum dolor sit amet" image="http://t.fod4.com/t/312ca0342a/c1920x1080_50.jpg">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae fringilla justo. Quisque pulvinar mollis.
+    </parallax>
+
+    <section class="full-section">
+      <md-layout md-gutter="40">
+        <md-layout style="flex: 1;" md-flex-xlarge="50" md-flex-large="50" md-flex-medium="100" md-flex-small="100" md-flex-xsmall="100">
+          <div class="split-section">
+            <h2>Lorem ipsum dolor sit amet</h2>
+            <p>Pellentesque lacinia magna sem, a mollis augue dignissim tempor. Maecenas aliquet erat turpis, non efficitur mauris vulputate ac. Phasellus tincidunt velit in facilisis dignissim. Praesent tempor suscipit dui. Integer eget nulla est. Suspendisse sagittis molestie pretium. Aliquam erat volutpat. Maecenas consectetur arcu sed lacinia malesuada. Nulla vestibulum tortor maximus quam pellentesque posuere.</p>
+          </div>
+        </md-layout>
+        <md-layout style="flex: 1;" md-flex-xlarge="50" md-flex-large="50" md-flex-medium="100" md-flex-small="100" md-flex-xsmall="100">
+          <div class="split-section">
+            <h2>Lorem ipsum dolor sit amet</h2>
+            <p>Pellentesque lacinia magna sem, a mollis augue dignissim tempor. Maecenas aliquet erat turpis, non efficitur mauris vulputate ac. Phasellus tincidunt velit in facilisis dignissim. Praesent tempor suscipit dui. Integer eget nulla est. Suspendisse sagittis molestie pretium. Aliquam erat volutpat. Maecenas consectetur arcu sed lacinia malesuada. Nulla vestibulum tortor maximus quam pellentesque posuere.</p>
+          </div>
+        </md-layout>
+      </md-layout>
+    </section>
+
+    <parallax title="Lorem ipsum dolor sit amet" image="http://outdoors.dartmouth.edu/images/fyt_hike2.jpg">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae fringilla justo. Quisque pulvinar mollis.
+    </parallax>
+
+    <section class="dense-section">
+      <h1>Lorem ipsum dolor sit amet</h1>
+      <p>Pellentesque lacinia magna sem, a mollis augue dignissim tempor. Maecenas aliquet erat turpis, non efficitur mauris vulputate ac. Phasellus tincidunt velit in facilisis dignissim. Praesent tempor suscipit dui. Integer eget nulla est. Suspendisse sagittis molestie pretium. Aliquam erat volutpat. Maecenas consectetur arcu sed lacinia malesuada. Nulla vestibulum tortor maximus quam pellentesque posuere.</p>
+    </section>
+
+    <footer class="landing-footer">
+      <span>Papaya © 2017</span>
+    </footer>
   </div>
 </template>
 <script>
+import Parallax from '../components/Parallax'
+
 export default {
   name: 'landing-page',
+  components: { Parallax },
   beforeRouteEnter (to, from, next) {
     next((vm) => {
       vm.$material.setCurrentTheme('blue')
@@ -24,7 +57,23 @@ export default {
 <style lang="scss" scoped>
 .landing-page {
 }
-</style>
 
-<style lang="scss">
+.full-section {
+  padding: 25vh 10vw;
+}
+
+.dense-section {
+  padding: 10vh 10vw;
+}
+
+.split-section {
+
+}
+
+.landing-footer {
+  text-align: center;
+  color: white;
+  background-color: black;
+  padding: 5vh 0;
+}
 </style>

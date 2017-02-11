@@ -2,7 +2,7 @@
   <div class="toolbar-landing">
     <div class="floating-wrapper">
       <md-whiteframe class="toolbar-wrapper" md-elevation="2" :style="{height: toolbarScrollHeight + 'px'}">
-        <div class="toolbar-picture" :style="{opacity: toolbarScrollDelta}"></div>
+        <div class="toolbar-picture" :style="{opacity: toolbarScrollDelta / 2}"></div>
         <div class="toolbar-logo" :style="{fontSize: toolbarLogoFontSize + 'px', lineHeight: toolbarScrollHeight + 'px', right: (1 - toolbarScrollDelta) * 100 + '%'}">
           <md-icon class="logo-icon" md-src="http://cdn.onlinewebfonts.com/svg/img_479199.svg" :style="{height: toolbarLogoFontSize + 'px', width: toolbarLogoFontSize + 'px'}"></md-icon>
           <span class="logo-text"> Papaya</span>
@@ -57,12 +57,14 @@ export default {
   top: 0;
   left: 0;
   right: 0;
+  z-index: 1000;
 }
 
 .toolbar-wrapper {
   background-color: black;
   color: white;
   position: relative;
+  z-index: 1000;
 }
 .toolbar-picture {
   position: absolute;
@@ -70,10 +72,11 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2;
+  z-index: 2000;
   pointer-events: none;
   margin: auto;
-  background-image: url('../assets/cityscape_dark.jpg');
+  background-color: black;
+  background-image: url('../assets/cityscape.jpg');
   background-position: center;
   background-size: cover;
 }
@@ -83,7 +86,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 3;
+  z-index: 3000;
   text-align: center;
   padding: 0 24px;
   white-space: nowrap;
@@ -101,7 +104,7 @@ export default {
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 4;
+  z-index: 4000;
 
   .md-button {
     margin: 14px;
