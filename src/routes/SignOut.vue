@@ -1,17 +1,10 @@
 <template>
-  <div class="sign">
-    <div v-for="i in 50">
-      Sign in/up/out {{i}}
-    </div>
-    {{$root.$data.scroll}}
-    <div v-for="i in 50">
-      Sign in/up/out {{i}}
-    </div>
+  <div class="sign-out">
   </div>
 </template>
 <script>
 export default {
-  name: 'sign',
+  name: 'sign-out',
   beforeRouteEnter (to, from, next) {
     next((vm) => {
       vm.$material.setCurrentTheme('red')
@@ -21,7 +14,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.sign {
+.sign-out {
 }
 </style>
 
