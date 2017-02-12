@@ -1,7 +1,7 @@
 <template>
   <div class="parallax">
     <section class="parallax_section">
-      <div class="parallax_background" :style="{ backgroundImage: 'url(' + image + ')', bottom: -25 * parallaxDelta  + 'vh', top: -25 * (1 -parallaxDelta)  + 'vh'  }"></div>
+      <div class="parallax_background" :style="{ backgroundImage: 'url(' + imageScaled + ')', bottom: -25 * parallaxDelta  + 'vh', top: -25 * (1 -parallaxDelta)  + 'vh'  }"></div>
       <div class="parallax_text">
         <h2 class="parallax_title">{{title}}</h2>
         <p>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  props: ['title', 'image'],
+  props: ['title', 'image', 'img-mobile'],
   name: 'parallax',
   data () {
     return {
@@ -30,6 +30,9 @@ export default {
       if (percent > 1) percent = 1
       if (percent < 0) percent = 0
       return percent
+    },
+    imageScaled: function () {
+      return (this.$root.$data.scroll.windowWidth > 600 ? this.image : this.imgMobile)
     }
   },
   watch: {

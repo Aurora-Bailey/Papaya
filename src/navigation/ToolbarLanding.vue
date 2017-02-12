@@ -76,9 +76,13 @@ export default {
   pointer-events: none;
   margin: auto;
   background-color: black;
-  background-image: url('../assets/cityscape.jpg');
+  background-image: url('/static/img/cityscape.jpg');
   background-position: center;
   background-size: cover;
+
+  @media (max-width: 600px) {
+    background-image: url('/static/img/cityscape_600.jpg');
+  }
 }
 .toolbar-logo {
   position: absolute;

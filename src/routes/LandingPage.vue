@@ -5,7 +5,7 @@
       <p>Pellentesque lacinia magna sem, a mollis augue dignissim tempor. Maecenas aliquet erat turpis, non efficitur mauris vulputate ac. Phasellus tincidunt velit in facilisis dignissim. Praesent tempor suscipit dui. Integer eget nulla est. Suspendisse sagittis molestie pretium. Aliquam erat volutpat. Maecenas consectetur arcu sed lacinia malesuada. Nulla vestibulum tortor maximus quam pellentesque posuere.</p>
     </section>
 
-    <parallax title="Lorem ipsum dolor sit amet" image="http://t.fod4.com/t/312ca0342a/c1920x1080_50.jpg">
+    <parallax title="Lorem ipsum dolor sit amet" image="/static/img/catan.jpg" img-mobile="/static/img/catan_600.jpg">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae fringilla justo. Quisque pulvinar mollis.
     </parallax>
 
@@ -26,7 +26,7 @@
       </md-layout>
     </section>
 
-    <parallax title="Lorem ipsum dolor sit amet" image="http://outdoors.dartmouth.edu/images/fyt_hike2.jpg">
+    <parallax title="Lorem ipsum dolor sit amet" image="/static/img/hiking.jpg" img-mobile="/static/img/hiking_600.jpg">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae fringilla justo. Quisque pulvinar mollis.
     </parallax>
 
