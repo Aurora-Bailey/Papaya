@@ -64,7 +64,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 10;
+  z-index: 1;
   background-color: black;
   background-position: center;
   background-size: cover;
@@ -72,7 +72,7 @@ export default {
 }
 .parallax_text {
   position: relative;
-  z-index: 20;
+  z-index: 2;
   text-align: center;
   font-size: 18px;
 }

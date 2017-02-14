@@ -57,14 +57,14 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 6;
 }
 
 .toolbar-wrapper {
   background-color: black;
   color: white;
   position: relative;
-  z-index: 1000;
+  z-index: 6;
 }
 .toolbar-picture {
   position: absolute;
@@ -72,7 +72,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2000;
+  z-index: 6;
   pointer-events: none;
   margin: auto;
   background-color: black;
@@ -90,7 +90,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 3000;
+  z-index: 6;
   text-align: center;
   padding: 0 24px;
   white-space: nowrap;
@@ -108,7 +108,7 @@ export default {
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: 4000;
+  z-index: 6;
 
   .md-button {
     margin: 14px;

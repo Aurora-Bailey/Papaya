@@ -19,7 +19,7 @@ Vue.material.registerTheme({
   red: {
     primary: 'red',
     accent: {
-      color: 'red',
+      color: 'green',
       hue: 900
     },
     background: 'white'
@@ -27,7 +27,7 @@ Vue.material.registerTheme({
   orange: {
     primary: 'orange',
     accent: {
-      color: 'orange',
+      color: 'blue',
       hue: 900
     },
     background: 'white'
@@ -35,7 +35,7 @@ Vue.material.registerTheme({
   green: {
     primary: 'green',
     accent: {
-      color: 'green',
+      color: 'red',
       hue: 900
     },
     background: 'white'
@@ -43,7 +43,7 @@ Vue.material.registerTheme({
   teal: {
     primary: 'teal',
     accent: {
-      color: 'teal',
+      color: 'red',
       hue: 900
     },
     background: 'white'
@@ -51,7 +51,7 @@ Vue.material.registerTheme({
   blue: {
     primary: 'blue',
     accent: {
-      color: 'blue',
+      color: 'orange',
       hue: 900
     },
     background: 'white'
@@ -59,7 +59,7 @@ Vue.material.registerTheme({
   cyan: {
     primary: 'cyan',
     accent: {
-      color: 'cyan',
+      color: 'orange',
       hue: 900
     },
     background: 'white'
@@ -67,7 +67,7 @@ Vue.material.registerTheme({
   purple: {
     primary: 'purple',
     accent: {
-      color: 'purple',
+      color: 'yellow',
       hue: 900
     },
     background: 'white'
@@ -75,7 +75,7 @@ Vue.material.registerTheme({
   brown: {
     primary: 'brown',
     accent: {
-      color: 'brown',
+      color: 'green',
       hue: 900
     },
     background: 'white'

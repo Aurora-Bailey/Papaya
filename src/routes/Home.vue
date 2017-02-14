@@ -1,5 +1,9 @@
 <template>
   <div class="home using-sidebar">
+    <new-post :open="newPostDialogOpen" @close="newPostDialogOpen=false" @post="makeNewPost"></new-post>
+    <md-button id="post-fab" class="md-fab gl-corner-fab" @click.native="newPostDialogOpen=true">
+      <md-icon>edit</md-icon>
+    </md-button>
     <div class="gl-narrow-wrapper-600">
 
       <md-whiteframe md-elevation="4dp" class="gl-post" v-for="post in posts">
@@ -64,8 +68,13 @@
   </div>
 </template>
 <script>
+import NewPost from '../components/NewPost'
+
 export default {
   name: 'home',
+  components: {
+    NewPost
+  },
   methods: {
     pseudoMakeComment: function (post) {
       if (post.addComment === '') {
@@ -84,10 +93,25 @@ export default {
 
       post.addComment = ''
       post.addCommentToggle = false
+    },
+    makeNewPost: function (post) {
+      this.posts.unshift({
+        name: 'Baz Hamilton',
+        profile: 'https://placeimg.com/48/48/people/8',
+        date: Date.now(),
+        postID: 1,
+        ownerID: 3,
+        remark: post.text,
+        pic: post.pic,
+        comments: [],
+        addComment: '',
+        addCommentToggle: false
+      })
     }
   },
   data () {
     return {
+      newPostDialogOpen: false,
       posts: [
         {
           name: 'Baz Hamilton',
