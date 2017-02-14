@@ -1,6 +1,6 @@
 <template>
 <div class="setup">
-  <div class="narrow-wrapper-480">
+  <div class="gl-narrow-wrapper-480">
     <h1 class="logo">
       <md-icon class="logo-icon" md-src="http://cdn.onlinewebfonts.com/svg/img_479199.svg"></md-icon>
       <span class="logo-text"> Papaya</span>
@@ -44,7 +44,7 @@
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
       </div>
 
-      <div class="center-button">
+      <div class="gl-center-button">
         <md-button class="md-raised" @click.native="getLocation">Get My Location</md-button>
       </div>
 

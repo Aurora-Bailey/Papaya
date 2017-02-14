@@ -9,6 +9,7 @@ import Router from './plugins/Router'
 import './plugins/Material'
 import './plugins/Resource'
 import './plugins/API'
+import './plugins/Filters'
 import './plugins/Style.scss'
 
 /* eslint-disable no-new */

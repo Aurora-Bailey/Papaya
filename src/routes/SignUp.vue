@@ -1,6 +1,6 @@
 <template>
 <div class="sign-up">
-  <div class="narrow-wrapper-480">
+  <div class="gl-narrow-wrapper-480">
     <h1 class="logo">
         <md-icon class="logo-icon" md-src="http://cdn.onlinewebfonts.com/svg/img_479199.svg"></md-icon>
         <span class="logo-text"> Papaya</span>
@@ -89,11 +89,11 @@
         </div>
       </md-input-container>
     </form>
-    <div class="center-button">
+    <div class="gl-center-button">
       <router-link to="/setup"><md-button class="md-primary md-raised">Create account</md-button></router-link>
     </div>
-    <div class="hr-or"></div>
-    <div class="center-button">
+    <div class="gl-divider-or"></div>
+    <div class="gl-center-button">
       <router-link to="/signin"><md-button class="md-primary ">Sign In</md-button></router-link>
     </div>
   </div>
