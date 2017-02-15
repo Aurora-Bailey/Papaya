@@ -8,7 +8,7 @@ Vue.use(Material)
 Vue.material.registerTheme({
   default: {
     primary: 'blue',
-    accent: 'orange',
+    accent: 'red',
     background: 'white'
   },
   white: {
@@ -19,7 +19,7 @@ Vue.material.registerTheme({
   red: {
     primary: 'red',
     accent: {
-      color: 'green',
+      color: 'red',
       hue: 900
     },
     background: 'white'
@@ -27,7 +27,7 @@ Vue.material.registerTheme({
   orange: {
     primary: 'orange',
     accent: {
-      color: 'blue',
+      color: 'red',
       hue: 900
     },
     background: 'white'
@@ -51,7 +51,7 @@ Vue.material.registerTheme({
   blue: {
     primary: 'blue',
     accent: {
-      color: 'orange',
+      color: 'red',
       hue: 900
     },
     background: 'white'
@@ -59,7 +59,7 @@ Vue.material.registerTheme({
   cyan: {
     primary: 'cyan',
     accent: {
-      color: 'orange',
+      color: 'red',
       hue: 900
     },
     background: 'white'
@@ -67,7 +67,7 @@ Vue.material.registerTheme({
   purple: {
     primary: 'purple',
     accent: {
-      color: 'yellow',
+      color: 'red',
       hue: 900
     },
     background: 'white'
@@ -75,7 +75,7 @@ Vue.material.registerTheme({
   brown: {
     primary: 'brown',
     accent: {
-      color: 'green',
+      color: 'red',
       hue: 900
     },
     background: 'white'

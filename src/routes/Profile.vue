@@ -1,17 +1,18 @@
 <template>
   <div class="profile using-sidebar">
-    <div v-for="i in 50">
-      Profile {{i}}
-    </div>
-    {{$root.$data.scroll}}
-    <div v-for="i in 50">
-      Profile {{i}}
+    <div class="gl-narrow-wrapper-600">
+      <display-posts></display-posts>
     </div>
   </div>
 </template>
 <script>
+import DisplayPosts from '../components/DisplayPosts'
+
 export default {
   name: 'profile',
+  components: {
+    DisplayPosts
+  },
   beforeRouteEnter (to, from, next) {
     next((vm) => {
       vm.$material.setCurrentTheme('cyan')
@@ -22,6 +23,7 @@ export default {
 
 <style lang="scss" scoped>
 .profile {
+  overflow: auto;
 }
 </style>
 
