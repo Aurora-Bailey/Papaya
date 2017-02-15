@@ -1,9 +1,7 @@
 <template>
   <div class="home using-sidebar">
-    <new-post :open="newPostDialogOpen" @close="newPostDialogOpen=false" @post="makeNewPost"></new-post>
-    <md-button id="post-fab" class="md-fab gl-corner-fab" @click.native="newPostDialogOpen=true">
-      <md-icon>edit</md-icon>
-    </md-button>
+    <new-post @post="makeNewPost"></new-post>
+
     <div class="gl-narrow-wrapper-600">
 
       <md-whiteframe md-elevation="4dp" class="gl-post" v-for="post in posts">
@@ -111,7 +109,6 @@ export default {
   },
   data () {
     return {
-      newPostDialogOpen: false,
       posts: [
         {
           name: 'Baz Hamilton',

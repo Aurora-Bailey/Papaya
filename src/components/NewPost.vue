@@ -28,6 +28,9 @@
         <md-button class="md-primary" @click.native="sendPost()">Post</md-button>
       </md-dialog-actions>
     </md-dialog>
+    <md-button id="post-fab" class="md-fab gl-corner-fab" @click.native="openDialog">
+      <md-icon>edit</md-icon>
+    </md-button>
   </div>
 </template>
 
@@ -44,11 +47,6 @@ export default {
       }
     }
   },
-  watch: {
-    open: function (isOpen) {
-      if (isOpen) this.openDialog('dialog')
-    }
-  },
   methods: {
     getPicture: function (event) {
       let input = event.target
@@ -62,12 +60,6 @@ export default {
         reader.readAsDataURL(input.files[0])
       }
     },
-    openDialog () {
-      this.$refs['dialog'].open()
-    },
-    closeDialog () {
-      this.$refs['dialog'].close()
-    },
     cancel () {
       this.post.pic = null
       this.post.picData = null
@@ -77,6 +69,12 @@ export default {
     sendPost () {
       this.$emit('post', {text: this.post.text, pic: this.post.picData})
       this.cancel()
+    },
+    openDialog () {
+      this.$refs['dialog'].open()
+    },
+    closeDialog () {
+      this.$refs['dialog'].close()
     },
     onOpen () {
       this.$emit('open')
