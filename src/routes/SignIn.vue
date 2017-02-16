@@ -56,11 +56,11 @@ export default {
 
 <style lang="scss" scoped>
 .sign-in {
-  padding: 20px 10px;
+  padding: 24px 5px;
 }
 .sign-form-container {
   background-color: white;
-  padding: 24px 12px;
+  padding: 24px;
 }
 .logo {
   text-align: center;
