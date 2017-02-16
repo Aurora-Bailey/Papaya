@@ -1,6 +1,6 @@
 <template>
   <div class="not-found using-sidebar">
-    <img class="image-found" src="/static/img/narwhal.png">
+    <!-- <img class="image-found" src="/static/img/narwhal.png"> -->
     <div class="large-text">
       page not found
     </div>
