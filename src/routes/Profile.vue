@@ -179,7 +179,6 @@ export default {
 <style lang="scss" scoped>
 .profile {
   overflow: auto;
-  background-color: #eee;
 }
 .profile-section {
   padding-top: 48px;

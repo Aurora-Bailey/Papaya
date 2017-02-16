@@ -1,98 +1,99 @@
 <template>
 <div class="sign-up">
   <div class="gl-narrow-wrapper-480">
-    <h1 class="logo">
+    <md-whiteframe class="sign-form-container">
+      <h1 class="logo">
         <md-icon class="logo-icon" md-src="http://cdn.onlinewebfonts.com/svg/img_479199.svg"></md-icon>
         <span class="logo-text"> Papaya</span>
       </h1>
-    <h2 class="title">Create Account</h2>
-    <form validate id="signup-form" @submit.prevent="sendSignup()">
-      <!-- <md-subheader>Account Information</md-subheader> -->
+      <h2 class="title">Create Account</h2>
+      <form validate id="signup-form" @submit.prevent="sendSignup()">
+        <!-- <md-subheader>Account Information</md-subheader> -->
 
-      <md-input-container>
-        <md-icon>email</md-icon>
-        <label>Email Address</label>
-        <md-input required type="email" v-model="signup.email"></md-input>
-      </md-input-container>
-
-      <md-input-container>
-        <md-icon>perm_identity</md-icon>
-        <label>Display Name (optional)</label>
-        <md-input type="text" v-model="signup.display_name"></md-input>
-      </md-input-container>
-
-      <md-input-container>
-        <md-icon>lock_outline</md-icon>
-        <label>Password</label>
-        <md-input required type="password" v-model="signup.password"></md-input>
-      </md-input-container>
-
-      <md-input-container>
-        <md-icon>lock_outline</md-icon>
-        <label>Confirm Password</label>
-        <md-input required type="password" v-model="signup.password_confirm"></md-input>
-      </md-input-container>
-
-      <!-- <md-subheader>Personal Information</md-subheader> -->
-
-      <md-input-container>
-        <md-icon>face</md-icon>
-        <label>First Name</label>
-        <md-input required type="text" v-model="signup.first_name"></md-input>
-      </md-input-container>
-
-      <md-input-container>
-        <md-icon>face</md-icon>
-        <label>Last Name</label>
-        <md-input required type="text" v-model="signup.last_name"></md-input>
-      </md-input-container>
-
-      <div class="field-group">
-        <md-icon>cake</md-icon>
         <md-input-container>
-          <label for="month">Month</label>
-          <md-select required name="month" id="signup-month" v-model="signup.birth_month">
-            <md-option value="1">Jan</md-option>
-            <md-option value="2">Feb</md-option>
-            <md-option value="3">Mar</md-option>
-            <md-option value="4">Apr</md-option>
-            <md-option value="5">May</md-option>
-            <md-option value="6">Jun</md-option>
-            <md-option value="7">Jul</md-option>
-            <md-option value="8">Aug</md-option>
-            <md-option value="9">Sep</md-option>
-            <md-option value="10">Oct</md-option>
-            <md-option value="11">Nov</md-option>
-            <md-option value="12">Dec</md-option>
-          </md-select>
+          <md-icon>email</md-icon>
+          <label>Email Address</label>
+          <md-input required type="email" v-model="signup.email"></md-input>
         </md-input-container>
 
         <md-input-container>
-          <label for="day">Day</label>
-          <md-select required name="day" id="day" v-model="signup.birth_day">
-            <md-option :value="index" v-for="index in 32">{{index}}</md-option>
-          </md-select>
+          <md-icon>perm_identity</md-icon>
+          <label>Display Name (optional)</label>
+          <md-input type="text" v-model="signup.display_name"></md-input>
         </md-input-container>
 
         <md-input-container>
-          <label for="year">Year</label>
-          <md-select required name="year" id="year" v-model="signup.birth_year">
-            <md-option :value="new Date().getFullYear() - index - 12" v-for="index in 120">{{new Date().getFullYear() - index - 12}}</md-option>
-          </md-select>
+          <md-icon>lock_outline</md-icon>
+          <label>Password</label>
+          <md-input required type="password" v-model="signup.password"></md-input>
         </md-input-container>
-      </div>
-      <md-input-container>
-        <md-icon>wc</md-icon>
-        <div class="radio-container">
-          <md-radio required v-model="signup.sex" name="signup-sex" class="md-primary" md-value="0">Female</md-radio>
-          <md-radio required v-model="signup.sex" name="signup-sex" class="md-primary" md-value="1">Male</md-radio>
+
+        <md-input-container>
+          <md-icon>lock_outline</md-icon>
+          <label>Confirm Password</label>
+          <md-input required type="password" v-model="signup.password_confirm"></md-input>
+        </md-input-container>
+
+        <!-- <md-subheader>Personal Information</md-subheader> -->
+
+        <md-input-container>
+          <md-icon>face</md-icon>
+          <label>First Name</label>
+          <md-input required type="text" v-model="signup.first_name"></md-input>
+        </md-input-container>
+
+        <md-input-container>
+          <md-icon>face</md-icon>
+          <label>Last Name</label>
+          <md-input required type="text" v-model="signup.last_name"></md-input>
+        </md-input-container>
+
+        <div class="field-group">
+          <md-icon>cake</md-icon>
+          <md-input-container>
+            <label for="month">Month</label>
+            <md-select required name="month" id="signup-month" v-model="signup.birth_month">
+              <md-option value="1">Jan</md-option>
+              <md-option value="2">Feb</md-option>
+              <md-option value="3">Mar</md-option>
+              <md-option value="4">Apr</md-option>
+              <md-option value="5">May</md-option>
+              <md-option value="6">Jun</md-option>
+              <md-option value="7">Jul</md-option>
+              <md-option value="8">Aug</md-option>
+              <md-option value="9">Sep</md-option>
+              <md-option value="10">Oct</md-option>
+              <md-option value="11">Nov</md-option>
+              <md-option value="12">Dec</md-option>
+            </md-select>
+          </md-input-container>
+
+          <md-input-container>
+            <label for="day">Day</label>
+            <md-select required name="day" id="day" v-model="signup.birth_day">
+              <md-option :value="index" v-for="index in 32">{{index}}</md-option>
+            </md-select>
+          </md-input-container>
+
+          <md-input-container>
+            <label for="year">Year</label>
+            <md-select required name="year" id="year" v-model="signup.birth_year">
+              <md-option :value="new Date().getFullYear() - index - 12" v-for="index in 120">{{new Date().getFullYear() - index - 12}}</md-option>
+            </md-select>
+          </md-input-container>
         </div>
-      </md-input-container>
-    </form>
-    <div class="gl-center-button">
-      <router-link to="/setup"><md-button class="md-primary md-raised">Create account</md-button></router-link>
-    </div>
-    <div class="gl-divider-or"></div>
+        <md-input-container>
+          <md-icon>wc</md-icon>
+          <div class="radio-container">
+            <md-radio required v-model="signup.sex" name="signup-sex" class="md-primary" md-value="0">Female</md-radio>
+            <md-radio required v-model="signup.sex" name="signup-sex" class="md-primary" md-value="1">Male</md-radio>
+          </div>
+        </md-input-container>
+      </form>
+      <div class="gl-center-button">
+        <router-link to="/setup"><md-button class="md-primary md-raised">Create account</md-button></router-link>
+      </div>
+    </md-whiteframe>
     <div class="gl-center-button">
       <router-link to="/signin"><md-button class="md-primary ">Sign In</md-button></router-link>
     </div>
@@ -134,6 +135,10 @@ export default {
 <style lang="scss" scoped>
 .sign-up {
   padding: 20px 10px;
+}
+.sign-form-container {
+  background-color: white;
+  padding: 24px 12px;
 }
 .logo {
   text-align: center;

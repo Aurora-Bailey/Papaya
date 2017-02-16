@@ -1,61 +1,63 @@
 <template>
 <div class="setup">
   <div class="gl-narrow-wrapper-480">
-    <h1 class="logo">
-      <md-icon class="logo-icon" md-src="http://cdn.onlinewebfonts.com/svg/img_479199.svg"></md-icon>
-      <span class="logo-text"> Papaya</span>
-    </h1>
+    <md-whiteframe class="sign-form-container">
+      <h1 class="logo">
+        <md-icon class="logo-icon" md-src="http://cdn.onlinewebfonts.com/svg/img_479199.svg"></md-icon>
+        <span class="logo-text"> Papaya</span>
+      </h1>
 
-    <div class="stage stage-picture" v-if="stage === 0">
-      <h2 class="title">Profile Picture</h2>
-      <div class="picture-preview" :style="{backgroundImage: 'url(' + picture.data + ')'}"></div>
-      <md-input-container>
-        <label>Upload Picture</label>
-        <md-file v-model="picture.input" @change.native="getPicture" accept="image/*"></md-file>
-      </md-input-container>
-    </div>
-
-    <div class="stage stage-picture" v-if="stage === 1">
-      <h2 class="title">Select Tags</h2>
-      <div class="description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
+      <div class="stage stage-picture" v-if="stage === 0">
+        <h2 class="title">Profile Picture</h2>
+        <div class="picture-preview" :style="{backgroundImage: 'url(' + picture.data + ')'}"></div>
+        <md-input-container>
+          <label>Upload Picture</label>
+          <md-file v-model="picture.input" @change.native="getPicture" accept="image/*"></md-file>
+        </md-input-container>
       </div>
 
-      <md-chips v-model="tags.list" md-input-placeholder="Add a custom tag">
-        <template scope="chip">{{ chip.value }}</template>
-      </md-chips>
-    </div>
+      <div class="stage stage-picture" v-if="stage === 1">
+        <h2 class="title">Select Tags</h2>
+        <div class="description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
+        </div>
 
-    <div class="stage stage-bio" v-if="stage === 2">
-      <h2 class="title">Short Bio</h2>
-      <div class="description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
+        <md-chips v-model="tags.list" md-input-placeholder="Add a custom tag">
+          <template scope="chip">{{ chip.value }}</template>
+        </md-chips>
       </div>
 
-      <md-input-container>
-        <label>About me</label>
-        <md-textarea v-model="bio.text" maxlength="500"></md-textarea>
-      </md-input-container>
-    </div>
+      <div class="stage stage-bio" v-if="stage === 2">
+        <h2 class="title">Short Bio</h2>
+        <div class="description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
+        </div>
 
-    <div class="stage stage-location" v-if="stage === 3">
-      <h2 class="title">Location</h2>
-      <div class="description">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
+        <md-input-container>
+          <label>About me</label>
+          <md-textarea v-model="bio.text" maxlength="500"></md-textarea>
+        </md-input-container>
       </div>
 
-      <div class="gl-center-button">
-        <md-button class="md-raised" @click.native="getLocation">Get My Location</md-button>
+      <div class="stage stage-location" v-if="stage === 3">
+        <h2 class="title">Location</h2>
+        <div class="description">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
+        </div>
+
+        <div class="gl-center-button">
+          <md-button class="md-raised" @click.native="getLocation">Get My Location</md-button>
+        </div>
+
+        <iframe class="location-map" :src="mapURL"></iframe>
       </div>
 
-      <iframe class="location-map" :src="mapURL"></iframe>
-    </div>
-
-    <div class="button-bar">
-      <md-button class="md-raised" v-if="stage > 0" @click.native="stage--">Back</md-button>
-      <md-button class="md-primary md-raised mod-md-text-white right-button" v-if="stage !== 3" @click.native="stage++">Next</md-button>
-      <router-link class="right-button" to="/events" v-if="stage === 3"><md-button class="md-primary md-raised mod-md-text-white">Finish Setup</md-button></router-link>
-    </div>
+      <div class="button-bar">
+        <md-button class="md-raised" v-if="stage > 0" @click.native="stage--">Back</md-button>
+        <md-button class="md-primary md-raised mod-md-text-white right-button" v-if="stage !== 3" @click.native="stage++">Next</md-button>
+        <router-link class="right-button" to="/events" v-if="stage === 3"><md-button class="md-primary md-raised mod-md-text-white">Finish Setup</md-button></router-link>
+      </div>
+    </md-whiteframe>
 
   </div>
 </div>
@@ -130,6 +132,10 @@ export default {
 <style lang="scss" scoped>
 .setup {
   padding: 20px 10px;
+}
+.sign-form-container {
+  background-color: white;
+  padding: 24px 12px;
 }
 .logo {
   text-align: center;

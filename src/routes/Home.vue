@@ -28,7 +28,6 @@ export default {
 <style lang="scss" scoped>
 .home {
   overflow: auto;
-  background-color: #eee;
 }
 </style>
 

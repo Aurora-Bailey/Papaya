@@ -55,6 +55,7 @@ export default {
 
 .full-section {
   padding: 25vh 10vw;
+  background-color: white;
 }
 
 .split-section {
