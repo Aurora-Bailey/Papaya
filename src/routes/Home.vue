@@ -1,7 +1,7 @@
 <template>
   <div class="home using-sidebar">
     <div class="gl-narrow-wrapper-600">
-      <display-posts></display-posts>
+      <display-posts :postable="true"></display-posts>
     </div>
   </div>
 </template>
@@ -28,6 +28,7 @@ export default {
 <style lang="scss" scoped>
 .home {
   overflow: auto;
+  background-color: #eee;
 }
 </style>
 

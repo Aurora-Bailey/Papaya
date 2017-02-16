@@ -1,8 +1,8 @@
 <template>
   <div class="display-posts">
-    <new-post @post="makeNewPost"></new-post>
+    <new-post @post="makeNewPost" v-if="postable"></new-post>
 
-    <md-whiteframe md-elevation="4dp" class="gl-post" v-for="post in posts">
+    <md-whiteframe md-elevation="4dp" class="post" v-for="post in posts">
       <div class="post-head">
         <div class="post-profile">
           <img :src="post.profile" alt="">
@@ -63,6 +63,7 @@
 import NewPost from '../components/NewPost'
 
 export default {
+  props: ['postable'],
   name: 'display-posts',
   components: {
     NewPost
@@ -202,7 +203,102 @@ export default {
 
 <style lang="scss" scoped>
 .display-posts {
-  overflow: auto;
+  padding: 5px;
+}
+.post {
+  margin: 24px 0;
+  background-color: white;
+
+  .remark-text {
+    white-space: pre-line;
+    margin: 0;
+  }
+
+  .post-profile {
+    border-radius: 100px;
+    overflow: hidden;
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    user-select: none;
+
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  }
+
+  .post-head {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+
+    .post-name {
+      flex: 1;
+      padding-left: 8px;
+    }
+    .post-date {
+      color: rgba(0,0,0,0.54);
+    }
+  }
+
+  .post-body {
+    .post-remark {
+      padding: 15px;
+    }
+    .post-pic {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+
+      img {
+        width: 100%
+      }
+    }
+    .post-comments {
+
+      .comment-head {
+        padding: 5px 15px;
+        display: flex;
+        align-items: center;
+
+        .post-profile {
+          width: 24px;
+          height: 24px;
+          min-width: 24px;
+          min-height: 24px;
+        }
+        .comment-name {
+          flex: 1;
+          padding-left: 8px;
+        }
+        .comment-date {
+          color: rgba(0,0,0,0.54);
+        }
+      }
+      .comment-remark {
+        padding: 5px 15px 5px 48px;
+      }
+    }
+    .post-controls {
+      color: rgba(0,0,0,0.38);
+      padding: 15px;
+      display: flex;
+    }
+    .post-make-comment {
+      padding: 5px 15px;
+      overflow: auto;
+      display: flex;
+      align-items: center;
+
+      .post-profile {
+        margin-right: 8px;
+      }
+    }
+  }
 }
 </style>
 
