@@ -57,6 +57,17 @@
             <md-button class="md-icon-button md-list-action" id="edit-location" @click.native="openDialog('dialog-edit-location')">
               <md-icon>edit</md-icon>
             </md-button>
+          </md-list-item>
+
+          <md-list-item class="md-inset">
+            <md-ink-ripple />
+            <div class="md-list-text-container">
+              <span>~{{account.distance}} Miles</span>
+              <span>Search Radius</span>
+            </div>
+            <md-button class="md-icon-button md-list-action" id="edit-distance" @click.native="openDialog('dialog-edit-distance')">
+              <md-icon>edit</md-icon>
+            </md-button>
             <md-divider class="md-inset"></md-divider>
           </md-list-item>
 
@@ -186,6 +197,28 @@
     </md-dialog>
 
     <!--Location Dialog-->
+    <md-dialog md-open-from="#edit-distance" md-close-to="#edit-distance" ref="dialog-edit-distance">
+      <md-dialog-title>
+        <h2 class="md-title">Update Search Radius</h2>
+      </md-dialog-title>
+
+      <md-dialog-content>
+        <div class="gl-center-button">
+          <md-button class="md-raised" :class="{'md-primary': edit.distance.distance == 5}" @click.native="edit.distance.distance = 5">~5 Miles</md-button>
+          <br>
+          <md-button class="md-raised" :class="{'md-primary': edit.distance.distance == 20}" @click.native="edit.distance.distance = 20">~20 Miles</md-button>
+          <br>
+          <md-button class="md-raised" :class="{'md-primary': edit.distance.distance == 50}" @click.native="edit.distance.distance = 50">~50 Miles</md-button>
+        </div>
+      </md-dialog-content>
+
+      <md-dialog-actions>
+        <md-button class="md-primary" @click.native="cancel('dialog-edit-distance')">Cancel</md-button>
+        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-distance', edit.distance)">Update</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+
+    <!--Location Dialog-->
     <md-dialog md-open-from="#edit-picture" md-close-to="#edit-picture" ref="dialog-edit-picture">
       <md-dialog-title>
         <h2 class="md-title">Upload New Picture</h2>
@@ -245,6 +278,9 @@ export default {
       if (cleanData.change === 'displayname') {
         this.account.displayname = cleanData.name
       }
+      if (cleanData.change === 'distance') {
+        this.account.distance = cleanData.distance
+      }
 
       this.cancel(ref)
     },
@@ -253,6 +289,7 @@ export default {
       this.closeDialog(ref)
     },
     openDialog (ref) {
+      this.resetEdit()
       this.$refs[ref].open()
     },
     closeDialog (ref) {
@@ -268,6 +305,10 @@ export default {
       }
 
       return {
+        distance: {
+          change: 'distance',
+          distance: setAccount.distance
+        },
         picture: {
           change: 'picture',
           input: '',
@@ -308,6 +349,7 @@ export default {
           lat: '37.3874',
           long: '-122.0575'
         },
+        distance: 5,
         bio: 'front-end engineer @facebook, musician, husband, christian. I build things together with @cpojer and play metal when i\'m not coding',
         pic: 'https://pbs.twimg.com/profile_images/644529861004931072/ItiZQelK_400x400.jpg'
       }
