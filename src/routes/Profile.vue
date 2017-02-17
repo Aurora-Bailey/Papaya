@@ -5,17 +5,16 @@
         <div class="profile-content">
           <div class="profile-pic">
             <img :src="person.pic" alt="">
+            <md-spinner :md-size="250" :md-stroke="1.2" :md-progress="person.likeness"></md-spinner>
           </div>
           <div class="profile-info">
-            <md-button class="profile-follow mod-md-text-white md-raised md-primary" v-if="person.following" @click.native="person.following=!person.following">Follow</md-button>
-            <md-button class="profile-follow md-raised" v-if="!person.following" @click.native="person.following=!person.following">Following</md-button>
+            <md-button class="profile-follow md-fab" :class="{'md-clean': !person.following}" @click.native="person.following=!person.following"><md-icon>star</md-icon></md-button>
             <div class="profile-person">
               <div class="profile-name">{{person.name}}</div>
               <div class="profile-age">{{person.age}}</div>
               <div class="profile-location">{{person.location}}</div>
             </div>
             <div>
-              <div class="profile-tagline">{{person.tagline}}</div>
               <p class="profile-bio">{{person.bio}}</p>
             </div>
           </div>
@@ -70,13 +69,13 @@ export default {
     return {
       showAllTags: false,
       person: {
-        name: 'Baz Hamilton',
-        age: '65',
-        location: 'San Francisco, CA',
-        tagline: 'Lorem ipsum dolor sit amet.',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis vestibulum nisi vitae vulputate. Morbi feugiat, neque et sodales dapibus, lectus neque volutpat nulla, venenatis tristique lacus elit non ipsum.',
-        pic: 'https://placeimg.com/200/200/people/8',
+        name: 'Dmitrii Abramov',
+        age: '32',
+        location: 'Silicon Valley, CA',
+        pic: 'https://pbs.twimg.com/profile_images/644529861004931072/ItiZQelK_400x400.jpg',
+        bio: 'front-end engineer @facebook, musician, husband, christian. I build things together with @cpojer and play metal when i\'m not coding',
         following: false,
+        likeness: 70,
         tags: [
           {id: 1, name: 'Apple', fav: false},
           {id: 1, name: 'Apricot', fav: true},
@@ -206,6 +205,7 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
+  margin: 0;
 }
 .profile-person {
   font-size: 1.2em;
@@ -222,15 +222,9 @@ export default {
     color: rgba(0,0,0,0.54)
   }
 }
-.profile-tagline {
-  font-size: 1.2em;
-  line-height: 1.4em;
-  padding-top: 12px;
-  font-weight: bold;
-}
 .profile-bio {
   margin: 0;
-  padding-top: 6px;
+  padding-top: 24px;
 }
 .profile-pic {
   width: 200px;
@@ -238,12 +232,19 @@ export default {
   height: 200px;
   min-height: 200px;
   margin: auto;
+  position: relative;
 
-  border-radius: 200px;
-  overflow: hidden;
   user-select: none;
 
+  .md-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   img {
+    border-radius: 200px;
     width: 100%;
     height: 100%;
     display: block;

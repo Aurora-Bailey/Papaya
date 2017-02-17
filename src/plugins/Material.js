@@ -13,71 +13,62 @@ Vue.material.registerTheme({
   },
   white: {
     primary: 'white',
-    accent: 'white',
-    background: 'white'
+    accent: 'white'
   },
   red: {
     primary: 'red',
     accent: {
       color: 'red',
       hue: 900
-    },
-    background: 'white'
+    }
   },
   orange: {
     primary: 'orange',
     accent: {
       color: 'red',
       hue: 900
-    },
-    background: 'white'
+    }
   },
   green: {
     primary: 'green',
     accent: {
       color: 'red',
       hue: 900
-    },
-    background: 'white'
+    }
   },
   teal: {
     primary: 'teal',
     accent: {
       color: 'red',
       hue: 900
-    },
-    background: 'white'
+    }
   },
   blue: {
     primary: 'blue',
     accent: {
       color: 'red',
       hue: 900
-    },
-    background: 'white'
+    }
   },
   cyan: {
     primary: 'cyan',
     accent: {
       color: 'red',
       hue: 900
-    },
-    background: 'white'
+    }
   },
   purple: {
     primary: 'purple',
     accent: {
       color: 'red',
       hue: 900
-    },
-    background: 'white'
+    }
   },
   brown: {
     primary: 'brown',
     accent: {
       color: 'red',
       hue: 900
-    },
-    background: 'white'
+    }
   }
 })
