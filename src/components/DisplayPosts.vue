@@ -203,10 +203,9 @@ export default {
 
 <style lang="scss" scoped>
 .display-posts {
-  padding: 5px;
 }
 .post {
-  margin: 24px 0;
+  margin: 24px 5px 5px;
   background-color: white;
 
   .remark-text {

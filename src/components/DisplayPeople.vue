@@ -46,6 +46,7 @@ export default {
 .display-people {
   column-width: 200px;
   column-gap: 0;
+  margin-top: 12px;
 }
 .person {
   margin: 12px 5px 0;

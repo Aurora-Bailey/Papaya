@@ -56,8 +56,8 @@ export default {
       deepCopy.sort((a, b) => {
         if (a.fav && !b.fav) return -1
         if (!a.fav && b.fav) return 1
-        if (a.name < b.name) return -1
-        if (a.name > b.name) return 1
+        if (a.name.toLowerCase() < b.name.toLowerCase()) return -1
+        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1
         return 0
       })
 
@@ -261,6 +261,7 @@ export default {
   max-height: 72px;
   overflow: hidden;
   transition: all 0.4s linear;
+  text-align: center;
 
   &.show-all-tags {
     max-height: 50vh;
