@@ -35,7 +35,7 @@
 
         <md-input-container>
           <label>About me</label>
-          <md-textarea v-model="bio.text" maxlength="500"></md-textarea>
+          <md-textarea v-model="bio.text" style="min-height: 72px;" maxlength="500"></md-textarea>
         </md-input-container>
       </div>
 

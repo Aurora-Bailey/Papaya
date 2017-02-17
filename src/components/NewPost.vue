@@ -19,13 +19,13 @@
         </md-input-container>
         <md-input-container>
           <label>Add a comment...</label>
-          <md-textarea v-model="post.text" maxlength="250"></md-textarea>
+          <md-textarea v-model="post.text" style="min-height: 72px;" maxlength="250"></md-textarea>
         </md-input-container>
       </md-dialog-content>
 
       <md-dialog-actions>
         <md-button class="md-primary" @click.native="cancel()">Cancel</md-button>
-        <md-button class="md-primary" @click.native="sendPost()">Post</md-button>
+        <md-button class="md-primary md-raised" @click.native="sendPost()">Post</md-button>
       </md-dialog-actions>
     </md-dialog>
     <md-button id="post-fab" class="md-fab gl-corner-fab" @click.native="openDialog">
