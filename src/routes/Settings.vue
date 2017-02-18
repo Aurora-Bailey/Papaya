@@ -147,7 +147,7 @@
       <md-dialog-content>
         <md-input-container>
           <label>Display Name</label>
-          <md-input v-model="edit.displayname.name" type="displayname"></md-input>
+          <md-input v-model="edit.displayname.name"></md-input>
         </md-input-container>
       </md-dialog-content>
 
@@ -165,7 +165,7 @@
       <md-dialog-content>
         <md-input-container>
           <label>Short Bio</label>
-          <md-textarea v-model="edit.bio.text" style="min-height: 72px;" type="bio" maxlength="500"></md-textarea>
+          <md-textarea v-model="edit.bio.text" style="min-height: 72px;" maxlength="500"></md-textarea>
         </md-input-container>
       </md-dialog-content>
 

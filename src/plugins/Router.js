@@ -14,6 +14,7 @@ import PeopleFollowing from 'routes/PeopleFollowing'
 import EventsFind from 'routes/EventsFind'
 import EventsPlanning from 'routes/EventsPlanning'
 import EventsPast from 'routes/EventsPast'
+import EventsCreate from 'routes/EventsCreate'
 import Mail from 'routes/Mail'
 import MailChat from 'routes/MailChat'
 import Profile from 'routes/Profile'
@@ -51,6 +52,7 @@ let RouteObject = new Router({
     { meta: {title: 'Papaya - Following'}, path: '/people/following', name: 'peoplefollowing', components: { default: PeopleFollowing, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsPeople } },
     { meta: {title: 'Papaya - Followers'}, path: '/people/followers', name: 'peoplefollowers', components: { default: PeopleFollowers, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsPeople } },
     { meta: {title: 'Papaya - Events'}, path: '/events', redirect: '/events/find' },
+    { meta: {title: 'Papaya - Create Event'}, path: '/events/create', name: 'eventsfind', components: { default: EventsCreate, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsEvents } },
     { meta: {title: 'Papaya - Find Events'}, path: '/events/find', name: 'eventsfind', components: { default: EventsFind, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsEvents } },
     { meta: {title: 'Papaya - Planning'}, path: '/events/planning', name: 'eventsplanning', components: { default: EventsPlanning, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsEvents } },
     { meta: {title: 'Papaya - Past'}, path: '/events/past', name: 'eventspast', components: { default: EventsPast, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsEvents } },
