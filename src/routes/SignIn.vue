@@ -1,7 +1,7 @@
 <template>
 <div class="sign-in">
   <div class="gl-narrow-wrapper-480">
-    <md-whiteframe class="sign-form-container">
+    <md-whiteframe class="sign-card">
       <h1 class="logo">
         <md-icon class="logo-icon" md-src="http://cdn.onlinewebfonts.com/svg/img_479199.svg"></md-icon>
         <span class="logo-text"> Papaya</span>
@@ -56,11 +56,11 @@ export default {
 
 <style lang="scss" scoped>
 .sign-in {
-  padding: 24px 5px;
 }
-.sign-form-container {
+.sign-card {
   background-color: white;
   padding: 24px;
+  margin: 24px 5px 5px;
 }
 .logo {
   text-align: center;
