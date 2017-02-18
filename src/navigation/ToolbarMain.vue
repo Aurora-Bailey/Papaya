@@ -6,7 +6,7 @@
           <md-icon>menu</md-icon>
         </md-button>
 
-        <h2 class="md-title toolbar-title" style="flex: 1">{{$route.name}}</h2>
+        <h2 class="md-title toolbar-title" style="flex: 1">{{$route.meta.title}}</h2>
       </md-whiteframe>
     </div>
   </div>
