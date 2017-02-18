@@ -3,11 +3,7 @@
     <md-dialog md-open-from="#post-fab" md-close-to="#post-fab" @open="onOpen" @close="onClose" ref="dialog">
       <md-dialog-title>
         <div class="dialog-head">
-          <md-avatar>
-            <img src="https://placeimg.com/24/24/people/8" alt="">
-          </md-avatar>
-          <span class="dialog-name">Baz Hamilton</span>
-          <span style="flex: 1"></span>
+          <h2 class="md-title">New Post</h2>
         </div>
       </md-dialog-title>
 
@@ -88,15 +84,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.dialog-head {
-  display: flex;
-  align-items: center;
-}
-.dialog-name {
-  font-weight: normal;
-  font-size: 18px;
-  padding-left: 8px;
-}
 .preview-pic {
   max-width: 300px;
   max-height: 20vh;
