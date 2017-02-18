@@ -8,19 +8,13 @@
         <div class="person-age">{{person.age}}</div>
         <div class="person-location">{{person.location}}</div>
         <div class="person-bio">{{person.bio}}</div>
-        <div class="person-likeness"><md-spinner :md-size="100" :md-progress="person.likeness"></md-spinner><div class="spinner-percent">{{person.likeness}}</div></div>
       </div>
+      
+      <div class="person-likeness"><md-spinner :md-size="100" :md-progress="person.likeness"></md-spinner><div class="spinner-percent">{{person.likeness}}</div></div>
 
       <md-button class="md-fab md-mini" :class="{'md-clean': !person.following}" @click.native="followPerson(person.userID)">
         <md-icon>star</md-icon>
       </md-button>
-
-
-      <!-- userID: 3,
-      name: 'Baz Hamilton',
-      profile: 'https://placeimg.com/48/48/people/8',
-      bio: 'asdf',
-      bio: 'asdf' -->
     </md-whiteframe>
   </div>
 </template>
@@ -44,17 +38,19 @@ export default {
 
 <style lang="scss" scoped>
 .display-people {
-  column-width: 200px;
-  column-gap: 0;
   margin-top: 12px;
+  text-align: center;
 }
 .person {
   margin: 12px 5px 0;
   background-color: white;
   width: 200px;
+  height: 520px;
   display: inline-block;
   text-align: left;
   position: relative;
+  vertical-align: top;
+  padding-bottom: 136px;
 
   .person-profile {
     width: 200px;
@@ -75,8 +71,10 @@ export default {
   }
 
   .person-text-content {
-    padding: 12px;
+    margin: 12px;
     font-weight: bold;
+    max-height: 172px;
+    overflow: hidden;
   }
   .person-name {
     display: inline-block;
@@ -94,10 +92,13 @@ export default {
     padding-top: 12px;
   }
   .person-likeness {
-    position: relative;
     width: 100px;
     height: 100px;
     margin: 12px auto;
+    position: absolute;
+    bottom: 12px;
+    right: 0;
+    left: 0;
 
     .spinner-percent {
       position: absolute;
