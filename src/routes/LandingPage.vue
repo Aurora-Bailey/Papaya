@@ -7,6 +7,7 @@
 
     <parallax title="Lorem ipsum dolor sit amet" image="/static/img/catan.jpg" img-mobile="/static/img/catan_600.jpg">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae fringilla justo. Quisque pulvinar mollis.
+      <div class="gl-center-button"><router-link to="/signup"><md-button class="md-raised md-primary">Sign Up</md-button></router-link></div>
     </parallax>
 
     <section class="full-section">
@@ -28,6 +29,7 @@
 
     <parallax title="Lorem ipsum dolor sit amet" image="/static/img/hiking.jpg" img-mobile="/static/img/hiking_600.jpg">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae fringilla justo. Quisque pulvinar mollis.
+      <div class="gl-center-button"><router-link to="/signup"><md-button class="md-raised md-primary">Sign Up</md-button></router-link></div>
     </parallax>
 
     <footer class="landing-footer">
