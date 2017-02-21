@@ -5,7 +5,6 @@
         <md-tab :md-label="tabRoute[0].lable" :md-active="$route.path === tabRoute[0].path"></md-tab>
         <md-tab :md-label="tabRoute[1].lable" :md-active="$route.path === tabRoute[1].path"></md-tab>
         <md-tab :md-label="tabRoute[2].lable" :md-active="$route.path === tabRoute[2].path"></md-tab>
-        <md-tab :md-label="tabRoute[3].lable" :md-active="$route.path === tabRoute[3].path"></md-tab>
       </md-tabs>
     </div>
   </div>
@@ -19,8 +18,7 @@ export default {
       tabRoute: [
         {lable: 'Create', path: '/events/create'},
         {lable: 'Find', path: '/events/find'},
-        {lable: 'Planning', path: '/events/planning'},
-        {lable: 'Past', path: '/events/past'}
+        {lable: 'Planning', path: '/events/planning'}
       ]
     }
   },
