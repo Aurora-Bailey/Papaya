@@ -1,8 +1,64 @@
 import Vue from 'vue'
 
+let month = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+]
+
+let day = [
+  'Sun',
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat'
+]
+function DateToString (timestamp) {
+  let dateString = ''
+  let d = new Date(parseInt(timestamp))
+
+  dateString += month[d.getMonth()]
+  dateString += ' '
+  dateString += d.getDate()
+  dateString += ' '
+  dateString += d.getFullYear()
+  return dateString
+}
+
+function DateTimeToString (timestamp) {
+  let dateString = ''
+  let d = new Date(parseInt(timestamp))
+
+  dateString += day[d.getDay()]
+  dateString += ' '
+  dateString += month[d.getMonth()]
+  dateString += ' '
+  dateString += d.getDate()
+  dateString += ' '
+
+  dateString += d.getHours()
+  dateString += ':'
+  dateString += (d.getMinutes() < 10 ? '0' : '') + d.getMinutes()
+  return dateString
+}
+
 Vue.filter('date', function (time) {
-  let d = new Date(parseInt(time))
-  return d.toDateString()
+  return DateToString(time)
+})
+
+Vue.filter('datetime', function (time) {
+  return DateTimeToString(time)
 })
 
 Vue.filter('elapsed', function (startTime) {
@@ -30,7 +86,7 @@ Vue.filter('elapsed', function (startTime) {
 
   let years = Math.floor(timeDiff)
 
-  if (years) return new Date(parseInt(startTime)).toDateString()
+  if (years) return DateToString(startTime)
   else if (weeks) return weeks + 'w'
   else if (days) return days + 'd'
   else if (hours) return hours + 'h'

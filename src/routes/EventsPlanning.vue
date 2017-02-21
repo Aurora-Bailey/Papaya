@@ -8,7 +8,7 @@
         </div>
         <div class="event-logistics">
           {{event.locationPublic}}
-          {{event.closeDate | date}}
+          {{event.closeDate | datetime}}
         </div>
         <div class="event-description">
           {{event.description}}
@@ -63,7 +63,7 @@ export default {
           eventID: 0,
           ownerID: 3,
           postDate: 1487008034000,
-          closeDate: Date.now() - 100000,
+          closeDate: Date.now() + 100000000,
           title: 'Chillin and playing DOTA2',
           description: 'Mini LAN at Johns house. Bring your own computer. Also feel free to bring any snacks or food :)',
           locationPublic: 'Logan, UT',
@@ -83,7 +83,7 @@ export default {
           eventID: 1,
           ownerID: 3,
           postDate: 1487008034000,
-          closeDate: Date.now() - 100000,
+          closeDate: Date.now() + 100000000,
           title: 'Maroon 5 Concert',
           description: 'We are planning on going to the Maroon 5 concert this weekend. Our car fits 7, we have 5 open seats. Note: You will need your own ticket.',
           locationPublic: 'Logan, UT',
@@ -105,7 +105,7 @@ export default {
           eventID: 2,
           ownerID: 3,
           postDate: 1487008034000,
-          closeDate: Date.now() - 100000,
+          closeDate: Date.now() + 100000000,
           title: 'Lorem ipsum dolor sit amet',
           description: 'Suspendisse ultricies sed lorem non posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra.',
           locationPublic: 'Logan, UT',
@@ -140,7 +140,7 @@ export default {
           eventID: 3,
           ownerID: 3,
           postDate: 1487008034000,
-          closeDate: Date.now() - 100000,
+          closeDate: Date.now() + 100000000,
           title: 'Lorem ipsum dolor sit amet',
           description: 'Suspendisse ultricies sed lorem non posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra.',
           locationPublic: 'Logan, UT',
@@ -161,7 +161,7 @@ export default {
           eventID: 4,
           ownerID: 3,
           postDate: 1487008034000,
-          closeDate: Date.now() - 100000,
+          closeDate: Date.now() + 100000000,
           title: 'Lorem ipsum dolor sit amet',
           description: 'Suspendisse ultricies sed lorem non posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra.',
           locationPublic: 'Logan, UT',
