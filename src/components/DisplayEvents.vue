@@ -23,20 +23,67 @@
         </div>
       </div>
       <div class="event-action">
-        <md-button class="md-raised md-primary mod-md-text-white"><span v-if="event.moderate"><md-icon>lock</md-icon> Request</span> Join</md-button>
+        <md-button class="md-raised md-primary mod-md-text-white" @click.native="sendJoinRequest(event.eventID)" v-if="!event.moderate">Join</md-button>
+        <md-button class="md-raised md-primary mod-md-text-white" @click.native="openRequestDialog(event.eventID)" v-if="event.moderate"><md-icon>lock</md-icon> Request Join</md-button>
       </div>
     </md-whiteframe>
+
+    <!--Request Join Dialog-->
+    <md-dialog ref="dialog-request-join">
+      <md-dialog-title>
+        <h2 class="md-title">Send request to join.</h2>
+      </md-dialog-title>
+
+      <md-dialog-content>
+        <md-input-container>
+          <label>Optional Message...</label>
+          <md-textarea v-model="request.input" style="min-height: 72px" maxlength="250"></md-textarea>
+        </md-input-container>
+      </md-dialog-content>
+
+      <md-dialog-actions>
+        <md-button class="md-primary" @click.native="closeRequestDialog()">Cancel</md-button>
+        <md-button class="md-primary md-raised mod-md-text-white" @click.native="sendJoinRequest()">Send Request</md-button>
+      </md-dialog-actions>
+    </md-dialog>
   </div>
 </template>
 <script>
 export default {
-  props: ['eventable'],
   name: 'display-events',
+  methods: {
+    openRequestDialog (eventID) {
+      this.request.eventID = eventID
+      this.request.input = ''
+      this.$refs['dialog-request-join'].open()
+    },
+    closeRequestDialog () {
+      this.request.input = ''
+      this.$refs['dialog-request-join'].close()
+    },
+    sendJoinRequest (eventID = this.request.eventID) {
+      this.request.eventID = eventID
+      let deepCopy = JSON.parse(JSON.stringify(this.request))
+      console.log(deepCopy)
+
+      // only designed to remove 1 element
+      this.events.forEach((e, i, o) => {
+        if (e.eventID === this.request.eventID) {
+          o.splice(i, 1)
+        }
+      })
+      this.closeRequestDialog()
+    }
+  },
   data () {
     return {
+      request: {
+        eventID: null,
+        input: ''
+      },
       events: [
         {
-          eventID: 1,
+          eventID: 0,
           ownerID: 3,
           postDate: 1487008034000,
           closeDate: Date.now() - 100000,
@@ -74,7 +121,7 @@ export default {
           ]
         },
         {
-          eventID: 1,
+          eventID: 2,
           ownerID: 3,
           postDate: 1487008034000,
           closeDate: Date.now() - 100000,
@@ -107,7 +154,7 @@ export default {
           ]
         },
         {
-          eventID: 1,
+          eventID: 3,
           ownerID: 3,
           postDate: 1487008034000,
           closeDate: Date.now() - 100000,
@@ -126,7 +173,7 @@ export default {
           ]
         },
         {
-          eventID: 1,
+          eventID: 4,
           ownerID: 3,
           postDate: 1487008034000,
           closeDate: Date.now() - 100000,
