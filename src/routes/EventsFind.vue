@@ -1,17 +1,18 @@
 <template>
   <div class="find-events using-sidebar">
-    <div v-for="i in 50">
-      Find Events {{i}}
-    </div>
-    {{$root.$data.scroll}}
-    <div v-for="i in 50">
-      Find Events {{i}}
+    <div class="gl-narrow-wrapper-600">
+      <display-events></display-events>
     </div>
   </div>
 </template>
 <script>
+import DisplayEvents from '../components/DisplayEvents'
+
 export default {
   name: 'find-events',
+  components: {
+    DisplayEvents
+  },
   beforeRouteEnter (to, from, next) {
     next((vm) => {
       vm.$material.setCurrentTheme('orange')

@@ -97,7 +97,7 @@ export default {
   padding: 10px;
   position: relative;
   .chat-msg-header {
-    border-top: 1px solid rgba(0,0,0,0.12);
+    // border-top: 1px solid rgba(0,0,0,0.12);
     padding: 8px 0;
   }
   .chat-msg-name {
