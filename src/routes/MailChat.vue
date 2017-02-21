@@ -1,6 +1,6 @@
 <template>
   <div class="mail-chat using-sidebar">
-    <div class="gl-narrow-wrapper-840">
+    <div class="gl-narrow-wrapper-480">
       <md-whiteframe class="mail-chat-card">
         <div class="chat-header">
           <md-button class="md-icon-button" @click.native="$router.go(-1)">

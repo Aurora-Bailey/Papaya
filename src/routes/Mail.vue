@@ -1,6 +1,6 @@
 <template>
   <div class="mail using-sidebar">
-    <div class="gl-narrow-wrapper-840">
+    <div class="gl-narrow-wrapper-600">
       <md-whiteframe class="mail-card">
         <md-list class="md-double-line">
           <md-list-item v-for="msg in mail" :class="{'md-primary': !msg.read}">
