@@ -8,7 +8,17 @@
             <md-spinner :md-size="250" :md-stroke="1.2" :md-progress="person.likeness"></md-spinner>
           </div>
           <div class="profile-info">
-            <md-button class="profile-follow md-fab" :class="{'md-clean': !person.following}" @click.native="person.following=!person.following"><md-icon>star</md-icon></md-button>
+            <div class="profile-follow">
+              <router-link to="/mail/23423/Message_Dmitrii_Abramov">
+                <md-button class="md-raised md-icon-button md-accent" >
+                  <md-icon>mail</md-icon>
+                </md-button>
+              </router-link>
+              <md-button class="md-raised" :class="{'md-accent': person.following}" @click.native="person.following=!person.following">
+                <span v-if="person.following">Following</span>
+                <span v-if="!person.following">Follow</span>
+              </md-button>
+            </div>
             <div class="profile-person">
               <div class="profile-name">{{person.name}}</div>
               <div class="profile-age">{{person.age}}</div>
@@ -205,7 +215,9 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  margin: 0;
+  .md-button {
+    margin: 0 0 0 6px;
+  }
 }
 .profile-person {
   font-size: 1.2em;

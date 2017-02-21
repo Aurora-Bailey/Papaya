@@ -3,7 +3,7 @@
     <div class="gl-narrow-wrapper-840">
       <md-whiteframe class="mail-chat-card">
         <div class="chat-header">
-          <md-button class="md-icon-button" @click.native="$router.push('/mail')">
+          <md-button class="md-icon-button" @click.native="$router.go(-1)">
             <md-icon>arrow_back</md-icon>
           </md-button>
           <span class="chat-title">{{chat.title}}</span>
