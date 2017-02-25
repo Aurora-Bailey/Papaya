@@ -76,6 +76,7 @@ export default {
         })
         .catch(e => {
           if (e.code === 'auth/invalid-email') this.signup.email_fail = e.message
+          if (e.code === 'auth/email-already-in-use') this.signup.email_fail = e.message
           if (e.code === 'auth/weak-password') this.signup.password_fail = e.message
           console.log(e)
         })

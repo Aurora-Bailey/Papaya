@@ -24,8 +24,8 @@
 
           <md-list-item>
             <div class="md-list-text-container">
-              <span>John Doe</span>
-              <span>johndoe@email.com</span>
+              <span>{{$root.$data.user.displayName}}</span>
+              <span>{{$root.$data.user.email}}</span>
             </div>
           </md-list-item>
         </md-list>

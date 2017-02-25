@@ -16,7 +16,7 @@
           <md-list-item class="md-inset">
             <md-ink-ripple />
             <div class="md-list-text-container">
-              <span>{{account.displayname}}</span>
+              <span>{{$root.$data.user.displayName}}</span>
               <span>Display Name</span>
             </div>
             <md-button class="md-icon-button md-list-action" id="edit-displayname" @click.native="openDialog('dialog-edit-displayname')">
@@ -75,7 +75,7 @@
             <md-ink-ripple />
             <md-icon class="md-primary">email</md-icon>
             <div class="md-list-text-container">
-              <span>{{account.email}}</span>
+              <span>{{$root.$data.user.email}}</span>
               <span>Email Address</span>
             </div>
             <md-divider class="md-inset"></md-divider>
@@ -276,7 +276,8 @@ export default {
       // temp
       console.log(cleanData)
       if (cleanData.change === 'displayname') {
-        this.account.displayname = cleanData.name
+        // TODO: Secure and validate
+        this.$root.$firebaseRefs.user.child('displayName').set(cleanData.name)
       }
       if (cleanData.change === 'distance') {
         this.account.distance = cleanData.distance
