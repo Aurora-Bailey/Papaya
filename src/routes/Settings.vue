@@ -99,7 +99,7 @@
               <span>Log Out<span>
             </div>
             <md-button class="md-icon-button md-list-action">
-              <router-link to="/" class="mod-md-link-button">
+              <router-link to="/signout" class="mod-md-link-button">
                 <md-icon>exit_to_app</md-icon>
               </router-link>
             </md-button>

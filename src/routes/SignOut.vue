@@ -3,9 +3,11 @@
   </div>
 </template>
 <script>
+import Firebase from 'firebase'
 export default {
   name: 'sign-out',
   beforeRouteEnter (to, from, next) {
+    Firebase.auth().signOut()
     next((vm) => {
       vm.$material.setCurrentTheme('red')
     })

@@ -7,22 +7,25 @@
         <span class="logo-text"> Papaya</span>
       </h1>
       <h2 class="title">Sign In</h2>
-      <form validate id="login-form" @submit.prevent="sendLogin()">
-        <md-input-container>
+      <form validate id="login-form" @submit.stop.prevent="sendLogin()">
+        <md-input-container :class="{'md-input-invalid': login.email_fail}">
           <md-icon>mail</md-icon>
           <label>Email</label>
           <md-input required type="text" v-model="login.email"></md-input>
+          <span class="md-error full-icon-offset" v-if="login.email_fail">{{login.email_fail}}</span>
         </md-input-container>
 
-        <md-input-container>
+        <md-input-container :class="{'md-input-invalid': login.password_fail}">
           <md-icon>lock_outline</md-icon>
           <label>Password</label>
           <md-input required type="password" v-model="login.password"></md-input>
+          <span class="md-error full-icon-offset" v-if="login.password_fail">{{login.password_fail}}</span>
         </md-input-container>
+
+        <div class="gl-center-button">
+          <md-button type="submit" class="md-primary md-raised">Sign In</md-button>
+        </div>
       </form>
-      <div class="gl-center-button">
-        <router-link to="/home"><md-button class="md-primary md-raised">Sign In</md-button></router-link>
-      </div>
     </md-whiteframe>
     <div class="gl-center-button">
       <router-link to="/signup"><md-button class="md-primary">Create account</md-button></router-link>
@@ -31,19 +34,31 @@
 </div>
 </template>
 <script>
+import Firebase from 'firebase'
+
 export default {
   name: 'sign-in',
   data () {
     return {
       login: {
         email: '',
-        password: ''
+        email_fail: false,
+        password: '',
+        password_fail: false
       }
     }
   },
   methods: {
     sendLogin: function () {
+      this.login.email_fail = false
+      this.login.password_fail = false
 
+      Firebase.auth().signInWithEmailAndPassword(this.login.email, this.login.password)
+        .catch(e => {
+          if (e.code === 'auth/user-not-found') this.login.email_fail = e.message
+          if (e.code === 'auth/invalid-email') this.login.email_fail = e.message
+          if (e.code === 'auth/wrong-password') this.login.password_fail = e.message
+        })
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -56,6 +71,9 @@ export default {
 
 <style lang="scss" scoped>
 .sign-in {
+  .md-error {
+    text-align: center;
+  }
 }
 .sign-card {
   background-color: white;
@@ -76,6 +94,9 @@ export default {
 .title {
   text-align: center;
   color: rgba(0, 0, 0, 0.54);
+}
+.full-icon-offset {
+  margin-left: 36px;
 }
 </style>
 

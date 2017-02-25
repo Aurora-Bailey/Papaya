@@ -7,92 +7,32 @@
         <span class="logo-text"> Papaya</span>
       </h1>
       <h2 class="title">Create Account</h2>
-      <form validate id="signup-form" @submit.prevent="sendSignup()">
-        <!-- <md-subheader>Account Information</md-subheader> -->
-
-        <md-input-container>
-          <md-icon>email</md-icon>
-          <label>Email Address</label>
-          <md-input required type="email" v-model="signup.email"></md-input>
+      <form validate id="signup-form" @submit.stop.prevent="sendSignup()">
+        <md-input-container :class="{'md-input-invalid': signup.email_fail}">
+          <md-icon>mail</md-icon>
+          <label>Email</label>
+          <md-input required type="text" v-model="signup.email"></md-input>
+          <span class="md-error full-icon-offset" v-if="signup.email_fail">{{signup.email_fail}}</span>
         </md-input-container>
 
-        <md-input-container>
-          <md-icon>perm_identity</md-icon>
-          <label>Display Name (optional)</label>
-          <md-input type="text" v-model="signup.display_name"></md-input>
-        </md-input-container>
-
-        <md-input-container>
-          <md-icon>lock_outline</md-icon>
+        <md-input-container :class="{'md-input-invalid': signup.password_fail}">
+          <md-icon>lock</md-icon>
           <label>Password</label>
           <md-input required type="password" v-model="signup.password"></md-input>
+          <span class="md-error full-icon-offset" v-if="signup.password_fail">{{signup.password_fail}}</span>
         </md-input-container>
 
-        <md-input-container>
+        <md-input-container :class="{'md-input-invalid': signup.password_confirm_fail}">
           <md-icon>lock_outline</md-icon>
           <label>Confirm Password</label>
           <md-input required type="password" v-model="signup.password_confirm"></md-input>
+          <span class="md-error full-icon-offset" v-if="signup.password_confirm_fail">{{signup.password_confirm_fail}}</span>
         </md-input-container>
 
-        <!-- <md-subheader>Personal Information</md-subheader> -->
-
-        <md-input-container>
-          <md-icon>face</md-icon>
-          <label>First Name</label>
-          <md-input required type="text" v-model="signup.first_name"></md-input>
-        </md-input-container>
-
-        <md-input-container>
-          <md-icon>face</md-icon>
-          <label>Last Name</label>
-          <md-input required type="text" v-model="signup.last_name"></md-input>
-        </md-input-container>
-
-        <div class="field-group">
-          <md-icon>cake</md-icon>
-          <md-input-container>
-            <label for="month">Month</label>
-            <md-select required name="month" id="signup-month" v-model="signup.birth_month">
-              <md-option value="1">Jan</md-option>
-              <md-option value="2">Feb</md-option>
-              <md-option value="3">Mar</md-option>
-              <md-option value="4">Apr</md-option>
-              <md-option value="5">May</md-option>
-              <md-option value="6">Jun</md-option>
-              <md-option value="7">Jul</md-option>
-              <md-option value="8">Aug</md-option>
-              <md-option value="9">Sep</md-option>
-              <md-option value="10">Oct</md-option>
-              <md-option value="11">Nov</md-option>
-              <md-option value="12">Dec</md-option>
-            </md-select>
-          </md-input-container>
-
-          <md-input-container>
-            <label for="day">Day</label>
-            <md-select required name="day" id="day" v-model="signup.birth_day">
-              <md-option :value="index" v-for="index in 32">{{index}}</md-option>
-            </md-select>
-          </md-input-container>
-
-          <md-input-container>
-            <label for="year">Year</label>
-            <md-select required name="year" id="year" v-model="signup.birth_year">
-              <md-option :value="new Date().getFullYear() - index - 12" v-for="index in 120">{{new Date().getFullYear() - index - 12}}</md-option>
-            </md-select>
-          </md-input-container>
+        <div class="gl-center-button">
+          <md-button type="submit" class="md-primary md-raised mod-md-text-white">Create account</md-button>
         </div>
-        <md-input-container>
-          <md-icon>wc</md-icon>
-          <div class="radio-container">
-            <md-radio required v-model="signup.sex" name="signup-sex" class="md-primary" md-value="0">Female</md-radio>
-            <md-radio required v-model="signup.sex" name="signup-sex" class="md-primary" md-value="1">Male</md-radio>
-          </div>
-        </md-input-container>
       </form>
-      <div class="gl-center-button">
-        <router-link to="/setup"><md-button class="md-primary md-raised">Create account</md-button></router-link>
-      </div>
     </md-whiteframe>
     <div class="gl-center-button">
       <router-link to="/signin"><md-button class="md-primary ">Sign In</md-button></router-link>
@@ -101,32 +41,44 @@
 </div>
 </template>
 <script>
+import Firebase from 'firebase'
+
 export default {
   name: 'sign-up',
   data () {
     return {
       signup: {
         email: '',
-        display_name: '',
+        email_fail: false,
         password: '',
+        password_fail: false,
         password_confirm: '',
-        first_name: '',
-        last_name: '',
-        birth_month: '',
-        birth_day: '',
-        birth_year: '',
-        sex: ''
+        password_confirm_fail: false
       }
     }
   },
   methods: {
     sendSignup: function () {
+      this.signup.email_fail = false
+      this.signup.password_fail = false
+      this.signup.password_confirm_fail = false
 
+      if (this.signup.password !== this.signup.password_confirm) {
+        this.signup.password_confirm_fail = 'Password does not match the confirm password!'
+        return false
+      }
+
+      Firebase.auth().createUserWithEmailAndPassword(this.signup.email, this.signup.password)
+        .catch(e => {
+          if (e.code === 'auth/invalid-email') this.signup.email_fail = e.message
+          if (e.code === 'auth/weak-password') this.signup.password_fail = e.message
+          console.log(e)
+        })
     }
   },
   beforeRouteEnter (to, from, next) {
     next((vm) => {
-      vm.$material.setCurrentTheme('blue')
+      vm.$material.setCurrentTheme('green')
     })
   }
 }
@@ -155,39 +107,10 @@ export default {
   text-align: center;
   color: rgba(0, 0, 0, 0.54);
 }
-
-// Birthday inputs
-.field-group {
-  display: flex;
-
-  .md-icon {
-    margin: 20px auto 4px;
-    color: rgba(0, 0, 0, 0.54);
-    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  }
-
-  .md-input-container {
-    flex: 1;
-    margin-left: 12px
-  }
-
-  .md-select {
-    min-width: 0;
-  }
+.full-icon-offset {
+  margin-left: 36px;
 }
 </style>
 
 <style lang="scss">
-#signup-form {
-  .radio-container {
-    flex:1;
-  }
-  .md-radio {
-    margin: 8px 8px 8px 12px;
-  }
-  .md-radio-label {
-    position: relative;
-    top: 0;
-  }
-}
 </style>
