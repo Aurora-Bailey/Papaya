@@ -69,6 +69,9 @@ export default {
       }
 
       Firebase.auth().createUserWithEmailAndPassword(this.signup.email, this.signup.password)
+        .then(e => {
+          this.$router.push('/home')
+        })
         .catch(e => {
           if (e.code === 'auth/invalid-email') this.signup.email_fail = e.message
           if (e.code === 'auth/weak-password') this.signup.password_fail = e.message

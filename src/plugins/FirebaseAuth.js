@@ -11,10 +11,14 @@ var config = {
   storageBucket: 'papaya-71cda.appspot.com',
   messagingSenderId: '898799549954'
 }
-var firebaseApp = Firebase.initializeApp(config)
-var db = firebaseApp.database()
-var textRef = db.ref('text')
+Firebase.initializeApp(config)
 
-export default {
-  text: textRef
-}
+let auth = {user: {}}
+Firebase.auth().onAuthStateChanged(firebaseUser => {
+  if (firebaseUser) {
+    console.log('Log in')
+    auth.user = firebaseUser
+  }
+})
+
+export default auth

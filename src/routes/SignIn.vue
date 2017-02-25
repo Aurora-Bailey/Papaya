@@ -54,6 +54,9 @@ export default {
       this.login.password_fail = false
 
       Firebase.auth().signInWithEmailAndPassword(this.login.email, this.login.password)
+        .then(e => {
+          this.$router.push('/home')
+        })
         .catch(e => {
           if (e.code === 'auth/user-not-found') this.login.email_fail = e.message
           if (e.code === 'auth/invalid-email') this.login.email_fail = e.message

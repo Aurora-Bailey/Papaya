@@ -6,12 +6,17 @@
 import Firebase from 'firebase'
 export default {
   name: 'sign-out',
-  beforeRouteEnter (to, from, next) {
+  beforeCreate () {
     Firebase.auth().signOut()
+      .then(e => {
+        this.$router.push('/signin')
+      })
+  }/*,
+  beforeRouteEnter (to, from, next) {
     next((vm) => {
       vm.$material.setCurrentTheme('red')
     })
-  }
+  } */
 }
 </script>
 
