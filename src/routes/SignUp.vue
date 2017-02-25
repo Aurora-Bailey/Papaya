@@ -70,6 +70,8 @@ export default {
 
       Firebase.auth().createUserWithEmailAndPassword(this.signup.email, this.signup.password)
         .then(e => {
+          // TODO: Secure and validate
+          Firebase.database().ref('user/' + e.uid).child('email').set(e.email)
           this.$router.push('/home')
         })
         .catch(e => {
