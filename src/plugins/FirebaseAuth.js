@@ -13,12 +13,13 @@ var config = {
 }
 Firebase.initializeApp(config)
 
-let auth = {user: {}}
-Firebase.auth().onAuthStateChanged(firebaseUser => {
-  if (firebaseUser) {
-    console.log('Log in')
-    auth.user = firebaseUser
-  }
-})
+let auth = function (cb) {
+  Firebase.auth().onAuthStateChanged(firebaseUser => {
+    console.log('Auth User')
+    cb(firebaseUser)
+  })
+}
 
-export default auth
+export default {
+  auth
+}

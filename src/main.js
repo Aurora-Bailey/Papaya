@@ -20,22 +20,47 @@ new Vue({
   router: Router,
   template: '<App/>',
   components: { App },
-  watch: {
-    'auth.user': function () {
-      console.log('rebind')
-      if (this.auth.user.uid) {
-        this.$bindAsObject('user', Firebase.database().ref('user/' + this.auth.user.uid))
-      } else {
-        console.log('nobind')
+  beforeCreate () {
+    FirebaseAuth.auth(user => {
+      // Set Auth
+      this.auth = user
+
+      // Bind to user data
+      if (user) {
+        console.log('Bind user.')
+        this.$bindAsObject('user', Firebase.database().ref('user/' + this.auth.uid))
+      } else if (this.user['.key']) {
+        console.log('Unbind user')
+        this.$unbind('user')
+        this.user = setUser()
       }
-    }
+
+      // Re-route on auth event
+      if (user) {
+        // Logged in but stitting on a login page
+        if (this.$route.path === '/' || this.$route.path === '/signin' || this.$route.path === '/signup') {
+          console.log('Re-route home')
+          this.$router.replace('/home')
+        }
+      } else {
+        // Not logged in and not sitting on a login page
+        if (this.$route.path !== '/' && this.$route.path !== '/signin' && this.$route.path !== '/signup') {
+          console.log('Re-route signin')
+          this.$router.replace('/signin')
+        }
+      }
+    })
   },
   data () {
     return {
       scroll: BodyScroll,
       drawerOpen: false,
-      auth: FirebaseAuth,
-      user: {email: '', displayName: ''}
+      auth: {}, // Not reactive, used as a data store.
+      user: setUser()
     }
   }
 })
+
+function setUser () {
+  return {email: '', displayName: ''}
+}

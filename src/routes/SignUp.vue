@@ -72,7 +72,6 @@ export default {
         .then(e => {
           // TODO: Secure and validate
           Firebase.database().ref('user/' + e.uid).child('email').set(e.email)
-          this.$router.push('/home')
         })
         .catch(e => {
           if (e.code === 'auth/invalid-email') this.signup.email_fail = e.message

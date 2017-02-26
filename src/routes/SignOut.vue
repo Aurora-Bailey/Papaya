@@ -8,9 +8,6 @@ export default {
   name: 'sign-out',
   beforeCreate () {
     Firebase.auth().signOut()
-      .then(e => {
-        this.$router.push('/signin')
-      })
   }/*,
   beforeRouteEnter (to, from, next) {
     next((vm) => {
