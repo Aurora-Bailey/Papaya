@@ -21,12 +21,12 @@ new Vue({
   template: '<App/>',
   components: { App },
   beforeCreate () {
-    FirebaseAuth.auth(user => {
+    FirebaseAuth.auth(auth => {
       // Set Auth
-      this.auth = user
+      this.auth = auth
 
       // Bind to user data
-      if (user) {
+      if (auth) {
         console.log('Bind user.')
         this.$bindAsObject('user', Firebase.database().ref('user/' + this.auth.uid))
       } else if (this.user['.key']) {
@@ -36,7 +36,7 @@ new Vue({
       }
 
       // Re-route on auth event
-      if (user) {
+      if (auth) {
         // Logged in but stitting on a login page
         if (this.$route.path === '/' || this.$route.path === '/signin' || this.$route.path === '/signup') {
           console.log('Re-route home')
