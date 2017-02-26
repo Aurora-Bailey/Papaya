@@ -3,7 +3,7 @@
   <div class="gl-narrow-wrapper-480">
     <md-whiteframe class="sign-card">
       <h1 class="logo">
-        <md-icon class="logo-icon" md-src="http://cdn.onlinewebfonts.com/svg/img_479199.svg"></md-icon>
+        <md-icon class="logo-icon" md-src="https://cdn.onlinewebfonts.com/svg/img_479199.svg"></md-icon>
         <span class="logo-text"> Papaya</span>
       </h1>
 

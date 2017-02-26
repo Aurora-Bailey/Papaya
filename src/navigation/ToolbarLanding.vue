@@ -4,7 +4,7 @@
       <md-whiteframe class="toolbar-wrapper" md-elevation="2" :style="{height: toolbarScrollHeight + 'px'}">
         <div class="toolbar-picture" :style="{opacity: toolbarScrollDelta / 2}"></div>
         <div class="toolbar-logo" :style="{fontSize: toolbarLogoFontSize + 'px', lineHeight: toolbarScrollHeight + 'px', right: (1 - toolbarScrollDelta) * 100 + '%'}">
-          <md-icon class="logo-icon" md-src="http://cdn.onlinewebfonts.com/svg/img_479199.svg" :style="{height: toolbarLogoFontSize + 'px', width: toolbarLogoFontSize + 'px'}"></md-icon>
+          <md-icon class="logo-icon" md-src="https://cdn.onlinewebfonts.com/svg/img_479199.svg" :style="{height: toolbarLogoFontSize + 'px', width: toolbarLogoFontSize + 'px'}"></md-icon>
           <span class="logo-text"> Papaya</span>
         </div>
         <div class="toolbar-buttons">
