@@ -8,9 +8,12 @@
             <md-ink-ripple />
             <md-icon class="md-primary">person</md-icon>
             <div class="md-list-text-container">
-              <span>{{account.name}}</span>
+              <span>{{$root.$data.user.firstName}} {{$root.$data.user.lastName}}</span>
               <span>Name</span>
             </div>
+            <md-button class="md-icon-button md-list-action" id="edit-name" @click.native="openDialog('dialog-edit-name')">
+              <md-icon>edit</md-icon>
+            </md-button>
           </md-list-item>
 
           <md-list-item class="md-inset">
@@ -51,7 +54,7 @@
             <md-ink-ripple />
             <md-icon class="md-primary">my_location</md-icon>
             <div class="md-list-text-container">
-              <span>{{account.location.name}}</span>
+              <span>{{$root.$data.user.locationName}}</span>
               <span>Location</span>
             </div>
             <md-button class="md-icon-button md-list-action" id="edit-location" @click.native="openDialog('dialog-edit-location')">
@@ -62,7 +65,7 @@
           <md-list-item class="md-inset">
             <md-ink-ripple />
             <div class="md-list-text-container">
-              <span>~{{account.distance}} Miles</span>
+              <span>~{{$root.$data.user.distance}} Miles</span>
               <span>Search Radius</span>
             </div>
             <md-button class="md-icon-button md-list-action" id="edit-distance" @click.native="openDialog('dialog-edit-distance')">
@@ -126,16 +129,37 @@
           <label>New Password</label>
           <md-input v-model="edit.password.new" type="password"></md-input>
         </md-input-container>
-
-        <md-input-container>
-          <label>Confirm New Password</label>
-          <md-input v-model="edit.password.confirm" type="password"></md-input>
-        </md-input-container>
       </md-dialog-content>
 
       <md-dialog-actions>
         <md-button class="md-primary" @click.native="cancel('dialog-edit-password')">Cancel</md-button>
         <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-password', edit.password)">Change Password</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+
+    <!--Change Name Dialog-->
+    <md-dialog md-open-from="#edit-name" md-close-to="#edit-name" ref="dialog-edit-name">
+      <md-dialog-title>
+        <h2 class="md-title">Change Name</h2>
+      </md-dialog-title>
+
+      <md-dialog-content>
+        <md-input-container>
+          <label>First Name</label>
+          <md-input v-model="edit.name.first"></md-input>
+        </md-input-container>
+      </md-dialog-content>
+
+      <md-dialog-content>
+        <md-input-container>
+          <label>Last Name</label>
+          <md-input v-model="edit.name.last"></md-input>
+        </md-input-container>
+      </md-dialog-content>
+
+      <md-dialog-actions>
+        <md-button class="md-primary" @click.native="cancel('dialog-edit-name')">Cancel</md-button>
+        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-name', edit.name)">Change</md-button>
       </md-dialog-actions>
     </md-dialog>
 
@@ -241,9 +265,71 @@
   </div>
 </template>
 <script>
+import Firebase from 'firebase'
+
 export default {
   name: 'settings',
   methods: {
+    sendEdit (ref, data) {
+      let cleanData = JSON.parse(JSON.stringify(data))
+
+      if (cleanData.change === 'displayname') {
+        // TODO: Secure and validate
+        this.$root.$firebaseRefs.user.child('displayName').set(cleanData.name)
+        this.cancel(ref)
+        return true
+      }
+      if (cleanData.change === 'name') {
+        // TODO: Secure and validate
+        this.$root.$firebaseRefs.user.child('firstName').set(cleanData.first)
+        this.$root.$firebaseRefs.user.child('lastName').set(cleanData.last)
+        this.cancel(ref)
+        return true
+      }
+      if (cleanData.change === 'bio') {
+        // TODO: Secure and validate
+        this.$root.$firebaseRefs.user.child('bio').set(cleanData.text)
+        this.cancel(ref)
+        return true
+      }
+      if (cleanData.change === 'location') {
+        // TODO: Secure and validate
+        this.$root.$firebaseRefs.user.child('locationName').set(cleanData.name)
+        this.$root.$firebaseRefs.user.child('locationLat').set(cleanData.lat)
+        this.$root.$firebaseRefs.user.child('locationLong').set(cleanData.long)
+        this.cancel(ref)
+        return true
+      }
+      if (cleanData.change === 'distance') {
+        // TODO: Secure and validate
+        this.$root.$firebaseRefs.user.child('distance').set(cleanData.distance)
+        this.cancel(ref)
+        return true
+      }
+      if (cleanData.change === 'password') {
+        var user = Firebase.auth().currentUser
+        var credential = Firebase.auth.EmailAuthProvider.credential(
+            user.email,
+            cleanData.old
+        )
+        user.reauthenticate(credential).then(() => {
+          user.updatePassword(cleanData.new).then(() => {
+            this.cancel(ref)
+            return true
+          }, (error) => {
+            window.alert(error.message)
+            console.log(error)
+            return false
+          })
+        }, (error) => {
+          window.alert(error.message)
+          console.log(error)
+          return false
+        })
+      }
+
+      // TODO: picture, birthday, sex
+    },
     getPicture: function (event) {
       let input = event.target
       if (input.files && input.files[0]) {
@@ -259,6 +345,7 @@ export default {
     getLocation: function (event) {
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
+          this.edit.location.name = 'Compute name later.'
           this.edit.location.lat = position.coords.latitude
           this.edit.location.long = position.coords.longitude
         }, (err) => {
@@ -269,21 +356,6 @@ export default {
         /* geolocation IS NOT available */
         window.alert('Geolocation is not available!')
       }
-    },
-    sendEdit (ref, data) {
-      let cleanData = JSON.parse(JSON.stringify(data))
-
-      // temp
-      console.log(cleanData)
-      if (cleanData.change === 'displayname') {
-        // TODO: Secure and validate
-        this.$root.$firebaseRefs.user.child('displayName').set(cleanData.name)
-      }
-      if (cleanData.change === 'distance') {
-        this.account.distance = cleanData.distance
-      }
-
-      this.cancel(ref)
     },
     cancel (ref) {
       this.resetEdit()
@@ -298,14 +370,14 @@ export default {
     },
     setEdit () {
       // Reference existing data
-      let setAccount = {}
-      if (this.account) {
-        setAccount = this.account
-      } else {
-        setAccount = this.setAccount()
-      }
+      let setAccount = this.$root.$data.user
 
       return {
+        name: {
+          change: 'name',
+          first: setAccount.firstName,
+          last: setAccount.lastName
+        },
         distance: {
           change: 'distance',
           distance: setAccount.distance
@@ -317,9 +389,9 @@ export default {
         },
         location: {
           change: 'location',
-          name: setAccount.location.name,
-          lat: setAccount.location.lat,
-          long: setAccount.location.long
+          name: setAccount.locationName,
+          lat: setAccount.locationLat,
+          long: setAccount.locationLong
         },
         bio: {
           change: 'bio',
@@ -327,33 +399,17 @@ export default {
         },
         displayname: {
           change: 'displayname',
-          name: setAccount.displayname
+          name: setAccount.displayName
         },
         password: {
           change: 'password',
           old: '',
-          new: '',
-          confirm: ''
+          new: ''
         }
       }
     },
     resetEdit () {
       this.edit = this.setEdit()
-    },
-    setAccount () {
-      return {
-        name: 'Dmitrii Abramov',
-        displayname: '',
-        email: 'dmitrii.abramov@example.com',
-        location: {
-          name: 'Silicon Valley, CA',
-          lat: '37.3874',
-          long: '-122.0575'
-        },
-        distance: 5,
-        bio: 'front-end engineer @facebook, musician, husband, christian. I build things together with @cpojer and play metal when i\'m not coding',
-        pic: 'https://pbs.twimg.com/profile_images/644529861004931072/ItiZQelK_400x400.jpg'
-      }
     }
   },
   computed: {
@@ -364,7 +420,6 @@ export default {
   data () {
     return {
       edit: this.setEdit(),
-      account: this.setAccount(),
       googleAPI: 'AIzaSyC_pqSISPg49PEQyz6LTpPyFMomhqzeOT0'
     }
   },

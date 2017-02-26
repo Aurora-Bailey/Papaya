@@ -71,7 +71,8 @@ export default {
       Firebase.auth().createUserWithEmailAndPassword(this.signup.email, this.signup.password)
         .then(e => {
           // TODO: Secure and validate
-          Firebase.database().ref('user/' + e.uid).child('email').set(e.email)
+          this.$root.$data.user.email = e.email
+          Firebase.database().ref('user/' + e.uid).set(JSON.parse(JSON.stringify(this.$root.$data.user)))
         })
         .catch(e => {
           if (e.code === 'auth/invalid-email') this.signup.email_fail = e.message

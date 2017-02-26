@@ -62,5 +62,18 @@ new Vue({
 })
 
 function setUser () {
-  return {email: '', displayName: ''}
+  return {
+    locationName: 'Not Set',
+    locationLong: 0,
+    locationLat: 0,
+    displayName: '',
+    pictureURL: '',
+    firstName: '',
+    lastName: '',
+    distance: 20,
+    birthday: 0, // Timestamp
+    email: '',
+    bio: '',
+    sex: ''
+  }
 }
