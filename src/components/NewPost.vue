@@ -1,6 +1,6 @@
 <template>
   <div class="new-post">
-    <md-dialog class="md-mod-full-dialog" md-open-from="#post-fab" md-close-to="#post-fab" @open="onOpen" @close="onClose" ref="dialog">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#post-fab" md-close-to="#post-fab" @open="onOpen" @close="onClose" ref="dialog">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">New Post</h2>
       </md-dialog-title>

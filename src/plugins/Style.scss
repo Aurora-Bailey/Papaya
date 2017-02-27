@@ -255,7 +255,10 @@ $sidebar-stay-open: 1281px;
 }
 
 // Material Mods
-.md-mod-full-dialog {
+.mod-md-grey-background {
+  background-color: #ccc;
+}
+.mod-md-full-dialog {
   .md-dialog {
     max-width: 95%;
     max-height: 95%;

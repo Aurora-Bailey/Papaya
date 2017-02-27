@@ -115,7 +115,7 @@
 
 
     <!--Password Dialog-->
-    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-password" md-close-to="#edit-password" ref="dialog-edit-password">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-password" md-close-to="#edit-password" ref="dialog-edit-password">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Change Password</h2>
       </md-dialog-title>
@@ -138,7 +138,7 @@
     </md-dialog>
 
     <!--Change Name Dialog-->
-    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-name" md-close-to="#edit-name" ref="dialog-edit-name">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-name" md-close-to="#edit-name" ref="dialog-edit-name">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Change Name</h2>
       </md-dialog-title>
@@ -164,7 +164,7 @@
     </md-dialog>
 
     <!--Display Name Dialog-->
-    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-displayname" md-close-to="#edit-displayname" ref="dialog-edit-displayname">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-displayname" md-close-to="#edit-displayname" ref="dialog-edit-displayname">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Change Display Name</h2>
       </md-dialog-title>
@@ -182,7 +182,7 @@
     </md-dialog>
 
     <!--Short Bio Dialog-->
-    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-bio" md-close-to="#edit-bio" ref="dialog-edit-bio">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-bio" md-close-to="#edit-bio" ref="dialog-edit-bio">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Update Bio</h2>
       </md-dialog-title>
@@ -200,7 +200,7 @@
     </md-dialog>
 
     <!--Location Dialog-->
-    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-location" md-close-to="#edit-location" ref="dialog-edit-location">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-location" md-close-to="#edit-location" ref="dialog-edit-location">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Update Location</h2>
       </md-dialog-title>
@@ -221,7 +221,7 @@
     </md-dialog>
 
     <!--Location Dialog-->
-    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-distance" md-close-to="#edit-distance" ref="dialog-edit-distance">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-distance" md-close-to="#edit-distance" ref="dialog-edit-distance">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Update Search Radius</h2>
       </md-dialog-title>
@@ -242,8 +242,8 @@
       </md-dialog-actions>
     </md-dialog>
 
-    <!--Location Dialog-->
-    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-picture" md-close-to="#edit-picture" ref="dialog-edit-picture">
+    <!--Picture Dialog-->
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-picture" md-close-to="#edit-picture" ref="dialog-edit-picture">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Upload New Picture</h2>
       </md-dialog-title>
@@ -255,6 +255,7 @@
           <label>Upload Picture</label>
           <md-file v-model="edit.picture.input" @change.native="getPicture" accept="image/*"></md-file>
         </md-input-container>
+        <md-progress :md-progress="edit.picture.progress"></md-progress>
       </md-dialog-content>
 
       <md-dialog-actions>
@@ -312,8 +313,8 @@ export default {
         return true
       }
       if (cleanData.change === 'password') {
-        var user = Firebase.auth().currentUser
-        var credential = Firebase.auth.EmailAuthProvider.credential(
+        let user = Firebase.auth().currentUser
+        let credential = Firebase.auth.EmailAuthProvider.credential(
             user.email,
             cleanData.old
         )
@@ -333,7 +334,23 @@ export default {
         })
       }
       if (cleanData.change === 'picture') {
-
+        let user = Firebase.auth().currentUser
+        let storageRef = Firebase.storage().ref('user/' + user.uid + '/profile.jpg')
+        let uploadTask = storageRef.putString(cleanData.data_crop, 'data_url')
+        uploadTask.on('state_changed', (snapshot) => {
+          // Progress
+          this.edit.picture.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          console.log('Upload is ' + this.edit.picture.progress + '% done')
+        }, (error) => {
+          // Fail
+          window.alert(error.message)
+        }, () => {
+          // Success
+          let downloadURL = uploadTask.snapshot.downloadURL
+          this.$root.$firebaseRefs.user.child('pictureURL').set(downloadURL)
+          this.cancel(ref)
+          return true
+        })
       }
 
       // TODO: picture, birthday, sex
@@ -393,7 +410,8 @@ export default {
           change: 'picture',
           input: '',
           data_crop: '',
-          data_raw: ''
+          data_raw: '',
+          progress: 0
         },
         location: {
           change: 'location',

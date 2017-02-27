@@ -31,7 +31,7 @@
     </div>
 
     <!--Request Join Dialog-->
-    <md-dialog class="md-mod-full-dialog" ref="dialog-request-join">
+    <md-dialog class="mod-md-full-dialog" ref="dialog-request-join">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Send request to join.</h2>
       </md-dialog-title>

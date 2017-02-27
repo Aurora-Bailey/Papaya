@@ -28,7 +28,6 @@ export default {
       }
     },
     image_processed: function (e) {
-      console.log('emit')
       this.$emit('crop', e)
     }
   },

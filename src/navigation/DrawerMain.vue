@@ -6,19 +6,11 @@
 
           <router-link to="/profile">
             <md-list-item class="md-avatar-list">
-              <md-avatar class="md-large">
-                <img src="https://placeimg.com/64/64/people/8" alt="People">
+              <md-avatar class="md-large mod-md-grey-background">
+                <img :src="$root.$data.user.pictureURL" alt="">
               </md-avatar>
 
               <span style="flex: 1"></span>
-
-              <md-avatar>
-                <img src="https://placeimg.com/40/40/people/3" alt="People">
-              </md-avatar>
-
-              <md-avatar>
-                <img src="https://placeimg.com/40/40/people/4" alt="People">
-              </md-avatar>
             </md-list-item>
           </router-link>
 
