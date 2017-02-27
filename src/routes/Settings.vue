@@ -249,7 +249,8 @@
       </md-dialog-title>
 
       <md-dialog-content>
-        <div class="picture-preview" v-if="edit.picture.data !== ''" :style="{backgroundImage: 'url(' + edit.picture.data + ')'}"></div>
+        <!-- <img :src="edit.picture.data_crop" alt=""> -->
+        <profile-crop :image="edit.picture.data_raw" @crop="image => { edit.picture.data_crop = image }"></profile-crop>
         <md-input-container>
           <label>Upload Picture</label>
           <md-file v-model="edit.picture.input" @change.native="getPicture" accept="image/*"></md-file>
@@ -266,9 +267,13 @@
 </template>
 <script>
 import Firebase from 'firebase'
+import ProfileCrop from '../components/ProfileCrop'
 
 export default {
   name: 'settings',
+  components: {
+    ProfileCrop
+  },
   methods: {
     sendEdit (ref, data) {
       let cleanData = JSON.parse(JSON.stringify(data))
@@ -327,18 +332,20 @@ export default {
           return false
         })
       }
+      if (cleanData.change === 'picture') {
+
+      }
 
       // TODO: picture, birthday, sex
     },
     getPicture: function (event) {
+      // TODO: Does not trigger when the same file is opend twice.
       let input = event.target
       if (input.files && input.files[0]) {
         var reader = new FileReader()
-
         reader.onload = (e) => {
-          this.edit.picture.data = e.target.result
+          this.edit.picture.data_raw = e.target.result
         }
-
         reader.readAsDataURL(input.files[0])
       }
     },
@@ -385,7 +392,8 @@ export default {
         picture: {
           change: 'picture',
           input: '',
-          data: ''
+          data_crop: '',
+          data_raw: ''
         },
         location: {
           change: 'location',
@@ -438,15 +446,6 @@ export default {
   background-color: white;
   padding: 24px;
   margin: 24px 5px 5px;
-}
-.picture-preview {
-  width: 200px;
-  height: 200px;
-  border-radius: 200px;
-  margin: auto;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
 }
 </style>
 

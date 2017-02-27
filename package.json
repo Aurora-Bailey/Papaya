@@ -10,6 +10,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "cropperjs": "^1.0.0-beta.2",
     "firebase": "^3.6.10",
     "node-sass": "^4.5.0",
     "sass-loader": "^4.1.1",

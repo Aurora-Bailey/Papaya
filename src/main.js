@@ -13,6 +13,8 @@ import './plugins/Resource'
 import './plugins/API'
 import './plugins/Filters'
 import './plugins/Style.scss'
+import 'cropperjs/dist/cropper.min.css'
+import 'cropperjs/dist/cropper.min.js'
 
 /* eslint-disable no-new */
 new Vue({
