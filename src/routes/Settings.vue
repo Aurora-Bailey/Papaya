@@ -115,9 +115,9 @@
 
 
     <!--Password Dialog-->
-    <md-dialog md-open-from="#edit-password" md-close-to="#edit-password" ref="dialog-edit-password">
+    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-password" md-close-to="#edit-password" ref="dialog-edit-password">
       <md-dialog-title>
-        <h2 class="md-title">Change Password</h2>
+        <h2 class="md-title gl-no-margin">Change Password</h2>
       </md-dialog-title>
       <md-dialog-content>
         <md-input-container>
@@ -138,9 +138,9 @@
     </md-dialog>
 
     <!--Change Name Dialog-->
-    <md-dialog md-open-from="#edit-name" md-close-to="#edit-name" ref="dialog-edit-name">
+    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-name" md-close-to="#edit-name" ref="dialog-edit-name">
       <md-dialog-title>
-        <h2 class="md-title">Change Name</h2>
+        <h2 class="md-title gl-no-margin">Change Name</h2>
       </md-dialog-title>
 
       <md-dialog-content>
@@ -164,9 +164,9 @@
     </md-dialog>
 
     <!--Display Name Dialog-->
-    <md-dialog md-open-from="#edit-displayname" md-close-to="#edit-displayname" ref="dialog-edit-displayname">
+    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-displayname" md-close-to="#edit-displayname" ref="dialog-edit-displayname">
       <md-dialog-title>
-        <h2 class="md-title">Change Display Name</h2>
+        <h2 class="md-title gl-no-margin">Change Display Name</h2>
       </md-dialog-title>
       <md-dialog-content>
         <md-input-container>
@@ -182,9 +182,9 @@
     </md-dialog>
 
     <!--Short Bio Dialog-->
-    <md-dialog md-open-from="#edit-bio" md-close-to="#edit-bio" ref="dialog-edit-bio">
+    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-bio" md-close-to="#edit-bio" ref="dialog-edit-bio">
       <md-dialog-title>
-        <h2 class="md-title">Update Bio</h2>
+        <h2 class="md-title gl-no-margin">Update Bio</h2>
       </md-dialog-title>
       <md-dialog-content>
         <md-input-container>
@@ -200,9 +200,9 @@
     </md-dialog>
 
     <!--Location Dialog-->
-    <md-dialog md-open-from="#edit-location" md-close-to="#edit-location" ref="dialog-edit-location">
+    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-location" md-close-to="#edit-location" ref="dialog-edit-location">
       <md-dialog-title>
-        <h2 class="md-title">Update Location</h2>
+        <h2 class="md-title gl-no-margin">Update Location</h2>
       </md-dialog-title>
 
       <md-dialog-content>
@@ -221,9 +221,9 @@
     </md-dialog>
 
     <!--Location Dialog-->
-    <md-dialog md-open-from="#edit-distance" md-close-to="#edit-distance" ref="dialog-edit-distance">
+    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-distance" md-close-to="#edit-distance" ref="dialog-edit-distance">
       <md-dialog-title>
-        <h2 class="md-title">Update Search Radius</h2>
+        <h2 class="md-title gl-no-margin">Update Search Radius</h2>
       </md-dialog-title>
 
       <md-dialog-content>
@@ -243,9 +243,9 @@
     </md-dialog>
 
     <!--Location Dialog-->
-    <md-dialog md-open-from="#edit-picture" md-close-to="#edit-picture" ref="dialog-edit-picture">
+    <md-dialog class="md-mod-full-dialog" md-open-from="#edit-picture" md-close-to="#edit-picture" ref="dialog-edit-picture">
       <md-dialog-title>
-        <h2 class="md-title">Upload New Picture</h2>
+        <h2 class="md-title gl-no-margin">Upload New Picture</h2>
       </md-dialog-title>
 
       <md-dialog-content>

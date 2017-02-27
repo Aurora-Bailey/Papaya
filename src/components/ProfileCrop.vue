@@ -72,6 +72,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.profile-crop {
+  max-width: 320px;
+}
 .picture-orig {
   min-width: 100%;
   max-width: 100%;
