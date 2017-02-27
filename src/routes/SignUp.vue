@@ -11,7 +11,7 @@
         <md-input-container :class="{'md-input-invalid': signup.email_fail}">
           <md-icon>mail</md-icon>
           <label>Email</label>
-          <md-input required type="text" v-model="signup.email"></md-input>
+          <md-input required type="email" v-model="signup.email"></md-input>
           <span class="md-error full-icon-offset" v-if="signup.email_fail">{{signup.email_fail}}</span>
         </md-input-container>
 
