@@ -69,7 +69,7 @@ function setUser () {
     locationLong: 0,
     locationLat: 0,
     displayName: '',
-    pictureURL: '/static/img/profile.jpg',
+    pictureURL: '',
     firstName: '',
     lastName: '',
     distance: 20,

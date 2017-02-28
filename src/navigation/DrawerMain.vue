@@ -5,11 +5,10 @@
         <md-list class="md-transparent">
 
           <router-link to="/profile">
-            <md-list-item class="md-avatar-list">
-              <md-avatar class="md-large mod-md-grey-background">
-                <img :src="$root.$data.user.pictureURL" alt="">
-              </md-avatar>
-
+            <md-list-item>
+              <div class="gl-avatar gl-large drawer-profile-picture">
+                <img :src="$root.$data.user.pictureURL">
+              </div>
               <span style="flex: 1"></span>
             </md-list-item>
           </router-link>
@@ -86,4 +85,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.drawer-profile-picture {
+  margin: 12px;
+}
 </style>
