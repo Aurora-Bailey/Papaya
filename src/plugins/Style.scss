@@ -257,6 +257,8 @@ $sidebar-stay-open: 1281px;
 .gl-alert-text {
   color: red;
   padding: 10px 0;
+  max-width: 320px;
+  margin: auto;
 }
 
 // Material Mods
@@ -299,6 +301,17 @@ $sidebar-stay-open: 1281px;
   &:hover {
     text-decoration: none !important;
   }
+}
+
+// Overwrite MD
+.md-list-item {
+  display: flex !important; // For IE off center problem
+}
+.md-input-focused input, .md-input-focused textarea {
+  // This prevents IE and Firefox from displaying blurry text in primary color
+  -webkit-text-fill-color: unset !important;
+  color: rgba(0,0,0,0.87) !important;
+  text-shadow: none !important;
 }
 
 // Transitions

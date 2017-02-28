@@ -1,0 +1,13 @@
+service firebase.storage {
+  match /b/papaya-71cda.appspot.com/o {
+    match /{allPaths=**} {
+      allow read: if request.auth != null;
+    }
+    match /user/{userId}/profile.jpg {
+      // Only allow uploads of jpeg image files less than 25KB
+      allow write: if request.resource.size < 25 * 1024
+                   && request.resource.contentType.matches('image/jpeg')
+                   && request.auth.uid == userId;
+    }
+  }
+}
