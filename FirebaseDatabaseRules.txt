@@ -6,11 +6,13 @@
     },
     "queue": {
       "tasks": {
-        ".read": "auth.canProcessTasks",
-        ".write": "auth.canAddTasks || auth.canProcessTasks",
+        ".read": "auth.token.isAdmin == true",
+        ".write": "auth != null || auth.token.isAdmin == true",
         ".indexOn": "_state",
         "$taskId": {
-          ".validate": "newData.hasChild('type') || (auth.canProcessTasks && newData.hasChildren(['_state', '_state_changed', '_progress']))",
+          ".validate": "newData.hasChild('type')
+          								|| (auth.token.isAdmin == true
+              						&& newData.hasChildren(['_state', '_state_changed', '_progress']))",
           "_state": {
             ".validate": "newData.isString()"
           },
@@ -52,8 +54,8 @@
         }
       },
       "specs" : {
-        ".read": "auth.canAddSpecs || auth.canProcessTasks",
-        ".write": "auth.canAddSpecs",
+        ".read": "auth.token.isAdmin == true",
+        ".write": "auth.token.isAdmin == true",
         "$specId": {
           ".validate": "newData.hasChild('in_progress_state')",
           "start_state": {

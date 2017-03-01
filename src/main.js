@@ -29,8 +29,12 @@ new Vue({
 
       // Bind to user data
       if (auth) {
-        console.log('Bind user.')
-        this.$bindAsObject('user', Firebase.database().ref('user/' + this.auth.uid))
+        if (this.user['.key']) {
+          console.log('user already bound.')
+        } else {
+          console.log('Bind user.')
+          this.$bindAsObject('user', Firebase.database().ref('user/' + this.auth.uid))
+        }
       } else if (this.user['.key']) {
         console.log('Unbind user')
         this.$unbind('user')
