@@ -1,18 +1,26 @@
 {
   "rules": {
     "user": {
-      ".read": true,
-      ".write": true
+      "$uid": {
+        ".read": "auth.uid == $uid",
+      	".write": "auth.uid == $uid"
+      }
     },
+    "roomInfo": {
+      "$roomId": {
+        ".read": "data.child('usersAuth').child(auth.uid).val() == true",
+      	".write": false
+      }
+    },
+
+    // Queue system
     "queue": {
       "tasks": {
-        ".read": "auth.token.isAdmin == true",
-        ".write": "auth != null || auth.token.isAdmin == true",
+        ".read": false,
+        ".write": "auth != null",
         ".indexOn": "_state",
         "$taskId": {
-          ".validate": "newData.hasChild('type')
-          								|| (auth.token.isAdmin == true
-              						&& newData.hasChildren(['_state', '_state_changed', '_progress']))",
+          ".validate": "newData.hasChild('type') || newData.hasChildren(['_state', '_state_changed', '_progress'])",
           "_state": {
             ".validate": "newData.isString()"
           },
@@ -54,8 +62,8 @@
         }
       },
       "specs" : {
-        ".read": "auth.token.isAdmin == true",
-        ".write": "auth.token.isAdmin == true",
+        ".read": false,
+        ".write": false,
         "$specId": {
           ".validate": "newData.hasChild('in_progress_state')",
           "start_state": {
