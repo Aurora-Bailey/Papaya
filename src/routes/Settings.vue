@@ -240,11 +240,22 @@
           <span>{{edit.location.fail}}</span>
         </div>
         <div class="gl-center-button">
-          <md-button class="md-raised" @click.native="getLocation">Get My Location</md-button>
+          <md-button class="md-raised md-primary" @click.native="autoLocation">Auto Find Location</md-button>
+        </div>
+        <div class="gl-center-button">
+          <form @submit.stop.prevent="manualLocation">
+            <md-input-container :class="{'md-input-invalid': edit.location.fail_search}">
+              <label>Enter city name</label>
+              <md-input v-model="edit.location.search"></md-input>
+              <span class="md-error" v-if="edit.location.fail_search">{{edit.location.fail_search}}</span>
+              <md-button class="md-icon-button" type="submit"><md-icon>search</md-icon></md-button>
+            </md-input-container>
+          </form>
         </div>
 
-        <iframe class="location-map" :src="mapURL"></iframe>
-        <div>{{edit.location.name}}</div>
+        <!-- <iframe class="location-map" :src="mapIFrameURL"></iframe> -->
+        <img :src="mapStaticURL" alt="Google Maps">
+        <!-- <div>{{edit.location.name}}</div> -->
       </md-dialog-content>
 
       <md-dialog-actions>
@@ -471,20 +482,69 @@ export default {
         reader.readAsDataURL(input.files[0])
       }
     },
-    getLocation: function (event) {
+    autoLocation: function (event) {
+      this.edit.location.fail = false
+      this.edit.location.fail_search = false
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition((position) => {
-          this.edit.location.name = 'Compute name later.'
-          this.edit.location.lat = position.coords.latitude
-          this.edit.location.long = position.coords.longitude
+          // Reverse Geocoding will pull from this location
+          this.edit.location.lat = +(Math.round(position.coords.latitude * 100) / 100)
+          this.edit.location.long = +(Math.round(position.coords.longitude * 100) / 100)
+
+          // Resolve city name
+          this.$http.get(this.reverseGeocodingURL).then(response => {
+            if (response.body.status !== 'OK') {
+              this.edit.location.name = 'Unknown'
+              this.edit.location.fail = response.body.status
+              return false
+            }
+            try {
+              let city = response.body.results[0]
+              this.edit.location.name = '' + city.address_components[0].long_name + ', ' + city.address_components[2].short_name
+              this.edit.location.search = this.edit.location.name
+            } catch (error) {
+              this.edit.location.name = 'Unknown'
+              this.edit.location.fail = 'Unable to resolve city name!'
+              console.log(error)
+            }
+          }, response => {
+            this.edit.location.name = 'Unknown'
+            if (response.body.status) this.edit.location.fail = response.body.status
+            else this.edit.location.fail = 'Failed to load Google Maps API!'
+            console.log(response)
+          })
         }, (err) => {
-          window.alert('Geolocation is not available! ')
+          this.edit.location.fail = 'Geolocation is not available!'
           console.log(err)
         })
       } else {
         /* geolocation IS NOT available */
-        window.alert('Geolocation is not available!')
+        this.edit.location.fail = 'Geolocation is not available!'
       }
+    },
+    manualLocation: function (event) {
+      this.edit.location.fail = false
+      this.edit.location.fail_search = false
+      this.$http.get(this.geocodingURL).then(response => {
+        if (response.body.status !== 'OK') {
+          this.edit.location.fail_search = response.body.status
+          return false
+        }
+        try {
+          let city = response.body.results[0]
+          this.edit.location.name = '' + city.address_components[0].long_name + ', ' + city.address_components[2].short_name
+          this.edit.location.search = this.edit.location.name
+          this.edit.location.lat = city.geometry.location.lat
+          this.edit.location.long = city.geometry.location.lng
+        } catch (error) {
+          this.edit.location.fail_search = 'Unable to resolve location!'
+          console.log(error)
+        }
+      }, response => {
+        if (response.body.status) this.edit.location.fail_search = response.body.status
+        else this.edit.location.fail_search = 'Failed to load Google Maps API!'
+        console.log(response)
+      })
     },
     cancel (ref) {
       this.resetEdit()
@@ -525,10 +585,12 @@ export default {
         },
         location: {
           change: 'location',
+          search: '',
           name: setAccount.locationName,
           lat: setAccount.locationLat,
           long: setAccount.locationLong,
-          fail: false
+          fail: false,
+          fail_search: false
         },
         bio: {
           change: 'bio',
@@ -565,14 +627,25 @@ export default {
     }
   },
   computed: {
-    mapURL: function () {
-      return 'https://www.google.com/maps/embed/v1/view?key=' + this.googleAPI + '&center=' + this.edit.location.lat + ',' + this.edit.location.long + '&zoom=14&maptype=satellite'
+    mapIFrameURL: function () {
+      return 'https://www.google.com/maps/embed/v1/view?key=' + this.googleIFrameAPI + '&center=' + this.edit.location.lat + ',' + this.edit.location.long + '&zoom=14&maptype=satellite'
+    },
+    mapStaticURL: function () {
+      return 'https://maps.googleapis.com/maps/api/staticmap?key=' + this.googleStaticAPI + '&center=' + this.edit.location.lat + ',' + this.edit.location.long + '&zoom=14&maptype=hybrid&size=640x360&markers=' + this.edit.location.lat + ',' + this.edit.location.long
+    },
+    geocodingURL: function () {
+      return 'https://maps.googleapis.com/maps/api/geocode/json?key=' + this.googleAPI + '&address=' + this.edit.location.search + '&location_type=political'
+    },
+    reverseGeocodingURL: function () {
+      return 'https://maps.googleapis.com/maps/api/geocode/json?key=' + this.googleAPI + '&latlng=' + this.edit.location.lat + ',' + this.edit.location.long + '&result_type=political'
     }
   },
   data () {
     return {
       edit: this.setEdit(),
-      googleAPI: 'AIzaSyC_pqSISPg49PEQyz6LTpPyFMomhqzeOT0'
+      googleIFrameAPI: 'AIzaSyC_pqSISPg49PEQyz6LTpPyFMomhqzeOT0',
+      googleStaticAPI: 'AIzaSyBVwyKUZONuIfaQt8io2gd3W1WtpjBUkLg',
+      googleAPI: 'AIzaSyBpPBn7foYvT6yus0hh1wOMf7TWKXrdzUo'
     }
   },
   beforeRouteEnter (to, from, next) {

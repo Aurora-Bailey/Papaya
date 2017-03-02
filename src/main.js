@@ -10,7 +10,6 @@ import FirebaseAuth from './plugins/FirebaseAuth'
 import Firebase from 'firebase'
 import './plugins/Material'
 import './plugins/Resource'
-import './plugins/API'
 import './plugins/Filters'
 import './plugins/Style.scss'
 import 'cropperjs/dist/cropper.min.css'
@@ -70,8 +69,8 @@ new Vue({
 function setUser () {
   return {
     locationName: 'Not Set',
-    locationLong: 0,
-    locationLat: 0,
+    locationLong: -109.3495,
+    locationLat: -27.113,
     displayName: '',
     pictureURL: '',
     firstName: '',
