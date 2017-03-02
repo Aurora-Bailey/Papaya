@@ -2,8 +2,28 @@
   "rules": {
     "user": {
       "$uid": {
+        // Allow user to access data they own
         ".read": "auth.uid == $uid",
-      	".write": "auth.uid == $uid"
+      	".write": "auth.uid == $uid",
+
+        // Validate inputs
+        "locationName": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "locationLong": { ".validate": "newData.isNumber() && newData.val() <= 180 && newData.val() >= -180" },
+        "locationLat": { ".validate": "newData.isNumber() && newData.val() <= 90 && newData.val() >= -90" },
+        "displayName": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "pictureURL": { ".validate": "newData.isString() && newData.val().length <= 250" },
+        "firstName": { ".validate": "newData.isString() && newData.val().length <= 60" },
+        "lastName": { ".validate": "newData.isString() && newData.val().length <= 60" },
+        "distance": { ".validate": "newData.isNumber() && newData.val() <= 100 && newData.val() >= 1" },
+        "birthday": { ".validate": "newData.isNumber() && newData.val() <= now && newData.val() >= -5364662000000" },
+        "email": { ".validate": "auth.token.email == newData.val()" },
+        "bio": { ".validate": "newData.isString() && newData.val().length <= 500" },
+        "sex": { ".validate": "newData.isString() && newData.val().length <= 10" },
+
+        // Reject if any other values are set
+        "$other": {
+          ".validate": false
+        }
       }
     },
     "roomInfo": {
@@ -31,10 +51,11 @@
           ".validate": "newData.hasChild('_state') && newData.hasChild('_uid')",
           "_state": {
             ".validate": "root.child('queue').child('specs').hasChild(newData.val())
+            							&& newData.val() != 'crit'
             							&& newData.val() != 'error'"
           },
           "_uid": {
-            ".validate": "auth.uid == newData.val()"
+            ".validate": "auth.uid == newData.val()" // Custom
           },
             // Reject all other private keys
           "_state_changed": { ".validate": false },

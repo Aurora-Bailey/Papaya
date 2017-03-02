@@ -70,7 +70,9 @@ export default {
 
       Firebase.auth().createUserWithEmailAndPassword(this.signup.email, this.signup.password)
         .then(auth => {
-          Firebase.database().ref('queue').child('tasks').push({_state: 'init_user', _uid: auth.uid})
+          let user = this.$root.setUser()
+          user.email = auth.email
+          Firebase.database().ref('user/' + auth.uid).set(user)
         })
         .catch(error => {
           if (error.code === 'auth/invalid-email') this.signup.email_fail = error.message

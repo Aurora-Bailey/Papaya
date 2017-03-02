@@ -37,7 +37,7 @@ new Vue({
       } else if (this.user['.key']) {
         console.log('Unbind user')
         this.$unbind('user')
-        this.user = setUser()
+        this.user = this.setUser()
       }
 
       // Re-route on auth event
@@ -61,24 +61,25 @@ new Vue({
       scroll: BodyScroll,
       drawerOpen: false,
       auth: {}, // Not reactive, used as a data store.
-      user: setUser()
+      user: this.setUser()
+    }
+  },
+  methods: {
+    setUser () {
+      return {
+        locationName: 'Not Set',
+        locationLong: -109.3495,
+        locationLat: -27.113,
+        displayName: '',
+        pictureURL: '',
+        firstName: '',
+        lastName: '',
+        distance: 20,
+        birthday: Date.now(), // Timestamp
+        email: '',
+        bio: '',
+        sex: 'na'
+      }
     }
   }
 })
-
-function setUser () {
-  return {
-    locationName: 'Not Set',
-    locationLong: -109.3495,
-    locationLat: -27.113,
-    displayName: '',
-    pictureURL: '',
-    firstName: '',
-    lastName: '',
-    distance: 20,
-    birthday: Date.now(), // Timestamp
-    email: '',
-    bio: '',
-    sex: 'na'
-  }
-}
