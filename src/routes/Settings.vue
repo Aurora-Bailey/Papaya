@@ -178,7 +178,7 @@
 
       <md-dialog-actions>
         <md-button class="md-primary" @click.native="cancel('dialog-edit-name')">Cancel</md-button>
-        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-name', edit.name)">Change</md-button>
+        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-name', edit.name)">Change Name</md-button>
       </md-dialog-actions>
     </md-dialog>
 
@@ -201,7 +201,7 @@
 
       <md-dialog-actions>
         <md-button class="md-primary" @click.native="cancel('dialog-edit-displayname')">Cancel</md-button>
-        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-displayname', edit.displayname)">Change</md-button>
+        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-displayname', edit.displayname)">Change Display Name</md-button>
       </md-dialog-actions>
     </md-dialog>
 
@@ -224,7 +224,7 @@
 
       <md-dialog-actions>
         <md-button class="md-primary" @click.native="cancel('dialog-edit-bio')">Cancel</md-button>
-        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-bio', edit.bio)">Update</md-button>
+        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-bio', edit.bio)">Update Bio</md-button>
       </md-dialog-actions>
     </md-dialog>
 
@@ -260,7 +260,7 @@
 
       <md-dialog-actions>
         <md-button class="md-primary" @click.native="cancel('dialog-edit-location')">Cancel</md-button>
-        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-location', edit.location)">Update</md-button>
+        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-location', edit.location)">Update Location</md-button>
       </md-dialog-actions>
     </md-dialog>
 
@@ -286,7 +286,7 @@
 
       <md-dialog-actions>
         <md-button class="md-primary" @click.native="cancel('dialog-edit-distance')">Cancel</md-button>
-        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-distance', edit.distance)">Update</md-button>
+        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-distance', edit.distance)">Update Distance</md-button>
       </md-dialog-actions>
     </md-dialog>
 
@@ -312,7 +312,7 @@
 
       <md-dialog-actions>
         <md-button class="md-primary" @click.native="cancel('dialog-edit-picture')">Cancel</md-button>
-        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-picture', edit.picture)">Upload</md-button>
+        <md-button class="md-primary md-raised" @click.native="sendEdit('dialog-edit-picture', edit.picture)">Upload Picture</md-button>
       </md-dialog-actions>
     </md-dialog>
 
@@ -446,6 +446,10 @@ export default {
       }
       if (cleanData.change === 'picture') {
         this.edit.picture.fail = false
+        if (this.edit.picture.data_crop === '') {
+          this.edit.picture.fail = 'No picture selected!'
+          return false
+        }
         let user = Firebase.auth().currentUser
         let storageRef = Firebase.storage().ref('user/' + user.uid + '/profile.jpg')
         let uploadTask = storageRef.putString(cleanData.data_crop, 'data_url')
