@@ -69,16 +69,14 @@ export default {
       }
 
       Firebase.auth().createUserWithEmailAndPassword(this.signup.email, this.signup.password)
-        .then(e => {
-          // TODO: Secure and validate
-          this.$root.$data.user.email = e.email
-          Firebase.database().ref('user/' + e.uid).set(JSON.parse(JSON.stringify(this.$root.$data.user)))
+        .then(auth => {
+          Firebase.database().ref('queue').child('tasks').push({_state: 'init_user', _uid: auth.uid})
         })
-        .catch(e => {
-          if (e.code === 'auth/invalid-email') this.signup.email_fail = e.message
-          if (e.code === 'auth/email-already-in-use') this.signup.email_fail = e.message
-          if (e.code === 'auth/weak-password') this.signup.password_fail = e.message
-          console.log(e)
+        .catch(error => {
+          if (error.code === 'auth/invalid-email') this.signup.email_fail = error.message
+          if (error.code === 'auth/email-already-in-use') this.signup.email_fail = error.message
+          if (error.code === 'auth/weak-password') this.signup.password_fail = error.message
+          else this.signup.email_fail = error.message
         })
     }
   },

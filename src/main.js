@@ -77,9 +77,9 @@ function setUser () {
     firstName: '',
     lastName: '',
     distance: 20,
-    birthday: 0, // Timestamp
+    birthday: Date.now(), // Timestamp
     email: '',
     bio: '',
-    sex: ''
+    sex: 'na'
   }
 }

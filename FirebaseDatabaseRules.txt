@@ -12,6 +12,12 @@
       	".write": false
       }
     },
+    "roomChat": {
+      "$roomId": {
+        ".read": "root.child('roomInfo').child($roomId).child('usersAuth').child(auth.uid).val() == true",
+        ".write": false
+      }
+    },
 
     // Queue system
     "queue": {
@@ -20,50 +26,33 @@
         ".write": "auth != null",
         ".indexOn": "_state",
         "$taskId": {
-          ".validate": "newData.hasChild('type') || newData.hasChildren(['_state', '_state_changed', '_progress'])",
+          	// Allow user to post if _state is a valid specID
+          	// Require _uid to be set to the auth user
+          ".validate": "newData.hasChild('_state') && newData.hasChild('_uid')",
           "_state": {
-            ".validate": "newData.isString()"
+            ".validate": "root.child('queue').child('specs').hasChild(newData.val())
+            							&& newData.val() != 'error'"
           },
-          "_state_changed": {
-            ".validate": "newData.isNumber() && (newData.val() === now || data.val() === newData.val())"
+          "_uid": {
+            ".validate": "auth.uid == newData.val()"
           },
-          "_owner": {
-            ".validate": "newData.isString()"
-          },
-          "_progress": {
-            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
-          },
-          "_error_details": {
-              "error": {
-                ".validate": "newData.isString()"
-              },
-              "error_stack": {
-                ".validate": "newData.isString()"
-              },
-              "previous_state": {
-                ".validate": "newData.isString()"
-              },
-              "original_task": {
-                /* This space intentionally left blank, for malformed tasks */
-              },
-              "attempts": {
-                ".validate": "newData.isNumber() && newData.val() > 0"
-              },
-              "$other": {
-                ".validate": false
-              }
-          },
-          "_id": {
-            ".validate": "newData.isString()"
-          },
-          "type": {
-            ".validate": "newData.isString()"
-          }
+            // Reject all other private keys
+          "_state_changed": { ".validate": false },
+          "_owner": { ".validate": false },
+          "_progress": { ".validate": false },
+          "_error_details": { ".validate": false },
+          "_id": { ".validate": false }
         }
+      },
+      "fail": {
+        ".read": false,
+        ".write": false
       },
       "specs" : {
         ".read": false,
         ".write": false,
+        // No need to validate if user cannot access
+        // This is pretty much just a reference
         "$specId": {
           ".validate": "newData.hasChild('in_progress_state')",
           "start_state": {
