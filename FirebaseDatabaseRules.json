@@ -16,7 +16,9 @@
         "lastName": { ".validate": "newData.isString() && newData.val().length <= 60" },
         "distance": { ".validate": "newData.isNumber() && newData.val() <= 100 && newData.val() >= 1" },
         "birthday": { ".validate": "newData.isNumber() && newData.val() <= now && newData.val() >= -5364662000000" },
-        "email": { ".validate": "auth.token.email == newData.val() || auth.email == newData.val()" },
+        // Tighter security, but prevents email change,
+        //"email": { ".validate": "auth.token.email == newData.val() || auth.email == newData.val()" },
+        "email": { ".validate": "newData.isString() && newData.val().length <= 250" },
         "bio": { ".validate": "newData.isString() && newData.val().length <= 500" },
         "sex": { ".validate": "newData.isString() && newData.val().length <= 10" },
 
