@@ -75,7 +75,7 @@ new Vue({
         firstName: '',
         lastName: '',
         distance: 20,
-        birthday: Date.now(), // Timestamp
+        birthday: 0, // Timestamp
         email: '',
         bio: '',
         sex: 'na'

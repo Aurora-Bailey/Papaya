@@ -70,9 +70,12 @@ export default {
 
       Firebase.auth().createUserWithEmailAndPassword(this.signup.email, this.signup.password)
         .then(auth => {
-          let user = this.$root.setUser()
-          user.email = auth.email
-          Firebase.database().ref('user/' + auth.uid).set(user)
+          let newUser = this.$root.setUser()
+          newUser.email = auth.email
+          Firebase.database().ref('user').child(auth.uid).set(newUser).catch(error => {
+            window.alert('You hit a fatal error! Your account may be in an incomplete state. We recommend you contact customer support.')
+            console.log(error)
+          })
         })
         .catch(error => {
           if (error.code === 'auth/invalid-email') this.signup.email_fail = error.message
