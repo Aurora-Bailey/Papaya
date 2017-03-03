@@ -56,7 +56,8 @@ let RouteObject = new Router({
     { meta: {title: 'Papaya - Planning'}, path: '/events/planning', name: 'eventsplanning', components: { default: EventsPlanning, drawer: DrawerMain, toolbar: ToolbarMain, tabs: TabsEvents } },
     { meta: {title: 'Papaya - Mail'}, path: '/mail', name: 'mail', components: { default: Mail, drawer: DrawerMain, toolbar: ToolbarMain } },
     { meta: {title: 'Papaya - Mail Open'}, path: '/mail/:id/:name', name: 'mailchat', components: { default: MailChat, drawer: DrawerMain, toolbar: ToolbarMain } },
-    { meta: {title: 'Papaya - Profile'}, path: '/profile', name: 'profile', components: { default: Profile, drawer: DrawerMain, toolbar: ToolbarMain } },
+    { meta: {title: 'Papaya - My Profile'}, path: '/profile', name: 'profile', components: { default: Profile, drawer: DrawerMain, toolbar: ToolbarMain } },
+    { meta: {title: 'Papaya - Profile'}, path: '/profile/:uid', name: 'profileuid', components: { default: Profile, drawer: DrawerMain, toolbar: ToolbarMain } },
     { meta: {title: 'Papaya - My Tags'}, path: '/tags', name: 'tags', components: { default: Tags, drawer: DrawerMain, toolbar: ToolbarMain } },
     { meta: {title: 'Papaya - Settings'}, path: '/settings', name: 'settings', components: { default: Settings, drawer: DrawerMain, toolbar: ToolbarMain } },
     { meta: {title: 'Papaya - Not Found'}, path: '*', name: 'notfound', components: { default: NotFound, drawer: DrawerMain, toolbar: ToolbarMain } }

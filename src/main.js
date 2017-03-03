@@ -4,10 +4,10 @@ import Vue from 'vue'
 import App from './App'
 
 // Plugins
-import BodyScroll from './plugins/BodyScroll'
-import Router from './plugins/Router'
 import FirebaseAuth from './plugins/FirebaseAuth'
 import Firebase from 'firebase'
+import BodyScroll from './plugins/BodyScroll'
+import Router from './plugins/Router'
 import './plugins/Material'
 import './plugins/Resource'
 import './plugins/Filters'

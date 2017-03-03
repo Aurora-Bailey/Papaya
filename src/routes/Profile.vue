@@ -4,7 +4,7 @@
       <div class="gl-narrow-wrapper-600">
         <div class="profile-content">
           <div class="profile-pic">
-            <img :src="person.pic" alt="">
+            <img :src="profile.pictureURL" alt="">
             <md-spinner :md-size="250" :md-stroke="1.2" :md-progress="person.likeness"></md-spinner>
           </div>
           <div class="profile-info">
@@ -20,17 +20,17 @@
               </md-button>
             </div>
             <div class="profile-person">
-              <div class="profile-name">{{person.name}}</div>
-              <div class="profile-age">{{person.age}}</div>
-              <div class="profile-location">{{person.location}}</div>
+              <div class="profile-name">{{profile.displayName}}</div>
+              <div class="profile-age">{{profile.age}}</div>
+              <div class="profile-location">{{profile.locationName}}</div>
             </div>
             <div>
-              <p class="profile-bio">{{person.bio}}</p>
+              <p class="profile-bio">{{profile.bio}}</p>
             </div>
           </div>
         </div>
         <div class="common-tags-title">
-          Tags both you and {{person.name}} have in common
+          Tags both you and {{profile.displayName}} have in common
         </div>
         <div class="common-tags" :class="{'show-all-tags': showAllTags}">
           <div class="gl-chip" v-for="tag in tagsFiltered" :class="{'chip-highlight': tag.fav}">
@@ -45,12 +45,15 @@
       </div>
     </md-whiteframe>
     <div class="gl-narrow-wrapper-600">
+      <router-link to="/profile/RbsFmKdNrrg6VGMtScc8g8mwQgk2">RbsFmKdNrrg6VGMtScc8g8mwQgk2</router-link>
+      <router-link to="/profile/tLIzLNtyFsQnQuXxA3vSAS3w46A3">tLIzLNtyFsQnQuXxA3vSAS3w46A3</router-link>
       <display-posts :postable="false"></display-posts>
     </div>
   </div>
 </template>
 <script>
 import DisplayPosts from '../components/DisplayPosts'
+import Firebase from 'firebase'
 
 export default {
   name: 'profile',
@@ -58,6 +61,20 @@ export default {
     DisplayPosts
   },
   computed: {
+    profile () {
+      let auth = this.$root.auth
+      let uid = ''
+
+      if (this.$route.params.uid) uid = this.$route.params.uid
+      else if (auth && auth.uid) uid = auth.uid
+
+      if (uid !== '') {
+        this.$bindAsObject('profileFirebase', Firebase.database().ref('profile/' + uid))
+        return this.profileFirebase
+      } else {
+        return this.$root.setProfile() // Blank
+      }
+    },
     tagsFiltered () {
       if (this.showAllTags) return this.person.tags
 
@@ -79,11 +96,6 @@ export default {
     return {
       showAllTags: false,
       person: {
-        name: 'Dmitrii Abramov',
-        age: '32',
-        location: 'Silicon Valley, CA',
-        pic: 'https://pbs.twimg.com/profile_images/644529861004931072/ItiZQelK_400x400.jpg',
-        bio: 'front-end engineer @facebook, musician, husband, christian. I build things together with @cpojer and play metal when i\'m not coding',
         following: false,
         likeness: 70,
         tags: [
@@ -245,7 +257,6 @@ export default {
   min-height: 200px;
   margin: auto;
   position: relative;
-
   user-select: none;
 
   .md-spinner {
@@ -257,8 +268,8 @@ export default {
 
   img {
     border-radius: 200px;
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     display: block;
   }
 }
