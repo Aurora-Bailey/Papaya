@@ -11,7 +11,7 @@
         "locationLong": { ".validate": "newData.isNumber() && newData.val() <= 180 && newData.val() >= -180" },
         "locationLat": { ".validate": "newData.isNumber() && newData.val() <= 90 && newData.val() >= -90" },
         "displayName": { ".validate": "newData.isString() && newData.val().length <= 120" },
-        "pictureURL": { ".validate": "newData.isString() && newData.val().length <= 250" },
+        "pictureURL": { ".validate": "newData.isString() && newData.val().length <= 250 && newData.val().matches(/^https:\\/\\/firebasestorage.googleapis.com\\//i) || newData.val().length == 0" },
         "firstName": { ".validate": "newData.isString() && newData.val().length <= 60" },
         "lastName": { ".validate": "newData.isString() && newData.val().length <= 60" },
         "distance": { ".validate": "newData.isNumber() && newData.val() <= 100 && newData.val() >= 1" },
@@ -19,6 +19,27 @@
         // Tighter security, but prevents email change,
         //"email": { ".validate": "auth.token.email == newData.val() || auth.email == newData.val()" },
         "email": { ".validate": "newData.isString() && newData.val().length <= 250" },
+        "bio": { ".validate": "newData.isString() && newData.val().length <= 500" },
+        "sex": { ".validate": "newData.isString() && newData.val().length <= 10" },
+
+        // Reject if any other values are set
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "profile": {
+      "$uid": {
+        // Allow anyone to read
+        // Allow user to write data they own
+        ".read": "auth.uid != null",
+      	".write": "auth.uid == $uid",
+
+        // Validate inputs
+        "locationName": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "displayName": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "pictureURL": { ".validate": "newData.isString() && newData.val().length <= 250 && newData.val().matches(/^https:\\/\\/firebasestorage.googleapis.com\\//i) || newData.val().length == 0" },
+        "age": { ".validate": "newData.isNumber() && newData.val() <= 300 && newData.val() >= 0" },
         "bio": { ".validate": "newData.isString() && newData.val().length <= 500" },
         "sex": { ".validate": "newData.isString() && newData.val().length <= 10" },
 
