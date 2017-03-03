@@ -65,6 +65,16 @@ new Vue({
     }
   },
   methods: {
+    setProfile () {
+      return {
+        locationName: 'Not Set',
+        displayName: '',
+        pictureURL: '',
+        age: 20, // Timestamp
+        bio: '',
+        sex: 'na'
+      }
+    },
     setUser () {
       return {
         locationName: 'Not Set',

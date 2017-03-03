@@ -76,6 +76,11 @@ export default {
             window.alert('You hit a fatal error! Your account may be in an incomplete state. We recommend you contact customer support.')
             console.log(error)
           })
+          let newProfile = this.$root.setProfile()
+          Firebase.database().ref('profile').child(auth.uid).set(newProfile).catch(error => {
+            window.alert('You hit a fatal error! Your account may be in an incomplete state. We recommend you contact customer support.')
+            console.log(error)
+          })
         })
         .catch(error => {
           if (error.code === 'auth/invalid-email') this.signup.email_fail = error.message

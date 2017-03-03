@@ -330,11 +330,16 @@ export default {
   methods: {
     sendEdit (ref, data) {
       let cleanData = JSON.parse(JSON.stringify(data))
+      let auth = Firebase.auth().currentUser
+      let db = Firebase.database()
 
       if (cleanData.change === 'displayname') {
         this.edit.displayname.fail = false
         this.edit.displayname.fail_name = false
-        this.$root.$firebaseRefs.user.child('displayName').set(cleanData.name).then(() => {
+        let updates = {}
+        updates['user/' + auth.uid + '/displayName'] = cleanData.name
+        updates['profile/' + auth.uid + '/displayName'] = cleanData.name
+        db.ref().update(updates).then(() => {
           // Success
           this.cancel(ref)
         }, (error) => {
@@ -346,11 +351,10 @@ export default {
         this.edit.name.fail = false
         this.edit.name.fail_first = false
         this.edit.name.fail_last = false
-        let updates = {
-          'firstName': cleanData.first,
-          'lastName': cleanData.last
-        }
-        this.$root.$firebaseRefs.user.update(updates).then(() => {
+        let updates = {}
+        updates['user/' + auth.uid + '/firstName'] = cleanData.first
+        updates['user/' + auth.uid + '/lastName'] = cleanData.last
+        db.ref().update(updates).then(() => {
           // Success
           this.cancel(ref)
         }, (error) => {
@@ -361,7 +365,10 @@ export default {
       if (cleanData.change === 'bio') {
         this.edit.bio.fail = false
         this.edit.bio.fail_text = false
-        this.$root.$firebaseRefs.user.child('bio').set(cleanData.text).then(() => {
+        let updates = {}
+        updates['user/' + auth.uid + '/bio'] = cleanData.text
+        updates['profile/' + auth.uid + '/bio'] = cleanData.text
+        db.ref().update(updates).then(() => {
           // Success
           this.cancel(ref)
         }, (error) => {
@@ -371,12 +378,12 @@ export default {
       }
       if (cleanData.change === 'location') {
         this.edit.location.fail = false
-        let updates = {
-          'locationName': cleanData.name,
-          'locationLat': cleanData.lat,
-          'locationLong': cleanData.long
-        }
-        this.$root.$firebaseRefs.user.update(updates).then(() => {
+        let updates = {}
+        updates['profile/' + auth.uid + '/locationName'] = cleanData.name
+        updates['user/' + auth.uid + '/locationName'] = cleanData.name
+        updates['user/' + auth.uid + '/locationLat'] = cleanData.lat
+        updates['user/' + auth.uid + '/locationLong'] = cleanData.long
+        db.ref().update(updates).then(() => {
           // Success
           this.cancel(ref)
         }, (error) => {
@@ -386,7 +393,7 @@ export default {
       }
       if (cleanData.change === 'distance') {
         this.edit.distance.fail = false
-        this.$root.$firebaseRefs.user.child('distance').set(cleanData.distance).then(() => {
+        db.ref('user').child(auth.uid).child('distance').set(cleanData.distance).then(() => {
           // Success
           this.cancel(ref)
         }, (error) => {
@@ -426,7 +433,7 @@ export default {
         )
         user.reauthenticate(credential).then(() => {
           user.updateEmail(cleanData.email).then(() => {
-            this.$root.$firebaseRefs.user.child('email').set(cleanData.email).then(() => {
+            db.ref('user').child(auth.uid).child('email').set(cleanData.email).then(() => {
               // Success
               this.cancel(ref)
             }, (error) => {
@@ -463,7 +470,10 @@ export default {
           // Success
           // Now save url to user
           let downloadURL = uploadTask.snapshot.downloadURL
-          this.$root.$firebaseRefs.user.child('pictureURL').set(downloadURL).then(() => {
+          let updates = {}
+          updates['user/' + auth.uid + '/pictureURL'] = downloadURL
+          updates['profile/' + auth.uid + '/pictureURL'] = downloadURL
+          db.ref().update(updates).then(() => {
             // Success
             this.cancel(ref)
           }, (error) => {
