@@ -62,11 +62,11 @@ export default {
   },
   computed: {
     profile () {
-      let auth = this.$root.auth
+      let auth = this.$root.uid
       let uid = ''
 
       if (this.$route.params.uid) uid = this.$route.params.uid
-      else if (auth && auth.uid) uid = auth.uid
+      else if (auth) uid = auth
 
       if (uid !== '') {
         this.$bindAsObject('profileFirebase', Firebase.database().ref('profile/' + uid))

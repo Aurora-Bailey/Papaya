@@ -24,7 +24,8 @@ new Vue({
   beforeCreate () {
     FirebaseAuth.auth(auth => {
       // Set Auth
-      this.auth = auth
+      if (auth && auth.uid) this.uid = auth.uid
+      else this.uid = null
 
       // Bind to user data
       if (auth) {
@@ -60,7 +61,7 @@ new Vue({
     return {
       scroll: BodyScroll,
       drawerOpen: false,
-      auth: {}, // Not reactive, used as a data store.
+      uid: null,
       user: this.setUser()
     }
   },
