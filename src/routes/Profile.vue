@@ -60,21 +60,36 @@ export default {
   components: {
     DisplayPosts
   },
-  computed: {
-    profile () {
-      let auth = this.$root.uid
-      let uid = ''
-
-      if (this.$route.params.uid) uid = this.$route.params.uid
-      else if (auth) uid = auth
-
-      if (uid !== '') {
-        this.$bindAsObject('profileFirebase', Firebase.database().ref('profile/' + uid))
-        return this.profileFirebase
-      } else {
-        return this.$root.setProfile() // Blank
-      }
+  mounted () {
+    this.profileUpdate()
+  },
+  watch: {
+    '$root.uid': function () {
+      this.profileUpdate()
     },
+    '$route': function () {
+      this.profileUpdate()
+    }
+  },
+  methods: {
+    profileUpdate: function (e) {
+      let uid = this.$root.uid
+
+      // Route overwrites user
+      if (this.$route.params.uid) uid = this.$route.params.uid
+
+      // Remove any old bindings
+      if (this.profile['.key']) this.$unbind('profile')
+
+      // Set the object
+      if (uid) {
+        this.$bindAsObject('profile', Firebase.database().ref('profile/' + uid))
+      } else {
+        this.profile = this.$root.setProfile()
+      }
+    }
+  },
+  computed: {
     tagsFiltered () {
       if (this.showAllTags) return this.person.tags
 
@@ -94,6 +109,7 @@ export default {
   },
   data () {
     return {
+      profile: this.$root.setProfile(), // Firebase placeholder
       showAllTags: false,
       person: {
         following: false,

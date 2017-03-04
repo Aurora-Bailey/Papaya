@@ -32,8 +32,6 @@ export default {
         if (a.name.toLowerCase() > b.name.toLowerCase()) return 1
         return 0
       })
-
-      console.log(JSON.stringify(this.tags))
       this.addTagInput = ''
     },
     removeTag (i) {

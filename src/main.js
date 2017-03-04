@@ -27,16 +27,13 @@ new Vue({
       if (auth && auth.uid) this.uid = auth.uid
       else this.uid = null
 
-      // Bind to user data
+      // Bind to firebase user globally
       if (auth) {
         if (this.user['.key']) {
-          console.log('user already bound.')
         } else {
-          console.log('Bind user.')
           this.$bindAsObject('user', Firebase.database().ref('user/' + auth.uid))
         }
       } else if (this.user['.key']) {
-        console.log('Unbind user')
         this.$unbind('user')
         this.user = this.setUser()
       }
@@ -45,13 +42,11 @@ new Vue({
       if (auth) {
         // Logged in but stitting on a login page
         if (this.$route.path === '/' || this.$route.path === '/signin' || this.$route.path === '/signup') {
-          console.log('Re-route home')
           this.$router.replace('/home')
         }
       } else {
         // Not logged in and not sitting on a login page
         if (this.$route.path !== '/' && this.$route.path !== '/signin' && this.$route.path !== '/signup') {
-          console.log('Re-route signin')
           this.$router.replace('/signin')
         }
       }

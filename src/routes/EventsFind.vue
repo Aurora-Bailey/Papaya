@@ -65,8 +65,7 @@ export default {
     },
     sendJoinRequest (eventID = this.request.eventID) {
       this.request.eventID = eventID
-      let deepCopy = JSON.parse(JSON.stringify(this.request))
-      console.log(deepCopy)
+      // let deepCopy = JSON.parse(JSON.stringify(this.request))
 
       // only designed to remove 1 element
       this.events.forEach((e, i, o) => {

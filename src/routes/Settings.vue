@@ -519,17 +519,16 @@ export default {
             } catch (error) {
               this.edit.location.name = 'Unknown'
               this.edit.location.fail = 'Unable to resolve city name!'
-              console.log(error)
+              console.error(error)
             }
           }, response => {
             this.edit.location.name = 'Unknown'
             if (response.body.status) this.edit.location.fail = response.body.status
             else this.edit.location.fail = 'Failed to load Google Maps API!'
-            console.log(response)
           })
-        }, (err) => {
+        }, (error) => {
           this.edit.location.fail = 'Geolocation is not available!'
-          console.log(err)
+          console.error(error)
         })
       } else {
         /* geolocation IS NOT available */
@@ -552,12 +551,11 @@ export default {
           this.edit.location.long = city.geometry.location.lng
         } catch (error) {
           this.edit.location.fail_search = 'Unable to resolve location!'
-          console.log(error)
+          console.error(error)
         }
       }, response => {
         if (response.body.status) this.edit.location.fail_search = response.body.status
         else this.edit.location.fail_search = 'Failed to load Google Maps API!'
-        console.log(response)
       })
     },
     cancel (ref) {

@@ -74,12 +74,12 @@ export default {
           newUser.email = auth.email
           Firebase.database().ref('user').child(auth.uid).set(newUser).catch(error => {
             window.alert('You hit a fatal error! Your account may be in an incomplete state. We recommend you contact customer support.')
-            console.log(error)
+            console.error(error)
           })
           let newProfile = this.$root.setProfile()
           Firebase.database().ref('profile').child(auth.uid).set(newProfile).catch(error => {
             window.alert('You hit a fatal error! Your account may be in an incomplete state. We recommend you contact customer support.')
-            console.log(error)
+            console.error(error)
           })
         })
         .catch(error => {

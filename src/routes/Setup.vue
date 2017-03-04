@@ -108,9 +108,9 @@ export default {
         navigator.geolocation.getCurrentPosition((position) => {
           this.location.lat = position.coords.latitude
           this.location.long = position.coords.longitude
-        }, (err) => {
+        }, (error) => {
           window.alert('Geolocation is not available! ')
-          console.log(err)
+          console.error(error)
         })
       } else {
         /* geolocation IS NOT available */

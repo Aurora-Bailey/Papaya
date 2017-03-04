@@ -15,7 +15,6 @@ Firebase.initializeApp(config)
 
 let auth = function (cb) {
   Firebase.auth().onAuthStateChanged(firebaseUser => {
-    console.log('Auth User')
     cb(firebaseUser)
   })
 }
