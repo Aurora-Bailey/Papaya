@@ -248,18 +248,19 @@ export default {
   }
 }
 .profile-person {
-  font-size: 1.2em;
-  line-height:1.4em;
   .profile-name {
-    display: inline-block;
     font-weight: bold;
+    font-size: 20px;
   }
   .profile-age {
     display: inline-block;
-    color: rgba(0,0,0,0.54)
+    color: rgba(0,0,0,0.54);
+    vertical-align: middle;
   }
   .profile-location {
-    color: rgba(0,0,0,0.54)
+    display: inline-block;
+    color: rgba(0,0,0,0.54);
+    vertical-align: middle;
   }
 }
 .profile-bio {
