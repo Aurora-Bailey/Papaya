@@ -38,11 +38,15 @@ new Vue({
         this.user = this.setUser()
       }
 
+      // TODO: Splash screen whie loading
+
       // Re-route on auth event
       if (auth) {
         // Logged in but stitting on a login page
-        if (this.$route.path === '/' || this.$route.path === '/signin' || this.$route.path === '/signup') {
+        if (this.$route.path === '/' || this.$route.path === '/signin') {
           this.$router.replace('/home')
+        } else if (this.$route.path === '/signup') {
+          this.$router.replace('/setup')
         }
       } else {
         // Not logged in and not sitting on a login page

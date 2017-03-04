@@ -107,13 +107,13 @@
         <md-input-container :class="{'md-input-invalid': edit.password.fail_old}">
           <label>Old Password</label>
           <md-input v-model="edit.password.old" type="password"></md-input>
-          <span class="md-error" v-if="edit.password.fail_old">{{edit.password.fail_old}}</span>
+          <span class="md-error gl-input-error" v-if="edit.password.fail_old">{{edit.password.fail_old}}</span>
         </md-input-container>
 
         <md-input-container :class="{'md-input-invalid': edit.password.fail_new}">
           <label>New Password</label>
           <md-input v-model="edit.password.new" type="password"></md-input>
-          <span class="md-error" v-if="edit.password.fail_new">{{edit.password.fail_new}}</span>
+          <span class="md-error gl-input-error" v-if="edit.password.fail_new">{{edit.password.fail_new}}</span>
         </md-input-container>
       </md-dialog-content>
 
@@ -136,13 +136,13 @@
         <md-input-container :class="{'md-input-invalid': edit.email.fail_password}">
           <label>Confirm Password</label>
           <md-input v-model="edit.email.password" type="password"></md-input>
-          <span class="md-error" v-if="edit.email.fail_password">{{edit.email.fail_password}}</span>
+          <span class="md-error gl-input-error" v-if="edit.email.fail_password">{{edit.email.fail_password}}</span>
         </md-input-container>
 
         <md-input-container :class="{'md-input-invalid': edit.email.fail_email}">
           <label>New Email Address</label>
           <md-input v-model="edit.email.email" type="email"></md-input>
-          <span class="md-error" v-if="edit.email.fail_email">{{edit.email.fail_email}}</span>
+          <span class="md-error gl-input-error" v-if="edit.email.fail_email">{{edit.email.fail_email}}</span>
         </md-input-container>
       </md-dialog-content>
 
@@ -166,13 +166,13 @@
         <md-input-container :class="{'md-input-invalid': edit.name.fail_first}">
           <label>First Name</label>
           <md-input v-model="edit.name.first"></md-input>
-          <span class="md-error" v-if="edit.name.fail_first">{{edit.name.fail_first}}</span>
+          <span class="md-error gl-input-error" v-if="edit.name.fail_first">{{edit.name.fail_first}}</span>
         </md-input-container>
 
         <md-input-container :class="{'md-input-invalid': edit.name.fail_last}">
           <label>Last Name</label>
           <md-input v-model="edit.name.last"></md-input>
-          <span class="md-error" v-if="edit.name.fail_last">{{edit.name.fail_last}}</span>
+          <span class="md-error gl-input-error" v-if="edit.name.fail_last">{{edit.name.fail_last}}</span>
         </md-input-container>
       </md-dialog-content>
 
@@ -195,7 +195,7 @@
         <md-input-container :class="{'md-input-invalid': edit.displayname.fail_name}">
           <label>Display Name</label>
           <md-input v-model="edit.displayname.name"></md-input>
-          <span class="md-error" v-if="edit.displayname.fail_name">{{edit.displayname.fail_name}}</span>
+          <span class="md-error gl-input-error" v-if="edit.displayname.fail_name">{{edit.displayname.fail_name}}</span>
         </md-input-container>
       </md-dialog-content>
 
@@ -218,7 +218,7 @@
         <md-input-container :class="{'md-input-invalid': edit.bio.fail_text}">
           <label>Short Bio</label>
           <md-textarea v-model="edit.bio.text" style="min-height: 72px;" maxlength="500"></md-textarea>
-          <span class="md-error" v-if="edit.bio.fail_text">{{edit.bio.fail_text}}</span>
+          <span class="md-error gl-input-error" v-if="edit.bio.fail_text">{{edit.bio.fail_text}}</span>
         </md-input-container>
       </md-dialog-content>
 
@@ -247,7 +247,7 @@
             <md-input-container :class="{'md-input-invalid': edit.location.fail_search}">
               <label>Enter city name</label>
               <md-input v-model="edit.location.search"></md-input>
-              <span class="md-error" v-if="edit.location.fail_search">{{edit.location.fail_search}}</span>
+              <span class="md-error gl-input-error" v-if="edit.location.fail_search">{{edit.location.fail_search}}</span>
               <md-button class="md-icon-button" type="submit"><md-icon>search</md-icon></md-button>
             </md-input-container>
           </form>
@@ -307,7 +307,7 @@
           <label>Upload Picture</label>
           <md-file v-model="edit.picture.input" @change.native="getPicture" accept="image/*"></md-file>
         </md-input-container>
-        <md-progress :md-progress="edit.picture.progress"></md-progress>
+        <!-- <md-progress :md-progress="edit.picture.progress"></md-progress> -->
       </md-dialog-content>
 
       <md-dialog-actions>
@@ -320,6 +320,7 @@
 </template>
 <script>
 import Firebase from 'firebase'
+import FirebaseSet from '../plugins/FirebaseSet'
 import ProfileCrop from '../components/ProfileCrop'
 
 export default {
@@ -453,33 +454,11 @@ export default {
       }
       if (cleanData.change === 'picture') {
         this.edit.picture.fail = false
-        if (this.edit.picture.data_crop === '') {
-          this.edit.picture.fail = 'No picture selected!'
-          return false
-        }
-        let user = Firebase.auth().currentUser
-        let storageRef = Firebase.storage().ref('user/' + user.uid + '/profile.jpg')
-        let uploadTask = storageRef.putString(cleanData.data_crop, 'data_url')
-        uploadTask.on('state_changed', (snapshot) => {
-          // Progress
-          this.edit.picture.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        }, (error) => {
-          // Fail
+        FirebaseSet.profilePicture(this.edit.picture.data_crop)
+        .then(() => {
+          this.cancel(ref)
+        }, error => {
           this.edit.picture.fail = error.message
-        }, () => {
-          // Success
-          // Now save url to user
-          let downloadURL = uploadTask.snapshot.downloadURL
-          let updates = {}
-          updates['user/' + auth.uid + '/pictureURL'] = downloadURL
-          updates['profile/' + auth.uid + '/pictureURL'] = downloadURL
-          db.ref().update(updates).then(() => {
-            // Success
-            this.cancel(ref)
-          }, (error) => {
-            // Fail
-            this.edit.picture.fail = error.message
-          })
         })
       }
 

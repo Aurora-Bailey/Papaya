@@ -65,6 +65,9 @@ export default {
   },
   mounted: function () {
     image = this.$el.children[0]
+    this.process(this.image, (newImage) => {
+      this.image_processed = newImage
+    })
   }
 }
 </script>
@@ -73,6 +76,8 @@ export default {
 <style lang="scss" scoped>
 .profile-crop {
   max-width: 320px;
+  min-width: 200px;
+  margin: auto;
 }
 .picture-orig {
   min-width: 100%;

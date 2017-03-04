@@ -5,7 +5,7 @@
         <md-button class="md-icon-button sidebar-toggle" @click.native="$root.$data.drawerOpen=true">
           <md-icon>menu</md-icon>
         </md-button>
-
+        <md-icon class="logo-icon" md-src="https://cdn.onlinewebfonts.com/svg/img_479199.svg"></md-icon>
         <h2 class="md-title toolbar-title" style="flex: 1">{{$route.meta.title}}</h2>
       </md-whiteframe>
     </div>
