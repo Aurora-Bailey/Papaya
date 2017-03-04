@@ -67,6 +67,7 @@ function nameBirthdaySex (first, last, birthday, sex) {
     updates['profile/' + uid + '/displayName'] = first + ' ' + last
     updates['user/' + uid + '/sex'] = sex
     updates['profile/' + uid + '/sex'] = sex
+    // TODO: user/birthday && profile/age
     Firebase.database().ref().update(updates).then(() => {
       // Success
       resolve()

@@ -84,7 +84,7 @@
             <md-ink-ripple />
             <md-icon class="md-primary">exit_to_app</md-icon>
             <div class="md-list-text-container">
-              <span>Log Out<span>
+              <span>Log Out</span>
             </div>
           </md-list-item>
 
