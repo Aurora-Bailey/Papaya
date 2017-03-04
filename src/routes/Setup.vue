@@ -8,7 +8,7 @@
       </h1>
 
       <!-- Set Picture -->
-      <div class="stage stage-picture" v-if="stage === 0">
+      <div class="stage stage-picture" v-if="$route.params.stage === '0'">
         <h2 class="title">Profile Picture</h2>
         <div class="gl-alert-text" v-if="picture.fail">
           <md-icon>warning</md-icon>
@@ -26,7 +26,7 @@
       </div>
 
       <!-- Set Name/Birthday/Sex -->
-      <div class="stage stage-bio" v-if="stage === 1">
+      <div class="stage stage-bio" v-if="$route.params.stage === '1'">
         <h2 class="title">About Me</h2>
         <!-- <div class="description">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
@@ -67,7 +67,7 @@
       </div>
 
       <!-- Set Location -->
-      <div class="stage stage-picture" v-if="stage === 2">
+      <div class="stage stage-picture" v-if="$route.params.stage === '2'">
         <h2 class="title">Select Tags</h2>
         <div class="description">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
@@ -78,7 +78,7 @@
         </md-chips>
       </div>
 
-      <div class="stage stage-location" v-if="stage === 3">
+      <div class="stage stage-location" v-if="$route.params.stage === '3'">
         <h2 class="title">Location</h2>
         <div class="description">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
@@ -106,7 +106,6 @@ export default {
   },
   data () {
     return {
-      stage: 0,
       picture: {
         input: '',
         data_crop: '',
@@ -149,6 +148,8 @@ export default {
       FirebaseSet.profilePicture(this.picture.data_crop)
       .then(() => {
         this.stage++
+        let stage = parseInt(this.$route.params.stage) + 1
+        this.$router.push('/setup/' + stage)
       }, error => {
         this.picture.fail = error.message
       })
@@ -163,6 +164,8 @@ export default {
       FirebaseSet.nameBirthdaySex(this.person.first_name, this.person.last_name, this.person.birthday, this.person.sex)
       .then(() => {
         this.stage++
+        let stage = parseInt(this.$route.params.stage) + 1
+        this.$router.push('/setup/' + stage)
       }, error => {
         console.log(error)
         if (error.input === 1) this.person.fail_first_name = error.message
