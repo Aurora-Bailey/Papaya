@@ -1,31 +1,31 @@
 <!-- Example usage
-<date-picker year month day hour minute output="MM DD, YY hh:mm" ref="ref-date-picker" id-attach="#asdf" @timestamp="time => { person.birthday_timestamp = time }" @date="date => { person.birthday = date }"></date-picker>
+<date-picker year month day hour minute format="MM DD, YY hh:mm" ref="ref-date-picker" id-attach="#asdf" @timestamp="time => { person.birthday_timestamp = time }" @date="date => { person.birthday = date }"></date-picker>
 <input v-model="person.birthday" id="asdf" type="text" @focus="$refs['ref-date-picker'].open()" />
 -->
 <template>
   <div class="date-picker">
     <md-dialog class="mod-md-full-dialog" ref="ref-dialog">
       <md-dialog-content>
-        <div class="date-button-container date-year" v-if="stack[stage] == 'year'">
+        <div class="date-stage-container date-year" v-if="stack[stage] == 'year'">
           <div class="stage-title">Year</div>
           <div class="date-button" v-for="i in 24" @click="nextStage(stack[stage], new Date().getFullYear() - i - showYearsOffset, new Date().getFullYear() - i - showYearsOffset)">{{new Date().getFullYear() - i - showYearsOffset}}</div>
           <div class="gl-center-button">
             <md-button class="md-raised md-primary mod-md-text-white" @click.native="showYearsOffset += 12">More</md-button>
           </div>
         </div>
-        <div class="date-button-container date-month" v-if="stack[stage] == 'month'">
+        <div class="date-stage-container date-month" v-if="stack[stage] == 'month'">
           <div class="stage-title">Month</div>
           <div class="date-button" v-for="(m, i) in months" @click="nextStage(stack[stage], m, i)">{{m}}</div>
         </div>
-        <div class="date-button-container date-day" v-if="stack[stage] == 'day'">
+        <div class="date-stage-container date-day" v-if="stack[stage] == 'day'">
           <div class="stage-title">Day</div>
           <div class="date-button" v-for="(d, i) in daysInMonth" @click="nextStage(stack[stage], d, d)">{{d}}</div>
         </div>
-        <div class="date-button-container date-hour" v-if="stack[stage] == 'hour'">
+        <div class="date-stage-container date-hour" v-if="stack[stage] == 'hour'">
           <div class="stage-title">Hour</div>
           <div class="date-button" v-for="(h, i) in 24" @click="nextStage(stack[stage], h, h)">{{h}}</div>
         </div>
-        <div class="date-button-container date-minute" v-if="stack[stage] == 'minute'">
+        <div class="date-stage-container date-minute" v-if="stack[stage] == 'minute'">
           <div class="stage-title">Minute</div>
           <div class="date-button" v-for="(m, i) in 60" @click="nextStage(stack[stage], m, m)">{{m}}</div>
         </div>
@@ -37,7 +37,7 @@
 <script>
 export default {
   props: {
-    'output': String,
+    'format': String,
     'year': { type: Boolean, default: false },
     'month': { type: Boolean, default: false },
     'day': { type: Boolean, default: false },
@@ -72,7 +72,7 @@ export default {
       }
     },
     emitDate () {
-      let dateString = this.output
+      let dateString = this.format
       if (this.date['year']) dateString = dateString.replace('YY', this.date['year'].name)
       if (this.date['month']) dateString = dateString.replace('MM', this.date['month'].name)
       if (this.date['day']) dateString = dateString.replace('DD', this.date['day'].name)
@@ -115,24 +115,22 @@ export default {
 .date-picker {
 }
 @keyframes fadeIn {
-    from {opacity: 0.2;}
-    to {opacity: 1;}
+    0% {opacity: 0;}
+    100% {opacity: 1;}
 }
 .date-button {
   cursor: pointer;
   display: inline-block;
   margin: 3px;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0,0,0,.2), 0 1px 1px rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   width: 60px;
   height: 30px;
   line-height: 30px;
   text-align: center;
-
-  animation-name: fadeIn;
-  animation-duration: .4s;
+  font-weight: bold;
+  transition: all .2s;
 
   &:hover {
+    background-color: white;
     box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px rgba(0,0,0,.14), 0 1px 10px rgba(0,0,0,.12);
     transform: scale(1.2)
   }
@@ -142,7 +140,9 @@ export default {
   font-size: 24px;
   padding: 0 24px 24px
 }
-.date-button-container {
+.date-stage-container {
+  animation-name: fadeIn;
+  animation-duration: .4s;
   text-align: center;
   max-width: 320px;
 }

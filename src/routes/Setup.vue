@@ -50,7 +50,7 @@
 
         <md-input-container :class="{'md-input-invalid': person.fail_birthday}">
           <label>Birthday</label>
-          <date-picker year month day output="MM DD, YY" ref="ref-date-picker" @timestamp="time => { person.birthday_timestamp = time }" @date="date => { person.birthday = date }"></date-picker>
+          <date-picker year month day format="MM DD, YY" ref="ref-date-picker" @timestamp="time => { person.birthday_timestamp = time }" @date="date => { person.birthday = date }"></date-picker>
           <md-input v-model="person.birthday" @focus.native="$refs['ref-date-picker'].open()"></md-input>
           <span class="md-error gl-input-error" v-if="person.fail_birthday">{{person.fail_birthday}}</span>
         </md-input-container>
@@ -170,7 +170,6 @@ export default {
         let stage = parseInt(this.$route.params.stage) + 1
         this.$router.push('/setup/' + stage)
       }, error => {
-        console.log(error)
         if (error.input === 1) this.person.fail_first_name = error.message
         else if (error.input === 2) this.person.fail_last_name = error.message
         else if (error.input === 3) this.person.fail_birthday = error.message
