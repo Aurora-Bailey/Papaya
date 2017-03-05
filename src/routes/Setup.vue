@@ -8,7 +8,7 @@
       </h1>
 
       <!-- Set Picture -->
-      <div class="stage" v-if="$route.params.stage === '0'">
+      <div class="stage" v-if="$route.params.stage === 'picture'">
         <h2 class="title">Profile Picture</h2>
         <div class="gl-alert-text" v-if="picture.fail">
           <md-icon>warning</md-icon>
@@ -26,7 +26,7 @@
       </div>
 
       <!-- Set Name/Birthday/Sex -->
-      <div class="stage" v-if="$route.params.stage === '1'">
+      <div class="stage" v-else-if="$route.params.stage === 'about'">
         <h2 class="title">About Me</h2>
         <!-- <div class="description">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
@@ -68,7 +68,7 @@
       </div>
 
       <!-- Set Location -->
-      <div class="stage" v-if="$route.params.stage === '2'">
+      <div class="stage" v-else-if="$route.params.stage === 'location'">
         <h2 class="title">Set My Location</h2>
         <!-- <div class="description">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
@@ -137,9 +137,7 @@ export default {
       this.picture.fail = false
       FirebaseSet.profilePicture(this.picture.data_crop)
       .then(() => {
-        this.stage++
-        let stage = parseInt(this.$route.params.stage) + 1
-        this.$router.push('/setup/' + stage)
+        this.$router.push('/setup/about')
       }, error => {
         this.picture.fail = error.message
       })
@@ -153,9 +151,7 @@ export default {
 
       FirebaseSet.nameBirthdaySex(this.person.first_name, this.person.last_name, this.person.birthday_timestamp, this.person.sex)
       .then(() => {
-        this.stage++
-        let stage = parseInt(this.$route.params.stage) + 1
-        this.$router.push('/setup/' + stage)
+        this.$router.push('/setup/location')
       }, error => {
         if (error.input === 1) this.person.fail_first_name = error.message
         else if (error.input === 2) this.person.fail_last_name = error.message
