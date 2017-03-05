@@ -1,5 +1,53 @@
 import Firebase from 'firebase'
 
+function password (oldPass, newPass) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    // var uid = user.uid
+
+    let credential = Firebase.auth.EmailAuthProvider.credential(
+        user.email,
+        oldPass
+    )
+    user.reauthenticate(credential).then(() => {
+      user.updatePassword(newPass).then(() => {
+        resolve()
+      }, (error) => {
+        reject(error)
+      })
+    }, (error) => {
+      reject(error)
+    })
+  })
+}
+function email (password, newEmail) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    var uid = user.uid
+
+    let credential = Firebase.auth.EmailAuthProvider.credential(
+        user.email,
+        password
+    )
+
+    user.reauthenticate(credential).then(() => {
+      user.updateEmail(newEmail).then(() => {
+        Firebase.database().ref('user').child(uid).child('email').set(newEmail).then(() => {
+          // Success
+          resolve()
+        }, (error) => {
+          reject(error)
+        })
+      }, (error) => {
+        reject(error)
+      })
+    }, (error) => {
+      reject(error)
+    })
+  })
+}
 function location (lat, lng, name) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
@@ -11,6 +59,77 @@ function location (lat, lng, name) {
     updates['user/' + uid + '/locationName'] = name
     updates['user/' + uid + '/locationLat'] = lat
     updates['user/' + uid + '/locationLong'] = lng
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
+function distance (dist) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    var uid = user.uid
+
+    let updates = {}
+    updates['user/' + uid + '/distance'] = dist
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
+function bio (bio) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    var uid = user.uid
+
+    let updates = {}
+    updates['user/' + uid + '/bio'] = bio
+    updates['profile/' + uid + '/bio'] = bio
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
+function name (first, last) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    var uid = user.uid
+
+    let updates = {}
+    updates['user/' + uid + '/firstName'] = first
+    updates['user/' + uid + '/lastName'] = last
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
+function displayName (name) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    var uid = user.uid
+
+    let updates = {}
+    updates['user/' + uid + '/displayName'] = name
+    updates['profile/' + uid + '/displayName'] = name
     Firebase.database().ref().update(updates).then(() => {
       // Success
       resolve()
@@ -100,7 +219,13 @@ function nameBirthdaySex (first, last, birthday, sex) {
 export default {
   location,
   profilePicture,
-  nameBirthdaySex
+  nameBirthdaySex,
+  displayName,
+  name,
+  bio,
+  distance,
+  password,
+  email
 }
 
 function _calculateAge (birthday) { // birthday is a date

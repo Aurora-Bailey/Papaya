@@ -304,7 +304,7 @@
   </div>
 </template>
 <script>
-import Firebase from 'firebase'
+// import Firebase from 'firebase'
 import FirebaseSet from '../plugins/FirebaseSet'
 import ProfileCrop from '../components/ProfileCrop'
 import GetLocation from '../components/GetLocation'
@@ -318,20 +318,14 @@ export default {
   methods: {
     sendEdit (ref, data) {
       let cleanData = JSON.parse(JSON.stringify(data))
-      let auth = Firebase.auth().currentUser
-      let db = Firebase.database()
 
       if (cleanData.change === 'displayname') {
         this.edit.displayname.fail = false
         this.edit.displayname.fail_name = false
-        let updates = {}
-        updates['user/' + auth.uid + '/displayName'] = cleanData.name
-        updates['profile/' + auth.uid + '/displayName'] = cleanData.name
-        db.ref().update(updates).then(() => {
-          // Success
+        FirebaseSet.displayName(cleanData.name)
+        .then(() => {
           this.cancel(ref)
-        }, (error) => {
-          // Fail
+        }, error => {
           this.edit.displayname.fail = error.message
         })
       }
@@ -339,28 +333,20 @@ export default {
         this.edit.name.fail = false
         this.edit.name.fail_first = false
         this.edit.name.fail_last = false
-        let updates = {}
-        updates['user/' + auth.uid + '/firstName'] = cleanData.first
-        updates['user/' + auth.uid + '/lastName'] = cleanData.last
-        db.ref().update(updates).then(() => {
-          // Success
+        FirebaseSet.name(cleanData.first, cleanData.last)
+        .then(() => {
           this.cancel(ref)
-        }, (error) => {
-          // Fail
+        }, error => {
           this.edit.name.fail = error.message
         })
       }
       if (cleanData.change === 'bio') {
         this.edit.bio.fail = false
         this.edit.bio.fail_text = false
-        let updates = {}
-        updates['user/' + auth.uid + '/bio'] = cleanData.text
-        updates['profile/' + auth.uid + '/bio'] = cleanData.text
-        db.ref().update(updates).then(() => {
-          // Success
+        FirebaseSet.bio(cleanData.text)
+        .then(() => {
           this.cancel(ref)
-        }, (error) => {
-          // Fail
+        }, error => {
           this.edit.bio.fail = error.message
         })
       }
@@ -375,11 +361,10 @@ export default {
       }
       if (cleanData.change === 'distance') {
         this.edit.distance.fail = false
-        db.ref('user').child(auth.uid).child('distance').set(cleanData.distance).then(() => {
-          // Success
+        FirebaseSet.distance(cleanData.distance)
+        .then(() => {
           this.cancel(ref)
-        }, (error) => {
-          // Fail
+        }, error => {
           this.edit.distance.fail = error.message
         })
       }
@@ -387,20 +372,12 @@ export default {
         this.edit.password.fail = false
         this.edit.password.fail_old = false
         this.edit.password.fail_new = false
-        let user = Firebase.auth().currentUser
-        let credential = Firebase.auth.EmailAuthProvider.credential(
-            user.email,
-            cleanData.old
-        )
-        user.reauthenticate(credential).then(() => {
-          user.updatePassword(cleanData.new).then(() => {
-            this.cancel(ref)
-          }, (error) => {
-            if (error.code === 'auth/weak-password') this.edit.password.fail_new = error.message
-            else this.edit.password.fail = error.message
-          })
-        }, (error) => {
-          if (error.code === 'auth/wrong-password') this.edit.password.fail_old = error.message
+        FirebaseSet.password(cleanData.old, cleanData.new)
+        .then(() => {
+          this.cancel(ref)
+        }, error => {
+          if (error.code === 'auth/weak-password') this.edit.password.fail_new = error.message
+          else if (error.code === 'auth/wrong-password') this.edit.password.fail_old = error.message
           else this.edit.password.fail = error.message
         })
       }
@@ -408,24 +385,10 @@ export default {
         this.edit.email.fail = false
         this.edit.email.fail_password = false
         this.edit.email.fail_email = false
-        let user = Firebase.auth().currentUser
-        let credential = Firebase.auth.EmailAuthProvider.credential(
-            user.email,
-            cleanData.password
-        )
-        user.reauthenticate(credential).then(() => {
-          user.updateEmail(cleanData.email).then(() => {
-            db.ref('user').child(auth.uid).child('email').set(cleanData.email).then(() => {
-              // Success
-              this.cancel(ref)
-            }, (error) => {
-              this.edit.email.fail = error.message
-            })
-          }, (error) => {
-            if (error.code === 'auth/invalid-email') this.edit.email.fail_email = error.message
-            else this.edit.email.fail = error.message
-          })
-        }, (error) => {
+        FirebaseSet.email(cleanData.password, cleanData.email)
+        .then(() => {
+          this.cancel(ref)
+        }, error => {
           if (error.code === 'auth/invalid-email') this.edit.email.fail_email = error.message
           else if (error.code === 'auth/user-disabled') this.edit.email.fail_email = error.message
           else if (error.code === 'auth/user-not-found') this.edit.email.fail_email = error.message
