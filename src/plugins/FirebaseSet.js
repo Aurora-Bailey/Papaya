@@ -51,10 +51,6 @@ function nameBirthdaySex (first, last, birthday, sex) {
       reject({code: 'input/empty-input', message: 'Field cannot be empty!', input: 2})
       return false
     }
-    if (birthday === null) {
-      reject({code: 'input/empty-input', message: 'Field cannot be empty!', input: 3})
-      return false
-    }
     if (sex === '') {
       reject({code: 'input/empty-input', message: 'Field cannot be empty!', input: 4})
       return false
@@ -67,6 +63,8 @@ function nameBirthdaySex (first, last, birthday, sex) {
     updates['profile/' + uid + '/displayName'] = first + ' ' + last
     updates['user/' + uid + '/sex'] = sex
     updates['profile/' + uid + '/sex'] = sex
+    updates['user/' + uid + '/birthday'] = birthday
+    updates['profile/' + uid + '/age'] = _calculateAge(birthday)
     // TODO: user/birthday && profile/age
     Firebase.database().ref().update(updates).then(() => {
       // Success
@@ -82,4 +80,10 @@ function nameBirthdaySex (first, last, birthday, sex) {
 export default {
   profilePicture,
   nameBirthdaySex
+}
+
+function _calculateAge (birthday) { // birthday is a date
+  var ageDifMs = Date.now() - new Date(birthday).getTime()
+  var ageDate = new Date(ageDifMs) // miliseconds from epoch
+  return Math.abs(ageDate.getUTCFullYear() - 1970)
 }

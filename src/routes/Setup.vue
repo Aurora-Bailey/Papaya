@@ -50,14 +50,15 @@
 
         <md-input-container :class="{'md-input-invalid': person.fail_birthday}">
           <label>Birthday</label>
-          <md-input v-model="person.birthday"></md-input>
+          <date-picker year month day output="MM DD, YY" ref="ref-date-picker" @timestamp="time => { person.birthday_timestamp = time }" @date="date => { person.birthday = date }"></date-picker>
+          <md-input v-model="person.birthday" @focus.native="$refs['ref-date-picker'].open()"></md-input>
           <span class="md-error gl-input-error" v-if="person.fail_birthday">{{person.fail_birthday}}</span>
         </md-input-container>
 
         <div>
           <md-radio v-model="person.sex" name="person-sex" class="md-primary" md-value="female">Female</md-radio>
           <md-radio v-model="person.sex" name="person-sex" class="md-primary" md-value="male">Male</md-radio>
-          <md-radio v-model="person.sex" name="person-sex" class="md-primary" md-value="na">Other</md-radio>
+          <md-radio v-model="person.sex" name="person-sex" class="md-primary" md-value="other">Other</md-radio>
           <div class="md-error gl-input-error" v-if="person.fail_sex">{{person.fail_sex}}</div>
         </div>
 
@@ -91,9 +92,6 @@
         <iframe class="location-map" :src="mapURL"></iframe>
       </div>
     </md-whiteframe>
-    <date-picker year month day ref="ref-date-picker" id-attach="#asdf" @timestamp="time => { person.birthday_timestamp = time }" @date="date => { person.birthday = date }"></date-picker>
-    <input v-model="person.birthday" id="asdf" type="text" @focus="$refs['ref-date-picker'].open()" />
-
   </div>
 </div>
 </template>
@@ -166,7 +164,7 @@ export default {
       this.person.fail_sex = false
       this.person.fail = false
 
-      FirebaseSet.nameBirthdaySex(this.person.first_name, this.person.last_name, this.person.birthday, this.person.sex)
+      FirebaseSet.nameBirthdaySex(this.person.first_name, this.person.last_name, this.person.birthday_timestamp, this.person.sex)
       .then(() => {
         this.stage++
         let stage = parseInt(this.$route.params.stage) + 1
