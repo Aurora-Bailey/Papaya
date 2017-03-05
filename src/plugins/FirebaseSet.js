@@ -1,5 +1,25 @@
 import Firebase from 'firebase'
 
+function location (lat, lng, name) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    var uid = user.uid
+
+    let updates = {}
+    updates['profile/' + uid + '/locationName'] = name
+    updates['user/' + uid + '/locationName'] = name
+    updates['user/' + uid + '/locationLat'] = lat
+    updates['user/' + uid + '/locationLong'] = lng
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
 function profilePicture (imageData) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
@@ -78,6 +98,7 @@ function nameBirthdaySex (first, last, birthday, sex) {
 }
 
 export default {
+  location,
   profilePicture,
   nameBirthdaySex
 }

@@ -8,7 +8,7 @@
       </h1>
 
       <!-- Set Picture -->
-      <div class="stage stage-picture" v-if="$route.params.stage === '0'">
+      <div class="stage" v-if="$route.params.stage === '0'">
         <h2 class="title">Profile Picture</h2>
         <div class="gl-alert-text" v-if="picture.fail">
           <md-icon>warning</md-icon>
@@ -26,7 +26,7 @@
       </div>
 
       <!-- Set Name/Birthday/Sex -->
-      <div class="stage stage-bio" v-if="$route.params.stage === '1'">
+      <div class="stage" v-if="$route.params.stage === '1'">
         <h2 class="title">About Me</h2>
         <!-- <div class="description">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
@@ -68,29 +68,24 @@
       </div>
 
       <!-- Set Location -->
-      <div class="stage stage-picture" v-if="$route.params.stage === '2'">
-        <h2 class="title">Select Tags</h2>
-        <div class="description">
+      <div class="stage" v-if="$route.params.stage === '2'">
+        <h2 class="title">Set My Location</h2>
+        <!-- <div class="description">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
+        </div> -->
+
+        <div class="gl-alert-text" v-if="location.fail">
+          <md-icon>warning</md-icon>
+          <span>{{location.fail}}</span>
         </div>
 
-        <md-chips v-model="tags.list" md-input-placeholder="Add a custom tag">
-          <template scope="chip">{{ chip.value }}</template>
-        </md-chips>
-      </div>
-
-      <div class="stage stage-location" v-if="$route.params.stage === '3'">
-        <h2 class="title">Location</h2>
-        <div class="description">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec ipsum luctus, interdum felis vel.
-        </div>
+        <get-location @lat="val => { location.lat = val }" @lng="val => { location.long = val }" @name="val => { location.name = val }"></get-location>
 
         <div class="gl-center-button">
-          <md-button class="md-raised" @click.native="getLocation">Get My Location</md-button>
+          <md-button class="md-raised md-primary mod-md-text-white" @click.native="updateLocation">Set Location</md-button>
         </div>
-
-        <iframe class="location-map" :src="mapURL"></iframe>
       </div>
+
     </md-whiteframe>
   </div>
 </div>
@@ -99,12 +94,14 @@
 import FirebaseSet from '../plugins/FirebaseSet'
 import ProfileCrop from '../components/ProfileCrop'
 import DatePicker from '../components/DatePicker'
+import GetLocation from '../components/GetLocation'
 
 export default {
   name: 'setup',
   components: {
     ProfileCrop,
-    DatePicker
+    DatePicker,
+    GetLocation
   },
   data () {
     return {
@@ -127,22 +124,12 @@ export default {
         fail_sex: false,
         fail: false
       },
-      tags: {
-        list: ['Fishing', 'Gardening', 'Cooking', 'Bowling', 'Writing', 'Reading', 'Hiking', 'Painting', 'Music', 'Genealogy', 'Sleep', 'Camping', 'Motorcycling', 'Skiing', 'Knitting', 'Dance', 'Birdwatching', 'Golf', 'Walking', 'Shoping', 'Collecting', 'Woodworking', 'Photography', 'Model building', 'Crochet', 'Drawing', 'Rail transport modeling', 'Amateur radio', 'Hunting', 'Running', 'Travel']
-      },
-      bio: {
-        text: ''
-      },
       location: {
-        lat: -27.1367,
-        long: -109.2797,
-        googleAPI: 'AIzaSyC_pqSISPg49PEQyz6LTpPyFMomhqzeOT0'
+        lat: 0,
+        long: 0,
+        name: '',
+        fail: false
       }
-    }
-  },
-  computed: {
-    mapURL () {
-      return 'https://www.google.com/maps/embed/v1/view?key=' + this.location.googleAPI + '&center=' + this.location.lat + ',' + this.location.long + '&zoom=14&maptype=satellite'
     }
   },
   methods: {
@@ -177,8 +164,20 @@ export default {
         else this.person.fail = error.message
       })
     },
+    updateLocation () {
+      this.location.fail = false
+
+      FirebaseSet.location(this.location.lat, this.location.long, this.location.name)
+      .then(() => {
+        // Setup is done
+        this.$router.push('/tags')
+      }, error => {
+        this.location.fail = error.message
+      })
+    },
     getPicture (event) {
       // TODO: Does not trigger when the same file is opend twice.
+      // TODO: Make this into a vue component for get file
       let input = event.target
       if (input.files && input.files[0]) {
         var reader = new FileReader()
@@ -186,20 +185,6 @@ export default {
           this.picture.data_raw = e.target.result
         }
         reader.readAsDataURL(input.files[0])
-      }
-    },
-    getLocation (event) {
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          this.location.lat = position.coords.latitude
-          this.location.long = position.coords.longitude
-        }, (error) => {
-          window.alert('Geolocation is not available! ')
-          console.error(error)
-        })
-      } else {
-        /* geolocation IS NOT available */
-        window.alert('Geolocation is not available!')
       }
     }
   },
