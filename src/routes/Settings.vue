@@ -95,7 +95,7 @@
 
 
     <!--Password Dialog-->
-    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-password" md-close-to="#edit-password" ref="dialog-edit-password">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-password" md-close-to="#edit-password" @close="dialogRef=''" ref="dialog-edit-password">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Change Password</h2>
       </md-dialog-title>
@@ -124,7 +124,7 @@
     </md-dialog>
 
     <!--Email Dialog-->
-    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-email" md-close-to="#edit-email" ref="dialog-edit-email">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-email" md-close-to="#edit-email" @close="dialogRef=''" ref="dialog-edit-email">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Change Email</h2>
       </md-dialog-title>
@@ -153,7 +153,7 @@
     </md-dialog>
 
     <!--Change Name Dialog-->
-    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-name" md-close-to="#edit-name" ref="dialog-edit-name">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-name" md-close-to="#edit-name" @close="dialogRef=''" ref="dialog-edit-name">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Change Name</h2>
       </md-dialog-title>
@@ -183,7 +183,7 @@
     </md-dialog>
 
     <!--Display Name Dialog-->
-    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-displayname" md-close-to="#edit-displayname" ref="dialog-edit-displayname">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-displayname" md-close-to="#edit-displayname" @close="dialogRef=''" ref="dialog-edit-displayname">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Change Display Name</h2>
       </md-dialog-title>
@@ -206,7 +206,7 @@
     </md-dialog>
 
     <!--Short Bio Dialog-->
-    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-bio" md-close-to="#edit-bio" ref="dialog-edit-bio">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-bio" md-close-to="#edit-bio" @close="dialogRef=''" ref="dialog-edit-bio">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Update Bio</h2>
       </md-dialog-title>
@@ -229,7 +229,7 @@
     </md-dialog>
 
     <!--Location Dialog-->
-    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-location" md-close-to="#edit-location" ref="dialog-edit-location">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-location" md-close-to="#edit-location" @close="dialogRef=''" ref="dialog-edit-location">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Update Location</h2>
       </md-dialog-title>
@@ -240,7 +240,7 @@
           <span>{{edit.location.fail}}</span>
         </div>
 
-        <get-location @lat="val => { edit.location.lat = val }" @lng="val => { edit.location.long = val }" @name="val => { edit.location.name = val }"></get-location>
+        <get-location v-if="dialogRef === 'dialog-edit-location'" @lat="val => { edit.location.lat = val }" @lng="val => { edit.location.long = val }" @name="val => { edit.location.name = val }"></get-location>
       </md-dialog-content>
 
       <md-dialog-actions>
@@ -250,7 +250,7 @@
     </md-dialog>
 
     <!--Distance Dialog-->
-    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-distance" md-close-to="#edit-distance" ref="dialog-edit-distance">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-distance" md-close-to="#edit-distance" @close="dialogRef=''" ref="dialog-edit-distance">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Update Search Radius</h2>
       </md-dialog-title>
@@ -276,7 +276,7 @@
     </md-dialog>
 
     <!--Picture Dialog-->
-    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-picture" md-close-to="#edit-picture" ref="dialog-edit-picture">
+    <md-dialog class="mod-md-full-dialog" md-open-from="#edit-picture" md-close-to="#edit-picture" @close="dialogRef=''" ref="dialog-edit-picture">
       <md-dialog-title>
         <h2 class="md-title gl-no-margin">Upload New Picture</h2>
       </md-dialog-title>
@@ -287,7 +287,7 @@
           <span>{{edit.picture.fail}}</span>
         </div>
         <!-- <img :src="edit.picture.data_crop" alt=""> -->
-        <profile-crop :image="edit.picture.data_raw" @crop="image => { edit.picture.data_crop = image }"></profile-crop>
+        <profile-crop v-if="dialogRef === 'dialog-edit-picture'"  :image="edit.picture.data_raw" @crop="image => { edit.picture.data_crop = image }"></profile-crop>
         <md-input-container>
           <label>Upload Picture</label>
           <md-file v-model="edit.picture.input" @change.native="getPicture" accept="image/*"></md-file>
@@ -459,6 +459,7 @@ export default {
       this.closeDialog(ref)
     },
     openDialog (ref) {
+      this.dialogRef = ref
       this.resetEdit()
       this.$refs[ref].open()
     },
@@ -536,7 +537,8 @@ export default {
   },
   data () {
     return {
-      edit: this.setEdit()
+      edit: this.setEdit(),
+      dialogRef: ''
     }
   },
   beforeRouteEnter (to, from, next) {
