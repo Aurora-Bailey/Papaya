@@ -91,6 +91,8 @@
         <iframe class="location-map" :src="mapURL"></iframe>
       </div>
     </md-whiteframe>
+    <date-picker year month day ref="ref-date-picker" id-attach="#asdf" @timestamp="time => { person.birthday_timestamp = time }" @date="date => { person.birthday = date }"></date-picker>
+    <input v-model="person.birthday" id="asdf" type="text" @focus="$refs['ref-date-picker'].open()" />
 
   </div>
 </div>
@@ -98,11 +100,13 @@
 <script>
 import FirebaseSet from '../plugins/FirebaseSet'
 import ProfileCrop from '../components/ProfileCrop'
+import DatePicker from '../components/DatePicker'
 
 export default {
   name: 'setup',
   components: {
-    ProfileCrop
+    ProfileCrop,
+    DatePicker
   },
   data () {
     return {
@@ -117,6 +121,7 @@ export default {
         first_name: '',
         last_name: '',
         birthday: null,
+        birthday_timestamp: 0,
         sex: '',
         fail_first_name: false,
         fail_last_name: false,
