@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <transition name="splashscreen">
+      <splash-screen v-if="$root.SplashScreen"></splash-screen>
+    </transition>
 
     <!-- route outlet -->
     <!-- component matched by the route will render here -->
@@ -13,8 +16,13 @@
 </template>
 
 <script>
+import SplashScreen from 'components/SplashScreen'
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    SplashScreen
+  }
 }
 </script>
 

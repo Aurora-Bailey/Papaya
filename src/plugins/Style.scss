@@ -361,3 +361,15 @@ $sidebar-stay-open: 1281px;
 .fade-enter, .fade-leave-to {
   opacity: 0;
 }
+.splashscreen-enter-active, .splashscreen-leave-active {
+  transition: all 0.5s cubic-bezier(.25,.8,.25,1);
+  .logo, .spinner {
+    transition: all 0.5s cubic-bezier(.25,.8,.25,1);
+  }
+}
+.splashscreen-enter, .splashscreen-leave-to {
+  opacity: 1;
+  .logo, .spinner {
+    opacity: 0;
+  }
+}

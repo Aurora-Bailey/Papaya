@@ -58,12 +58,16 @@ new Vue({
           this.$router.replace('/signin')
         }
       }
+
+      // Remove the splash screen
+      this.SplashScreen = false
     })
   },
   data () {
     return {
       scroll: BodyScroll,
       drawerOpen: false,
+      SplashScreen: true,
       uid: null,
       emailVerified: false,
       user: this.setUser()
