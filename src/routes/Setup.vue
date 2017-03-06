@@ -166,6 +166,12 @@ export default {
       FirebaseSet.location(this.location.lat, this.location.long, this.location.name)
       .then(() => {
         // Setup is done
+        FirebaseSet.verifyEmail()
+        .then(() => {
+          // Success
+        }, error => {
+          console.log(error)
+        })
         this.$router.push('/tags')
       }, error => {
         this.location.fail = error.message

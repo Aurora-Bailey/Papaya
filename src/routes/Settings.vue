@@ -91,6 +91,19 @@
         </md-list>
 
       </md-whiteframe>
+
+      <md-whiteframe class="settings-card" v-if="!$root.emailVerified">
+        <h2 class="md-title settings-title">Your Account is Unverified!</h2>
+        <md-list class="md-double-line">
+          <md-list-item @click.native="verifyEmail">
+            <md-ink-ripple />
+            <md-icon class="md-primary">email</md-icon>
+            <div class="md-list-text-container">
+              <span>Resend email verification</span>
+            </div>
+          </md-list-item>
+        </md-list>
+      </md-whiteframe>
     </div>
 
 
@@ -316,6 +329,14 @@ export default {
     GetLocation
   },
   methods: {
+    verifyEmail () {
+      FirebaseSet.verifyEmail()
+      .then(() => {
+        window.alert('Email verification sent!')
+      }, error => {
+        console.log(error)
+      })
+    },
     sendEdit (ref, data) {
       let cleanData = JSON.parse(JSON.stringify(data))
 

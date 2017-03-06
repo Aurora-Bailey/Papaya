@@ -70,11 +70,6 @@ export default {
 
       Firebase.auth().createUserWithEmailAndPassword(this.signup.email, this.signup.password)
         .then(auth => {
-          auth.sendEmailVerification().then(() => {
-            // Email sent.
-          }, error => {
-            console.warn(error)
-          })
           let newUser = this.$root.setUser()
           newUser.email = auth.email
           Firebase.database().ref('user').child(auth.uid).set(newUser).catch(error => {

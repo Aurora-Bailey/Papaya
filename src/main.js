@@ -27,6 +27,10 @@ new Vue({
       if (auth && auth.uid) this.uid = auth.uid
       else this.uid = null
 
+      // Set Verified
+      if (auth && auth.emailVerified) this.emailVerified = auth.emailVerified
+      else this.emailVerified = false
+
       // Bind to firebase user globally
       if (auth) {
         if (this.user['.key']) {
@@ -61,6 +65,7 @@ new Vue({
       scroll: BodyScroll,
       drawerOpen: false,
       uid: null,
+      emailVerified: false,
       user: this.setUser()
     }
   },

@@ -1,9 +1,33 @@
 import Firebase from 'firebase'
 
+function verifyEmail () {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    if (user.emailVerified) {
+      reject({code: 'auth/duplicate-request', message: 'User has already verified!'})
+      return false
+    }
+    // var uid = user.uid
+
+    user.sendEmailVerification().then(() => {
+      // Email sent.
+      resolve()
+    }, error => {
+      reject(error)
+    })
+  })
+}
 function password (oldPass, newPass) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
-    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
     // var uid = user.uid
 
     let credential = Firebase.auth.EmailAuthProvider.credential(
@@ -24,7 +48,10 @@ function password (oldPass, newPass) {
 function email (password, newEmail) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
-    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
     var uid = user.uid
 
     let credential = Firebase.auth.EmailAuthProvider.credential(
@@ -51,7 +78,10 @@ function email (password, newEmail) {
 function location (lat, lng, name) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
-    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
     var uid = user.uid
 
     let updates = {}
@@ -71,7 +101,10 @@ function location (lat, lng, name) {
 function distance (dist) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
-    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
     var uid = user.uid
 
     let updates = {}
@@ -88,7 +121,10 @@ function distance (dist) {
 function bio (bio) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
-    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
     var uid = user.uid
 
     let updates = {}
@@ -106,7 +142,10 @@ function bio (bio) {
 function name (first, last) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
-    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
     var uid = user.uid
 
     let updates = {}
@@ -124,7 +163,10 @@ function name (first, last) {
 function displayName (name) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
-    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
     var uid = user.uid
 
     let updates = {}
@@ -142,7 +184,10 @@ function displayName (name) {
 function profilePicture (imageData) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
-    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
     var uid = user.uid
 
     if (imageData === '') {
@@ -179,7 +224,10 @@ function profilePicture (imageData) {
 function nameBirthdaySex (first, last, birthday, sex) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
-    if (!user) reject({code: 'auth/null-user', message: 'User not found!'})
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
     var uid = user.uid
 
     if (first === '') {
@@ -225,7 +273,8 @@ export default {
   bio,
   distance,
   password,
-  email
+  email,
+  verifyEmail
 }
 
 function _calculateAge (birthday) { // birthday is a date
