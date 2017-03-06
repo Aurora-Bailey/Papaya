@@ -174,6 +174,16 @@ function displayName (name) {
     updates['profile/' + uid + '/displayName'] = name
     Firebase.database().ref().update(updates).then(() => {
       // Success
+      // === Add display name to account
+      user.updateProfile({
+        displayName: name
+      }).then(function () {
+        // Update successful.
+      }, function (error) {
+        // An error happened.
+        console.log(error)
+      })
+      // ===
       resolve()
     }, (error) => {
       // Fail
@@ -255,6 +265,16 @@ function nameBirthdaySex (first, last, birthday, sex) {
     // TODO: user/birthday && profile/age
     Firebase.database().ref().update(updates).then(() => {
       // Success
+      // === Add display name to account
+      user.updateProfile({
+        displayName: first + ' ' + last
+      }).then(function () {
+        // Update successful.
+      }, function (error) {
+        // An error happened.
+        console.log(error)
+      })
+      // ===
       resolve()
     }, (error) => {
       // Fail
