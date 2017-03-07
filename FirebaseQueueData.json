@@ -15,5 +15,4 @@ specs
      start_state: "update_user"
  tasks
    -KeBibBwSiKMVJzW7nP5
-     foo:
-    "bar"
+     foo: "bar"
