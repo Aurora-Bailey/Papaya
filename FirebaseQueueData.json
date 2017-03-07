@@ -1,0 +1,19 @@
+specs
+   crit
+     in_progress_state: "crit_in_progress"
+     start_state: "crit"
+   error
+     in_progress_state: "error_in_progress"
+     start_state: "error"
+   init_user
+     error_state: "crit"
+     in_progress_state: "init_user_in_progress"
+     retries: 3
+     start_state: "init_user"
+   update_user
+     in_progress_state: "update_user_in_progress"
+     start_state: "update_user"
+ tasks
+   -KeBibBwSiKMVJzW7nP5
+     foo:
+    "bar"

@@ -49,6 +49,13 @@
         }
       }
     },
+    "userTags": {
+      "$uid": {
+        ".read": true,
+        "write": false
+      }
+    },
+
     "roomInfo": {
       "$roomId": {
         ".read": "data.child('usersAuth').child(auth.uid).val() == true",
@@ -89,6 +96,10 @@
         }
       },
       "fail": {
+        ".read": false,
+        ".write": false
+      },
+      "crit": {
         ".read": false,
         ".write": false
       },
