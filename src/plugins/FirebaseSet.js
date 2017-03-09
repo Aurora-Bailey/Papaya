@@ -58,7 +58,12 @@ function addTag (tag, weight, level) {
     }
     var uid = user.uid
 
-    let tagSanitize = tag.toLowerCase().replace(/[^a-z ]/gi, '')
+    let tagSanitize = tag.toLowerCase().replace(/[^0-9a-z ]/gi, '')
+
+    if (tagSanitize === '') {
+      reject({code: 'input/empty', message: 'Tag is empty or invalid!'})
+      return false
+    }
 
     let updates = {}
     updates['userTags/' + uid + '/' + tagSanitize + '/name'] = tagSanitize
@@ -96,6 +101,8 @@ function removeTag (key) {
   })
 }
 function countTag (tag, add) {
+  // theoretically anyone could post any tag at any count
+  // Move to server if abused
   Firebase.database().ref().child('tags').child(tag)
   .transaction(tagRef => {
     return (tagRef || 0) + add
