@@ -4,23 +4,22 @@
       "$uid": {
         // Allow user to access data they own
         ".read": "auth.uid == $uid",
-      	".write": "auth.uid == $uid",
 
         // Validate inputs
-        "locationName": { ".validate": "newData.isString() && newData.val().length <= 120" },
-        "locationLong": { ".validate": "newData.isNumber() && newData.val() <= 180 && newData.val() >= -180" },
-        "locationLat": { ".validate": "newData.isNumber() && newData.val() <= 90 && newData.val() >= -90" },
-        "displayName": { ".validate": "newData.isString() && newData.val().length <= 120" },
-        "pictureURL": { ".validate": "newData.isString() && newData.val().length <= 250 && newData.val().matches(/^https:\\/\\/firebasestorage.googleapis.com\\//i) || newData.val().length == 0" },
-        "firstName": { ".validate": "newData.isString() && newData.val().length <= 60" },
-        "lastName": { ".validate": "newData.isString() && newData.val().length <= 60" },
-        "distance": { ".validate": "newData.isNumber() && newData.val() <= 100 && newData.val() >= 1" },
-        "birthday": { ".validate": "newData.isNumber() && newData.val() <= now && newData.val() >= -5364662000000" },
+        "locationName": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 120" },
+        "locationLong": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isNumber() && newData.val() <= 180 && newData.val() >= -180" },
+        "locationLat": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isNumber() && newData.val() <= 90 && newData.val() >= -90" },
+        "displayName": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 120" },
+        "pictureURL": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 250 && newData.val().matches(/^https:\\/\\/firebasestorage.googleapis.com\\//i) || newData.val().length == 0" },
+        "firstName": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 60" },
+        "lastName": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 60" },
+        "distance": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isNumber() && newData.val() <= 100 && newData.val() >= 1" },
+        "birthday": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isNumber() && newData.val() <= now && newData.val() >= -5364662000000" },
         // Tighter security, but prevents email change,
-        //"email": { ".validate": "auth.token.email == newData.val() || auth.email == newData.val()" },
-        "email": { ".validate": "newData.isString() && newData.val().length <= 250" },
-        "bio": { ".validate": "newData.isString() && newData.val().length <= 500" },
-        "sex": { ".validate": "newData.isString() && newData.val().length <= 10" },
+        //"email": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "auth.token.email == newData.val() || auth.email == newData.val()" },
+        "email": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 250" },
+        "bio": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 500" },
+        "sex": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 10" },
 
         // Reject if any other values are set
         "$other": {
@@ -33,15 +32,14 @@
         // Allow anyone to read
         // Allow user to write data they own
         ".read": "auth.uid != null",
-      	".write": "auth.uid == $uid",
 
         // Validate inputs
-        "locationName": { ".validate": "newData.isString() && newData.val().length <= 120" },
-        "displayName": { ".validate": "newData.isString() && newData.val().length <= 120" },
-        "pictureURL": { ".validate": "newData.isString() && newData.val().length <= 250 && newData.val().matches(/^https:\\/\\/firebasestorage.googleapis.com\\//i) || newData.val().length == 0" },
-        "age": { ".validate": "newData.isNumber() && newData.val() <= 300 && newData.val() >= 0" },
-        "bio": { ".validate": "newData.isString() && newData.val().length <= 500" },
-        "sex": { ".validate": "newData.isString() && newData.val().length <= 10" },
+        "locationName": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 120" },
+        "displayName": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 120" },
+        "pictureURL": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 250 && newData.val().matches(/^https:\\/\\/firebasestorage.googleapis.com\\//i) || newData.val().length == 0" },
+        "age": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isNumber() && newData.val() <= 300 && newData.val() >= 0" },
+        "bio": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 500" },
+        "sex": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 10" },
 
         // Reject if any other values are set
         "$other": {
@@ -51,11 +49,26 @@
     },
     "userTags": {
       "$uid": {
-        ".read": true,
-        "write": false
+        ".read": "auth.uid == $uid",
+        "$tagId": {
+          // Only write new data OR delete existing data
+          ".write": "auth.uid == $uid && !data.exists() || auth.uid == $uid && !newData.exists()",
+
+          // Data writes must contain children
+          ".validate": "newData.hasChild('name') && newData.hasChild('weight') && newData.hasChild('level') && $tagId.length < 120",
+
+          // Validte inputs
+          "weight": { ".validate": "newData.isNumber() && newData.val() <= 100 && newData.val() >= 0" },
+          "level": { ".validate": "newData.isNumber() && newData.val() <= 10 && newData.val() >= 0" },
+          "name": { ".validate": "newData.isString() && newData.val().length <= 120" },
+
+            // Reject if any other values are set
+          "$other": {
+            ".validate": false
+          }
+        }
       }
     },
-
     "roomInfo": {
       "$roomId": {
         ".read": "data.child('usersAuth').child(auth.uid).val() == true",

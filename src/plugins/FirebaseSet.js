@@ -1,5 +1,100 @@
 import Firebase from 'firebase'
+function newUser (newUser) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
 
+    let updates = {}
+
+    let newUserKeys = Object.keys(newUser)
+    newUserKeys.forEach(key => {
+      updates['user/' + uid + '/' + key] = newUser[key]
+    })
+
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
+function newProfile (newProfile) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
+
+    let updates = {}
+
+    let newProfileKeys = Object.keys(newProfile)
+    newProfileKeys.forEach(key => {
+      updates['profile/' + uid + '/' + key] = newProfile[key]
+    })
+
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
+function addTag (tag, weight, level) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
+
+    let tagId = tag.toLowerCase().replace(/[^a-z ]/gi, '')
+
+    let updates = {}
+    updates['userTags/' + uid + '/' + tagId + '/name'] = tag
+    updates['userTags/' + uid + '/' + tagId + '/weight'] = weight
+    updates['userTags/' + uid + '/' + tagId + '/level'] = level
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
+function removeTag (tag) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
+
+    let tagId = tag.toLowerCase().replace(/[^a-z ]/gi, '')
+
+    let updates = {}
+    updates['userTags/' + uid + '/' + tagId] = null
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
 function verifyEmail () {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
@@ -294,7 +389,11 @@ export default {
   distance,
   password,
   email,
-  verifyEmail
+  verifyEmail,
+  addTag,
+  removeTag,
+  newProfile,
+  newUser
 }
 
 function _calculateAge (birthday) { // birthday is a date

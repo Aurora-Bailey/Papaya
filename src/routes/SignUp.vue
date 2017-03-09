@@ -42,6 +42,7 @@
 </template>
 <script>
 import Firebase from 'firebase'
+import FirebaseSet from '../plugins/FirebaseSet'
 
 export default {
   name: 'sign-up',
@@ -72,12 +73,16 @@ export default {
         .then(auth => {
           let newUser = this.$root.setUser()
           newUser.email = auth.email
-          Firebase.database().ref('user').child(auth.uid).set(newUser).catch(error => {
+          FirebaseSet.newUser(newUser).then(() => {
+            // Success
+          }, error => {
             window.alert('You hit a fatal error! Your account may be in an incomplete state. We recommend you contact customer support.')
             console.error(error)
           })
           let newProfile = this.$root.setProfile()
-          Firebase.database().ref('profile').child(auth.uid).set(newProfile).catch(error => {
+          FirebaseSet.newProfile(newProfile).then(() => {
+            // Success
+          }, error => {
             window.alert('You hit a fatal error! Your account may be in an incomplete state. We recommend you contact customer support.')
             console.error(error)
           })
