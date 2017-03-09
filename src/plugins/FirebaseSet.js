@@ -66,6 +66,7 @@ function addTag (tag, weight, level) {
     updates['userTags/' + uid + '/' + tagSanitize + '/level'] = level
     Firebase.database().ref().update(updates).then(() => {
       // Success
+      countTag(tagSanitize, 1)
       resolve()
     }, (error) => {
       // Fail
@@ -86,11 +87,18 @@ function removeTag (key) {
     updates['userTags/' + uid + '/' + key] = null
     Firebase.database().ref().update(updates).then(() => {
       // Success
+      countTag(key, -1)
       resolve()
     }, (error) => {
       // Fail
       reject(error)
     })
+  })
+}
+function countTag (tag, add) {
+  Firebase.database().ref().child('tags').child(tag)
+  .transaction(tagRef => {
+    return (tagRef || 0) + add
   })
 }
 function verifyEmail () {

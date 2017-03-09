@@ -81,6 +81,13 @@
         ".write": false
       }
     },
+    "tags": {
+      "$tagId": {
+        ".read": "auth.uid != null",
+        ".write": "auth.uid != null",
+        ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 10000000000 && $tagId.length < 120",
+      }
+    },
 
     // Queue system
     "queue": {
