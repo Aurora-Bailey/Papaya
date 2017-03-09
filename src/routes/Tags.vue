@@ -51,6 +51,10 @@ export default {
         // Success
         this.addTagInput = ''
       }, error => {
+        // TODO: display error to user
+        // TODO: interface for weight and level
+        // TODO: global tag list with tag count
+        // TODO: autocomplete based on global tags and tag count
         console.error(error)
       })
     },

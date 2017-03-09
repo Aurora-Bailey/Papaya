@@ -58,12 +58,12 @@ function addTag (tag, weight, level) {
     }
     var uid = user.uid
 
-    let tagId = tag.toLowerCase().replace(/[^a-z ]/gi, '')
+    let tagSanitize = tag.toLowerCase().replace(/[^a-z ]/gi, '')
 
     let updates = {}
-    updates['userTags/' + uid + '/' + tagId + '/name'] = tag
-    updates['userTags/' + uid + '/' + tagId + '/weight'] = weight
-    updates['userTags/' + uid + '/' + tagId + '/level'] = level
+    updates['userTags/' + uid + '/' + tagSanitize + '/name'] = tagSanitize
+    updates['userTags/' + uid + '/' + tagSanitize + '/weight'] = weight
+    updates['userTags/' + uid + '/' + tagSanitize + '/level'] = level
     Firebase.database().ref().update(updates).then(() => {
       // Success
       resolve()
@@ -73,7 +73,7 @@ function addTag (tag, weight, level) {
     })
   })
 }
-function removeTag (tag) {
+function removeTag (key) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
     if (!user) {
@@ -82,10 +82,8 @@ function removeTag (tag) {
     }
     var uid = user.uid
 
-    let tagId = tag.toLowerCase().replace(/[^a-z ]/gi, '')
-
     let updates = {}
-    updates['userTags/' + uid + '/' + tagId] = null
+    updates['userTags/' + uid + '/' + key] = null
     Firebase.database().ref().update(updates).then(() => {
       // Success
       resolve()
