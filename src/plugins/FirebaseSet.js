@@ -61,22 +61,37 @@ function addTag (tag, weight, level) {
     let tagSanitize = tag.toLowerCase().replace(/[^0-9a-z ]/gi, '')
 
     if (tagSanitize === '') {
-      reject({code: 'input/empty', message: 'Tag is empty or invalid!'})
+      reject({code: 'input/empty', message: 'Tag is empty or invalid!', query: tagSanitize})
       return false
     }
 
-    let updates = {}
-    updates['userTags/' + uid + '/' + tagSanitize + '/name'] = tagSanitize
-    updates['userTags/' + uid + '/' + tagSanitize + '/weight'] = weight
-    updates['userTags/' + uid + '/' + tagSanitize + '/level'] = level
-    Firebase.database().ref().update(updates).then(() => {
-      // Success
-      countTag(tagSanitize, 1)
-      resolve()
-    }, (error) => {
-      // Fail
+    // Check for existing tags
+    Firebase.database().ref().child('userTags').child(uid).child(tagSanitize)
+    .once('value', snap => {
+      // Reject if tag exists
+      if (snap.val()) {
+        reject({code: 'input/duplicate', message: 'You already have this Tag!', query: tagSanitize})
+        return false
+      }
+      // Send new tag
+      let updates = {}
+      updates['userTags/' + uid + '/' + tagSanitize + '/name'] = tagSanitize
+      updates['userTags/' + uid + '/' + tagSanitize + '/weight'] = weight
+      updates['userTags/' + uid + '/' + tagSanitize + '/level'] = level
+      Firebase.database().ref().update(updates).then(() => {
+        // Success
+        countTag(tagSanitize, 1)
+        resolve()
+      }, (error) => {
+        // Fail
+        reject(error)
+      })
+      // End send new tag
+    }, error => {
       reject(error)
+      console.error(error)
     })
+    // End Promise
   })
 }
 function removeTag (key) {

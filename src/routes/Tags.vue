@@ -51,16 +51,6 @@ export default {
       }
     },
     addTag (event) {
-      // Check for duplicate tags
-      let duplicate = false
-      this.tags.forEach(val => {
-        // uses the normalization formula form FirebaseSet.addTag()
-        if (val.name === this.addTagInput.toLowerCase().replace(/[^0-9a-z ]/gi, '')) duplicate = true
-      })
-      if (duplicate) {
-        this.addTagFail = 'You already have this Tag!'
-        return false
-      }
       // Upload tag
       this.addTagFail = null
       FirebaseSet.addTag(this.addTagInput, 50, 0)
@@ -71,6 +61,7 @@ export default {
         // TODO: interface for weight and level
         // TODO: autocomplete based on global tags and tag count
         this.addTagFail = error.message
+        if (error.query) this.addTagInput = error.query
         console.error(error)
       })
     },
