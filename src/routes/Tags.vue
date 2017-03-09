@@ -5,10 +5,11 @@
         <form @submit.stop.prevent="addTag">
           <md-input-container :class="{'md-input-invalid': addTagFail}">
             <label>Add a new tag...</label>
-            <md-input v-model="addTagInput" maxlength="120"></md-input>
+            <md-input v-model="addTagInput" maxlength="120" autocomplete="off"></md-input>
             <span class="md-error gl-input-error" v-if="addTagFail">{{addTagFail}}</span>
             <md-button class="md-icon-button" type="submit"><md-icon>arrow_forward</md-icon></md-button>
           </md-input-container>
+          <auto-complete :active="addTagInput.length > 0" @suggest="val => {addTagInput = val}" @choose="val => {addTagInput = val; addTag(null)}"></auto-complete>
         </form>
         <div class="tag-container">
           <div v-for="(tag, index) in tags" class="gl-chip buttons-visible" :class="{'chip-highlight': tag.level === 1}">
@@ -25,9 +26,13 @@
 <script>
 import Firebase from 'firebase'
 import FirebaseSet from '../plugins/FirebaseSet'
+import AutoComplete from '../components/AutoComplete'
 
 export default {
   name: 'tags',
+  components: {
+    AutoComplete
+  },
   mounted () {
     this.bindTags()
   },
@@ -49,7 +54,8 @@ export default {
       // Check for duplicate tags
       let duplicate = false
       this.tags.forEach(val => {
-        if (val.name === this.addTagInput) duplicate = true
+        // uses the normalization formula form FirebaseSet.addTag()
+        if (val.name === this.addTagInput.toLowerCase().replace(/[^0-9a-z ]/gi, '')) duplicate = true
       })
       if (duplicate) {
         this.addTagFail = 'You already have this Tag!'

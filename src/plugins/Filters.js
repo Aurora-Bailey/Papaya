@@ -61,6 +61,31 @@ Vue.filter('datetime', function (time) {
   return DateTimeToString(time)
 })
 
+Vue.filter('shortnumber', function (number) {
+  if (number / 1000000000 > 1) {
+    let simp = '' + (number / 1000000000)
+    if (simp.split('.')[0].length === 1) return simp.substr(0, 3) + 'B'
+    if (simp.split('.')[0].length === 2) return simp.substr(0, 2) + 'B'
+    if (simp.split('.')[0].length === 3) return simp.substr(0, 3) + 'B'
+    else return number
+  }
+  if (number / 1000000 > 1) {
+    let simp = '' + (number / 1000000)
+    if (simp.split('.')[0].length === 1) return simp.substr(0, 3) + 'M'
+    if (simp.split('.')[0].length === 2) return simp.substr(0, 2) + 'M'
+    if (simp.split('.')[0].length === 3) return simp.substr(0, 3) + 'M'
+    else return number
+  }
+  if (number / 1000 > 1) {
+    let simp = '' + (number / 1000)
+    if (simp.split('.')[0].length === 1) return simp.substr(0, 3) + 'K'
+    if (simp.split('.')[0].length === 2) return simp.substr(0, 2) + 'K'
+    if (simp.split('.')[0].length === 3) return simp.substr(0, 3) + 'K'
+    else return number
+  }
+  return number
+})
+
 Vue.filter('elapsed', function (startTime) {
   let endTime = Date.now()
 
