@@ -81,9 +81,10 @@
         ".write": false
       }
     },
+    // Note anyone can technically write any tag and set the count to any number.
     "tags": {
+      ".read": "auth.uid != null",
       "$tagId": {
-        ".read": "auth.uid != null",
         ".write": "auth.uid != null",
         ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 10000000000 && $tagId.length < 120",
       }

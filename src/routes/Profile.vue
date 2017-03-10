@@ -79,9 +79,8 @@ export default {
       if (this.$route.params.uid) uid = this.$route.params.uid
 
       // Remove any old bindings
-      if (this.profile['.key']) this.$unbind('profile')
-
-      // Set the object
+      if (this.$firebaseRefs && this.$firebaseRefs['profile']) this.$unbind('profile')
+      // Set new bindings
       if (uid) {
         this.$bindAsObject('profile', Firebase.database().ref('profile/' + uid))
       } else {

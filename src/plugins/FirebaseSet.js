@@ -1,4 +1,6 @@
 import Firebase from 'firebase'
+import _ from 'lodash'
+
 function newUser (newUser) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
@@ -49,6 +51,9 @@ function newProfile (newProfile) {
     })
   })
 }
+function tagSanitize (tag) {
+  return tag.toLowerCase().replace(/[^0-9a-z ]/gi, '')
+}
 function addTag (tag, weight, level) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
@@ -58,29 +63,29 @@ function addTag (tag, weight, level) {
     }
     var uid = user.uid
 
-    let tagSanitize = tag.toLowerCase().replace(/[^0-9a-z ]/gi, '')
+    let cleanTag = _.trim(tagSanitize(tag))
 
-    if (tagSanitize === '') {
-      reject({code: 'input/empty', message: 'Tag is empty or invalid!', query: tagSanitize})
+    if (cleanTag === '') {
+      reject({code: 'input/empty', message: 'Tag is empty or invalid!', query: cleanTag})
       return false
     }
 
     // Check for existing tags
-    Firebase.database().ref().child('userTags').child(uid).child(tagSanitize)
+    Firebase.database().ref().child('userTags').child(uid).child(cleanTag)
     .once('value', snap => {
       // Reject if tag exists
       if (snap.val()) {
-        reject({code: 'input/duplicate', message: 'You already have this Tag!', query: tagSanitize})
+        reject({code: 'input/duplicate', message: 'You already have this Tag!', query: cleanTag})
         return false
       }
       // Send new tag
       let updates = {}
-      updates['userTags/' + uid + '/' + tagSanitize + '/name'] = tagSanitize
-      updates['userTags/' + uid + '/' + tagSanitize + '/weight'] = weight
-      updates['userTags/' + uid + '/' + tagSanitize + '/level'] = level
+      updates['userTags/' + uid + '/' + cleanTag + '/name'] = cleanTag
+      updates['userTags/' + uid + '/' + cleanTag + '/weight'] = weight
+      updates['userTags/' + uid + '/' + cleanTag + '/level'] = level
       Firebase.database().ref().update(updates).then(() => {
         // Success
-        countTag(tagSanitize, 1)
+        countTag(cleanTag, 1)
         resolve()
       }, (error) => {
         // Fail
@@ -419,6 +424,7 @@ export default {
   email,
   verifyEmail,
   addTag,
+  tagSanitize,
   removeTag,
   newProfile,
   newUser

@@ -12,6 +12,7 @@
   "dependencies": {
     "cropperjs": "^1.0.0-beta.2",
     "firebase": "^3.6.10",
+    "lodash": "^4.17.4",
     "node-sass": "^4.5.0",
     "sass-loader": "^4.1.1",
     "vue": "^2.1.10",

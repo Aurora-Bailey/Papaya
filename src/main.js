@@ -31,14 +31,12 @@ new Vue({
       if (auth && auth.emailVerified) this.emailVerified = auth.emailVerified
       else this.emailVerified = false
 
-      // Bind to firebase user globally
+      // Remove any old bindings
+      if (this.$firebaseRefs && this.$firebaseRefs['user']) this.$unbind('user')
+      // Set new bindings
       if (auth) {
-        if (this.user['.key']) {
-        } else {
-          this.$bindAsObject('user', Firebase.database().ref('user/' + auth.uid))
-        }
-      } else if (this.user['.key']) {
-        this.$unbind('user')
+        this.$bindAsObject('user', Firebase.database().ref('user/' + auth.uid))
+      } else {
         this.user = this.setUser()
       }
 

@@ -1,12 +1,12 @@
 <!-- Example usage
 -->
 <template>
-  <div class="auto-complete" v-if="active">
+  <div class="auto-complete" v-show="options.length > 0">
     <md-whiteframe md-elevation="6" class="list-viewport">
       <md-list class="md-dense">
-        <md-list-item v-for="(item, index) in list" @click.native.prevent.stop="choose(item.option)" :class="{'item-selected': index === arrowSelect}">
-          <span class="item-option">{{item.option}}</span>
-          <span class="item-right">{{item.right | shortnumber}}</span>
+        <md-list-item v-for="(item, index) in options" @click.native.prevent.stop="arrowSelect = index; submit()" :class="{'item-selected': index === arrowSelect}">
+          <span class="item-key">{{item.name}}</span>
+          <span class="item-value">{{item.count | shortnumber}}</span>
         </md-list-item>
       </md-list>
     </md-whiteframe>
@@ -14,52 +14,77 @@
 </template>
 
 <script>
+import Firebase from 'firebase'
+import FirebaseSet from '../plugins/FirebaseSet'
+import _ from 'lodash'
+
 export default {
-  props: ['active', 'list_asdf'],
+  props: ['search'],
   name: 'auto-complete',
   created () {
-    console.log('addEventListener')
     window.addEventListener('keyup', this.handleArrowKeys)
   },
   beforeDestroy () {
-    console.log('remove event listener')
     window.removeEventListener('keyup', this.handleArrowKeys)
   },
   data () {
     return {
-      arrowSelect: -1,
-      list: [
-        {option: 'Mary Johnson 1', right: '2545'},
-        {option: 'Mary Johnson 2', right: '45'},
-        {option: 'Mary Johnson 3', right: '453'},
-        {option: 'Mary Johnson 4', right: '4535'},
-        {option: 'Mary Johnson 5', right: '45357'},
-        {option: 'Mary Johnson 6', right: '753576'},
-        {option: 'Mary Johnson 7', right: '4353761'},
-        {option: 'Mary Johnson 8', right: '43537621'}
-      ]
+      arrowSelect: 0,
+      list: {}
+    }
+  },
+  watch: {
+    'list': function () {
+      this.arrowSelect = 0
+    },
+    'search': function () {
+      this.pullAutoComplete()
+    }
+  },
+  computed: {
+    options: function () {
+      // Convert list object to array of objects
+      let arr = []
+      let keys = Object.keys(this.list)
+      keys.forEach(key => {
+        arr.push({name: key, count: this.list[key]})
+      })
+      return arr
     }
   },
   methods: {
+    pullAutoComplete: _.debounce(function () {
+      let cleanSearch = FirebaseSet.tagSanitize(this.search)
+      if (cleanSearch === '') {
+        this.list = {}
+        return false
+      }
+      let ifNoResults = {}
+      ifNoResults[cleanSearch] = 0
+      console.log(cleanSearch)
+      Firebase.database().ref().child('tags').orderByKey().startAt(cleanSearch).endAt(cleanSearch + '~').limitToFirst(5).once('value', snap => {
+        this.$set(this, 'list', _.assign(ifNoResults, snap.val()))
+      })
+    }, 300),
     handleArrowKeys (event) {
+      if (event.keyCode === 13) { // Enter
+        this.submit()
+      }
+      if (this.options.length === 0) return false
       if (event.keyCode === 38) { // Up
         this.arrowSelect--
-        this.arrowSelect = this.arrowSelect % this.list.length
-        if (this.arrowSelect < 0) this.arrowSelect = this.list.length - 1
-        this.suggest(this.list[this.arrowSelect].option)
+        this.arrowSelect = this.arrowSelect % this.options.length
+        if (this.arrowSelect < 0) this.arrowSelect = this.options.length - 1
       } else if (event.keyCode === 40) { // Down
         this.arrowSelect++
-        this.arrowSelect = this.arrowSelect % this.list.length
-        if (this.arrowSelect < 0) this.arrowSelect = this.list.length - 1
-        this.suggest(this.list[this.arrowSelect].option)
+        this.arrowSelect = this.arrowSelect % this.options.length
+        if (this.arrowSelect < 0) this.arrowSelect = this.options.length - 1
       }
     },
-    suggest (item) {
-      this.$emit('suggest', item)
-    },
-    choose (item) {
-      this.$emit('choose', item)
-    }
+    submit: _.debounce(function () {
+      if (this.options.length === 0) return false
+      this.$emit('submit', this.options[this.arrowSelect].name)
+    }, 300)
   }
 }
 </script>
@@ -76,7 +101,7 @@ export default {
   right: 0;
   background-color: white;
 }
-.item-right {
+.item-value {
   font-weight: bold;
   color: rgba(0,0,0,0.54)
 }
