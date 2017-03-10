@@ -31,13 +31,16 @@ new Vue({
       if (auth && auth.emailVerified) this.emailVerified = auth.emailVerified
       else this.emailVerified = false
 
-      // Remove any old bindings
-      if (this.$firebaseRefs && this.$firebaseRefs['user']) this.$unbind('user')
       // Set new bindings
       if (auth) {
-        this.$bindAsObject('user', Firebase.database().ref('user/' + auth.uid))
+        if (!this.$firebaseRefs || !this.$firebaseRefs['user']) this.$bindAsObject('user', Firebase.database().ref('user/' + auth.uid))
+        if (!this.$firebaseRefs || !this.$firebaseRefs['userTags']) this.$bindAsArray('userTags', Firebase.database().ref('userTags/' + auth.uid))
       } else {
+        // Remove any old bindings
+        if (this.$firebaseRefs && this.$firebaseRefs['user']) this.$unbind('user')
+        if (this.$firebaseRefs && this.$firebaseRefs['userTags']) this.$unbind('userTags')
         this.user = this.setUser()
+        this.userTags = []
       }
 
       // TODO: Splash screen whie loading
@@ -68,7 +71,8 @@ new Vue({
       SplashScreen: true,
       uid: null,
       emailVerified: false,
-      user: this.setUser()
+      user: this.setUser(),
+      userTags: []
     }
   },
   methods: {

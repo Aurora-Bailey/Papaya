@@ -9,7 +9,7 @@
         </md-input-container>
         <auto-complete :search="addTagInput" @submit="val => { addTag(val) }"></auto-complete>
         <div class="tag-container">
-          <div v-for="(tag, index) in tags" class="gl-chip buttons-visible" :class="{'chip-highlight': tag.level === 1}">
+          <div v-for="(tag, index) in $root.userTags" class="gl-chip" :class="{'chip-highlight': tag.level === 1, 'buttons-visible': tag.name === tagOpen}" @click="tagOpen = tag.name">
             <span class="chip-text">{{tag.name}}</span>
             <span class="chip-text chip-new" v-if="tagsJustAdded[tag.name]">(New)</span>
             <md-button class="chip-button md-icon-button" v-on:click.native.stop="removeTag(tag['.key'])">
@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import Firebase from 'firebase'
+// import Firebase from 'firebase'
 import FirebaseSet from '../plugins/FirebaseSet'
 import AutoComplete from '../components/AutoComplete'
 import _ from 'lodash'
@@ -32,13 +32,7 @@ export default {
   components: {
     AutoComplete
   },
-  mounted () {
-    this.bindTags()
-  },
   watch: {
-    '$root.uid': function () {
-      this.bindTags()
-    },
     'addTagInput': _.debounce(function () {
       // Snap the input back to a sanitized format
       this.addTagInput = FirebaseSet.tagSanitize(this.addTagInput)
@@ -47,17 +41,6 @@ export default {
     }, 300)
   },
   methods: {
-    bindTags () {
-      let uid = this.$root.uid
-      // Remove any old bindings
-      if (this.$firebaseRefs && this.$firebaseRefs['tags']) this.$unbind('tags')
-      // Set new bindings
-      if (uid) {
-        this.$bindAsArray('tags', Firebase.database().ref('userTags/' + uid))
-      } else {
-        this.tags = []
-      }
-    },
     addTag (tag) {
       // Only called by autocomplete
       // Upload tag
@@ -88,7 +71,7 @@ export default {
     return {
       addTagInput: '',
       addTagFail: null,
-      tags: [], // bind to firebase
+      tagOpen: '',
       tagsJustAdded: {}
     }
   },
