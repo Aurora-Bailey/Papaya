@@ -11,6 +11,7 @@
         <div class="tag-container">
           <div v-for="(tag, index) in tags" class="gl-chip buttons-visible" :class="{'chip-highlight': tag.level === 1}">
             <span class="chip-text">{{tag.name}}</span>
+            <span class="chip-text chip-new" v-if="tagsJustAdded[tag.name]">(New)</span>
             <md-button class="chip-button md-icon-button" v-on:click.native.stop="removeTag(tag['.key'])">
               <md-icon>cancel</md-icon>
             </md-button>
@@ -64,6 +65,7 @@ export default {
       FirebaseSet.addTag(tag, 50, 0)
       .then(() => {
         // Success
+        this.tagsJustAdded[tag] = true
         this.addTagInput = ''
       }, error => {
         // TODO: interface for weight and level
@@ -86,7 +88,8 @@ export default {
     return {
       addTagInput: '',
       addTagFail: null,
-      tags: [] // bind to firebase
+      tags: [], // bind to firebase
+      tagsJustAdded: {}
     }
   },
   beforeRouteEnter (to, from, next) {

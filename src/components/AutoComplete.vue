@@ -61,7 +61,6 @@ export default {
       }
       let ifNoResults = {}
       ifNoResults[cleanSearch] = 0
-      console.log(cleanSearch)
       Firebase.database().ref().child('tags').orderByKey().startAt(cleanSearch).endAt(cleanSearch + '~').limitToFirst(5).once('value', snap => {
         this.$set(this, 'list', _.assign(ifNoResults, snap.val()))
       })

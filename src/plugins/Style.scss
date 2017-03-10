@@ -181,6 +181,9 @@ $sidebar-stay-open: 1281px;
   background-color: rgba(0, 0, 0, .12);
   cursor: pointer;
 
+  animation-name: gl-chip-enter;
+  animation-duration: .4s;
+
   .chip-text, .chip-highlight-text, .chip-button {
     font-size: 13px; // Reset the space hide thing
   }
@@ -219,6 +222,11 @@ $sidebar-stay-open: 1281px;
       pointer-events: auto;
     }
   }
+  .chip-new {
+    font-weight: bold;
+    color: red;
+    padding-left: 6px;
+  }
   &.chip-highlight {
     background-color: red;
     color: white;
@@ -227,6 +235,10 @@ $sidebar-stay-open: 1281px;
       color: white;
     }
   }
+}
+@keyframes gl-chip-enter {
+    0%   {opacity: 0;}
+    100% {opacity: 1}
 }
 
 .gl-corner-fab {
