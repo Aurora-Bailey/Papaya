@@ -149,6 +149,12 @@ export default {
       this.person.fail_sex = false
       this.person.fail = false
 
+      // Manual filter for birthday because i'ts not passed into FirebaseSet
+      if (!this.person.birthday) {
+        this.person.fail_birthday = 'Please enter your birthday!'
+        return false
+      }
+
       FirebaseSet.nameBirthdaySex(this.person.first_name, this.person.last_name, this.person.birthday_timestamp, this.person.sex)
       .then(() => {
         this.$router.push('/setup/location')

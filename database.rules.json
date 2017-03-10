@@ -51,16 +51,16 @@
       "$uid": {
         ".read": "auth.uid == $uid",
         "$tagId": {
-          // Only write new data OR delete existing data
-          ".write": "auth.uid == $uid && !data.exists() || auth.uid == $uid && !newData.exists()",
+          // Allow user to write data they own
+          ".write": "auth.uid == $uid",
 
-          // Data writes must contain children
-          ".validate": "newData.hasChild('name') && newData.hasChild('weight') && newData.hasChild('level') && $tagId.length < 120",
+          // New data writes must contain children
+          ".validate": "data.exists() || newData.hasChild('name') && newData.hasChild('weight') && newData.hasChild('level') && $tagId.length < 120",
 
           // Validte inputs
-          "weight": { ".validate": "newData.isNumber() && newData.val() <= 100 && newData.val() >= 0" },
-          "level": { ".validate": "newData.isNumber() && newData.val() <= 10 && newData.val() >= 0" },
-          "name": { ".validate": "newData.isString() && newData.val().length <= 120" },
+          "weight": { ".validate": "newData.exists() && newData.isNumber() && newData.val() <= 100 && newData.val() >= 0" },
+          "level": { ".validate": "newData.exists() && newData.isNumber() && newData.val() <= 10 && newData.val() >= 0" },
+          "name": { ".validate": "newData.exists() && newData.isString() && newData.val().length <= 120" },
 
             // Reject if any other values are set
           "$other": {
@@ -86,7 +86,7 @@
       ".read": "auth.uid != null",
       "$tagId": {
         ".write": "auth.uid != null",
-        ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 10000000000 && $tagId.length < 120",
+        ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 10000000000 && $tagId.length < 120"
       }
     },
 
@@ -101,9 +101,7 @@
           	// Require _uid to be set to the auth user
           ".validate": "newData.hasChild('_state') && newData.hasChild('_uid')",
           "_state": {
-            ".validate": "root.child('queue').child('specs').hasChild(newData.val())
-            							&& newData.val() != 'crit'
-            							&& newData.val() != 'error'"
+            ".validate": "root.child('queue').child('specs').hasChild(newData.val()) && newData.val() != 'crit' && newData.val() != 'error'"
           },
           "_uid": {
             ".validate": "auth.uid == newData.val()" // Custom
