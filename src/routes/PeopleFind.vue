@@ -1,25 +1,56 @@
 <template>
   <div class="find-people using-sidebar">
     <div class="gl-narrow-wrapper-840">
+      {{findPeople}}
       <display-people :people="people" @follow="followPerson"></display-people>
     </div>
   </div>
 </template>
 <script>
 import DisplayPeople from '../components/DisplayPeople'
+import FirebaseSet from '../plugins/FirebaseSet'
+import Firebase from 'firebase'
 
 export default {
   name: 'find-people',
   components: {
     DisplayPeople
   },
+  mounted () {
+    this.findPeopleTask()
+  },
+  watch: {
+    '$root.uid': function () {
+      this.findPeopleTask()
+    }
+  },
   methods: {
+    findPeopleTask () {
+      FirebaseSet.findPeopleTask()
+      .then(watching => {
+        console.log(watching)
+        // Bind to the watching location
+        // Remove any old bindings
+        if (this.$firebaseRefs && this.$firebaseRefs['findPeople']) this.$unbind('findPeople')
+        // Set new bindings
+        let uid = this.$root.uid
+        if (uid) {
+          this.$bindAsArray('findPeople', Firebase.database().ref('findPeople/' + uid + '/' + watching))
+        } else {
+          this.findPeople = []
+        }
+        // End bind
+      }, error => {
+        console.error(error)
+      })
+    },
     followPerson (id) {
       this.people[id].following = !this.people[id].following
     }
   },
   data () {
     return {
+      findPeople: [],
       people: [
         {
           userID: 0,

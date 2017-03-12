@@ -1,6 +1,27 @@
 import Firebase from 'firebase'
 import _ from 'lodash'
 
+function findPeopleTask () {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
+
+    let watching = Date.now()
+
+    Firebase.database().ref('queue/tasks').push({'_state': 'find_people', '_uid': uid, 'watching': watching})
+    .then(() => {
+      // Success
+      resolve(watching)
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
 function newUser (newUser) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
@@ -257,6 +278,9 @@ function location (lat, lng, name) {
     updates['user/' + uid + '/locationName'] = name
     updates['user/' + uid + '/locationLat'] = lat
     updates['user/' + uid + '/locationLong'] = lng
+    updates['userLocation/' + uid + '/name'] = name
+    updates['userLocation/' + uid + '/lat'] = lat
+    updates['userLocation/' + uid + '/lng'] = lng
     Firebase.database().ref().update(updates).then(() => {
       // Success
       resolve()
@@ -469,7 +493,8 @@ export default {
   tagSanitize,
   removeTag,
   newProfile,
-  newUser
+  newUser,
+  findPeopleTask
 }
 
 function _calculateAge (birthday) { // birthday is a date

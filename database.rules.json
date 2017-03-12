@@ -69,6 +69,34 @@
         }
       }
     },
+    "userLocation": {
+      "$uid": {
+        ".read": "auth.uid == $uid",
+
+        // Acceptable values
+        "name": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 120" },
+        "lng": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isNumber() && newData.val() <= 180 && newData.val() >= -180" },
+        "lat": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isNumber() && newData.val() <= 90 && newData.val() >= -90" },
+
+        // Reject all other data
+        "$other": { ".validate": false }
+      }
+    },
+    // User sets a task to find something
+    // Task will dump the results here
+    // User will be watching here
+    "findPeople": {
+      "$uid": {
+        ".read": "auth.uid == $uid",
+        ".write": false
+      }
+    },
+    "findEvents": {
+      "$uid": {
+        ".read": "auth.uid == $uid",
+        ".write": false
+      }
+    },
     "roomInfo": {
       "$roomId": {
         ".read": "data.child('usersAuth').child(auth.uid).val() == true",
@@ -104,24 +132,26 @@
             ".validate": "root.child('queue').child('specs').hasChild(newData.val()) && newData.val() != 'crit' && newData.val() != 'error'"
           },
           "_uid": {
-            ".validate": "auth.uid == newData.val()" // Custom
+            ".validate": "auth.uid == newData.val()"
           },
-            // Reject all other private keys
-          "_state_changed": { ".validate": false },
-          "_owner": { ".validate": false },
-          "_progress": { ".validate": false },
-          "_error_details": { ".validate": false },
-          "_id": { ".validate": false }
+          "watching": {
+            ".validate": "newData.isNumber() && newData.val() <= 100000000000000 && newData.val() > 0"
+          },
+            // Reject anything unspecified above
+          "$other": { ".validate": false}
         }
       },
+      // Store failed attempts
       "fail": {
         ".read": false,
         ".write": false
       },
+      // Store fatal errors
       "crit": {
         ".read": false,
         ".write": false
       },
+      // Task models
       "specs" : {
         ".read": false,
         ".write": false,

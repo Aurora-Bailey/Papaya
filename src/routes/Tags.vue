@@ -124,7 +124,6 @@ export default {
       this.$refs['ref-tag-dialog'].open()
     },
     onCloseTag () {
-      console.log('close tag')
       this.tagOpen = null
     }
   },
