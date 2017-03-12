@@ -184,7 +184,7 @@ $sidebar-stay-open: 1281px;
   animation-name: gl-chip-enter;
   animation-duration: .4s;
 
-  .chip-text, .chip-highlight-text, .chip-button {
+  .chip-text, .chip-highlight-red-text, .chip-button {
     font-size: 13px; // Reset the space hide thing
   }
 
@@ -224,12 +224,31 @@ $sidebar-stay-open: 1281px;
   }
   .chip-new {
     font-weight: bold;
-    color: red;
+    color: #F44336;
     padding-left: 6px;
   }
-  &.chip-highlight {
-    background-color: red;
+  &.chip-highlight-red {
+    background-color: #F44336;
     color: white;
+    .chip-new { color: white; }
+
+    &.buttons-visible .chip-button {
+      color: white;
+    }
+  }
+  &.chip-highlight-blue {
+    background-color: #2196F3;
+    color: white;
+    .chip-new { color: white; }
+
+    &.buttons-visible .chip-button {
+      color: white;
+    }
+  }
+  &.chip-highlight-purple {
+    background-color: #9C27B0;
+    color: white;
+    .chip-new { color: white; }
 
     &.buttons-visible .chip-button {
       color: white;

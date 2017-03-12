@@ -9,16 +9,53 @@
         </md-input-container>
         <auto-complete :search="addTagInput" @submit="val => { addTag(val) }"></auto-complete>
         <div class="tag-container">
-          <div v-for="(tag, index) in $root.userTags" class="gl-chip" :class="{'chip-highlight': tag.level === 1, 'buttons-visible': tag.name === tagOpen}" @click="tagOpen = tag.name">
+          <div v-for="(tag, index) in $root.userTags" class="gl-chip" :class="{'chip-highlight-red': tag.level === 1, 'chip-highlight-blue': tag.level === 2, 'chip-highlight-purple': tag.level === 3}" @click="openTag(index)">
             <span class="chip-text">{{tag.name}}</span>
             <span class="chip-text chip-new" v-if="tagsJustAdded[tag.name]">(New)</span>
-            <md-button class="chip-button md-icon-button" v-on:click.native.stop="removeTag(tag['.key'])">
-              <md-icon>cancel</md-icon>
-            </md-button>
           </div>
         </div>
       </md-whiteframe>
     </div>
+
+    <md-dialog class="mod-md-full-dialog tag-dialog" ref="ref-tag-dialog" @close="onCloseTag()">
+      <md-dialog-content v-if="tagOpen !== null">
+        <div class="tag-preview">
+          <div>Tag</div>
+          <div class="tag-preview-content">
+            <div class="gl-chip" :class="{'chip-highlight-red': $root.userTags[tagOpen].level === 1, 'chip-highlight-blue': $root.userTags[tagOpen].level === 2, 'chip-highlight-purple': $root.userTags[tagOpen].level === 3}">
+              <span class="chip-text">{{$root.userTags[tagOpen].name}}</span>
+              <span class="chip-text chip-new" v-if="tagsJustAdded[$root.userTags[tagOpen].name]">(New)</span>
+            </div>
+            <md-button class="md-warn md-raised md-icon-button md-dense" @click.native="removeTag(tagOpen); $refs['ref-tag-dialog'].close()">
+              <md-icon>delete</md-icon>
+            </md-button>
+          </div>
+        </div>
+        <div class="tag-weight">
+          <div>Weight</div>
+          <md-button-toggle md-single class="md-primary">
+            <md-button class="md-icon-button" :class="{'md-toggle': $root.userTags[tagOpen].weight === 1}" @click.native="setTagWeight(tagOpen, 1)">1</md-button>
+            <md-button class="md-icon-button" :class="{'md-toggle': $root.userTags[tagOpen].weight === 2}" @click.native="setTagWeight(tagOpen, 2)">2</md-button>
+            <md-button class="md-icon-button" :class="{'md-toggle': $root.userTags[tagOpen].weight === 4}" @click.native="setTagWeight(tagOpen, 4)">4</md-button>
+            <md-button class="md-icon-button" :class="{'md-toggle': $root.userTags[tagOpen].weight === 8}" @click.native="setTagWeight(tagOpen, 8)">8</md-button>
+            <md-button class="md-icon-button" :class="{'md-toggle': $root.userTags[tagOpen].weight === 16}" @click.native="setTagWeight(tagOpen, 16)">16</md-button>
+            <md-button class="md-icon-button" :class="{'md-toggle': $root.userTags[tagOpen].weight === 32}" @click.native="setTagWeight(tagOpen, 32)">32</md-button>
+          </md-button-toggle>
+        </div>
+        <div class="tag-highlight">
+          <div>Highlight</div>
+          <div class="tag-highlight-content">
+            <div class="gl-chip" @click="setTagHighlight(tagOpen, 0)"><span class="chip-text">None</span></div>
+            <div class="gl-chip chip-highlight-red" @click="setTagHighlight(tagOpen, 1)"><span class="chip-text">Passion</span></div>
+            <div class="gl-chip chip-highlight-blue" @click="setTagHighlight(tagOpen, 2)"><span class="chip-text">Expert</span></div>
+            <div class="gl-chip chip-highlight-purple" @click="setTagHighlight(tagOpen, 3)"><span class="chip-text">Lifeblood</span></div>
+          </div>
+        </div>
+      </md-dialog-content>
+      <md-dialog-actions>
+        <md-button class="md-primary" @click.native="$refs['ref-tag-dialog'].close()">Close</md-button>
+      </md-dialog-actions>
+    </md-dialog>
   </div>
 </template>
 <script>
@@ -45,7 +82,7 @@ export default {
       // Only called by autocomplete
       // Upload tag
       this.addTagFail = null
-      FirebaseSet.addTag(tag, 50, 0)
+      FirebaseSet.addTag(tag, 4, 0)
       .then(() => {
         // Success
         this.tagsJustAdded[tag] = true
@@ -58,20 +95,44 @@ export default {
         console.error(error)
       })
     },
-    removeTag (key) {
-      FirebaseSet.removeTag(key)
+    setTagHighlight (tagIndex, level) {
+      FirebaseSet.setTagHighlight(this.$root.userTags[tagIndex]['.key'], level)
       .then(() => {
         // Success
       }, error => {
         console.error(error)
       })
+    },
+    setTagWeight (tagIndex, weight) {
+      FirebaseSet.setTagWeight(this.$root.userTags[tagIndex]['.key'], weight)
+      .then(() => {
+        // Success
+      }, error => {
+        console.error(error)
+      })
+    },
+    removeTag (tagIndex) {
+      FirebaseSet.removeTag(this.$root.userTags[tagIndex]['.key'])
+      .then(() => {
+        // Success
+      }, error => {
+        console.error(error)
+      })
+    },
+    openTag (tagIndex) {
+      this.tagOpen = tagIndex
+      this.$refs['ref-tag-dialog'].open()
+    },
+    onCloseTag () {
+      console.log('close tag')
+      this.tagOpen = null
     }
   },
   data () {
     return {
       addTagInput: '',
       addTagFail: null,
-      tagOpen: '',
+      tagOpen: null,
       tagsJustAdded: {}
     }
   },
@@ -94,6 +155,25 @@ export default {
 .tag-container {
   padding-top: 24px;
   text-align: center;
+}
+.tag-dialog {
+  .tag-preview {
+    padding: 0 0 12px;
+    .tag-preview-content {
+      text-align: center;
+    }
+  }
+  .tag-weight {
+    padding: 0 0 12px;
+    .md-button-toggle {
+      justify-content: center;
+    }
+  }
+  .tag-highlight {
+    .tag-highlight-content {
+      text-align: center;
+    }
+  }
 }
 </style>
 

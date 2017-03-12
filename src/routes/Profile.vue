@@ -33,7 +33,7 @@
           Tags both you and {{profile.displayName}} have in common
         </div>
         <div class="common-tags" :class="{'show-all-tags': showAllTags}">
-          <div class="gl-chip" v-for="tag in tagsFiltered" :class="{'chip-highlight': tag.fav}">
+          <div class="gl-chip" v-for="tag in tagsFiltered" :class="{'chip-highlight-red': tag.fav}">
             <span class="chip-text">{{tag.name}}</span>
           </div>
         </div>

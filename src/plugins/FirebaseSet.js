@@ -99,6 +99,46 @@ function addTag (tag, weight, level) {
     // End Promise
   })
 }
+function setTagHighlight (key, level) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
+
+    let updates = {}
+    updates['userTags/' + uid + '/' + key + '/level'] = level
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
+function setTagWeight (key, weight) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
+
+    let updates = {}
+    updates['userTags/' + uid + '/' + key + '/weight'] = weight
+    Firebase.database().ref().update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
 function removeTag (key) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
@@ -424,6 +464,8 @@ export default {
   email,
   verifyEmail,
   addTag,
+  setTagHighlight,
+  setTagWeight,
   tagSanitize,
   removeTag,
   newProfile,
