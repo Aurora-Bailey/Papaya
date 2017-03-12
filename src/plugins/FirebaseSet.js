@@ -1,4 +1,7 @@
 import Firebase from 'firebase'
+var dbRef = Firebase.database().ref()
+import GeoFire from 'geofire'
+var geofire = new GeoFire(dbRef.child('geofire'))
 import _ from 'lodash'
 
 function findPeopleTask () {
@@ -12,7 +15,7 @@ function findPeopleTask () {
 
     let watching = Date.now()
 
-    Firebase.database().ref('queue/tasks').push({'_state': 'find_people', '_uid': uid, 'watching': watching})
+    dbRef.child('queue').child('tasks').push({'_state': 'find_people', '_uid': uid, 'watching': watching})
     .then(() => {
       // Success
       resolve(watching)
@@ -38,7 +41,7 @@ function newUser (newUser) {
       updates['user/' + uid + '/' + key] = newUser[key]
     })
 
-    Firebase.database().ref().update(updates).then(() => {
+    dbRef.update(updates).then(() => {
       // Success
       resolve()
     }, (error) => {
@@ -63,7 +66,7 @@ function newProfile (newProfile) {
       updates['profile/' + uid + '/' + key] = newProfile[key]
     })
 
-    Firebase.database().ref().update(updates).then(() => {
+    dbRef.update(updates).then(() => {
       // Success
       resolve()
     }, (error) => {
@@ -92,7 +95,7 @@ function addTag (tag, weight, level) {
     }
 
     // Check for existing tags
-    Firebase.database().ref().child('userTags').child(uid).child(cleanTag)
+    dbRef.child('userTags').child(uid).child(cleanTag)
     .once('value', snap => {
       // Reject if tag exists
       if (snap.val()) {
@@ -104,7 +107,7 @@ function addTag (tag, weight, level) {
       updates['userTags/' + uid + '/' + cleanTag + '/name'] = cleanTag
       updates['userTags/' + uid + '/' + cleanTag + '/weight'] = weight
       updates['userTags/' + uid + '/' + cleanTag + '/level'] = level
-      Firebase.database().ref().update(updates).then(() => {
+      dbRef.update(updates).then(() => {
         // Success
         countTag(cleanTag, 1)
         resolve()
@@ -131,7 +134,7 @@ function setTagHighlight (key, level) {
 
     let updates = {}
     updates['userTags/' + uid + '/' + key + '/level'] = level
-    Firebase.database().ref().update(updates).then(() => {
+    dbRef.update(updates).then(() => {
       // Success
       resolve()
     }, (error) => {
@@ -151,7 +154,7 @@ function setTagWeight (key, weight) {
 
     let updates = {}
     updates['userTags/' + uid + '/' + key + '/weight'] = weight
-    Firebase.database().ref().update(updates).then(() => {
+    dbRef.update(updates).then(() => {
       // Success
       resolve()
     }, (error) => {
@@ -171,7 +174,7 @@ function removeTag (key) {
 
     let updates = {}
     updates['userTags/' + uid + '/' + key] = null
-    Firebase.database().ref().update(updates).then(() => {
+    dbRef.update(updates).then(() => {
       // Success
       countTag(key, -1)
       resolve()
@@ -184,7 +187,7 @@ function removeTag (key) {
 function countTag (tag, add) {
   // theoretically anyone could post any tag at any count
   // Move to server if abused
-  Firebase.database().ref().child('tags').child(tag)
+  dbRef.child('tags').child(tag)
   .transaction(tagRef => {
     return (tagRef || 0) + add
   })
@@ -250,7 +253,7 @@ function email (password, newEmail) {
 
     user.reauthenticate(credential).then(() => {
       user.updateEmail(newEmail).then(() => {
-        Firebase.database().ref('user').child(uid).child('email').set(newEmail).then(() => {
+        dbRef.child('user').child(uid).child('email').set(newEmail).then(() => {
           // Success
           resolve()
         }, (error) => {
@@ -273,19 +276,23 @@ function location (lat, lng, name) {
     }
     var uid = user.uid
 
-    let updates = {}
-    updates['profile/' + uid + '/locationName'] = name
-    updates['user/' + uid + '/locationName'] = name
-    updates['user/' + uid + '/locationLat'] = lat
-    updates['user/' + uid + '/locationLong'] = lng
-    updates['userLocation/' + uid + '/name'] = name
-    updates['userLocation/' + uid + '/lat'] = lat
-    updates['userLocation/' + uid + '/lng'] = lng
-    Firebase.database().ref().update(updates).then(() => {
+    // Set GeoLocation
+    geofire.set(uid, [lat, lng]).then(() => {
       // Success
-      resolve()
-    }, (error) => {
-      // Fail
+      // Set user location
+      let updates = {}
+      updates['profile/' + uid + '/locationName'] = name
+      updates['user/' + uid + '/locationName'] = name
+      updates['user/' + uid + '/locationLat'] = lat
+      updates['user/' + uid + '/locationLong'] = lng
+      dbRef.update(updates).then(() => {
+        // Success
+        resolve()
+      }, (error) => {
+        // Fail
+        reject(error)
+      })
+    }, error => {
       reject(error)
     })
   })
@@ -301,7 +308,7 @@ function distance (dist) {
 
     let updates = {}
     updates['user/' + uid + '/distance'] = dist
-    Firebase.database().ref().update(updates).then(() => {
+    dbRef.update(updates).then(() => {
       // Success
       resolve()
     }, (error) => {
@@ -322,7 +329,7 @@ function bio (bio) {
     let updates = {}
     updates['user/' + uid + '/bio'] = bio
     updates['profile/' + uid + '/bio'] = bio
-    Firebase.database().ref().update(updates).then(() => {
+    dbRef.update(updates).then(() => {
       // Success
       resolve()
     }, (error) => {
@@ -343,7 +350,7 @@ function name (first, last) {
     let updates = {}
     updates['user/' + uid + '/firstName'] = first
     updates['user/' + uid + '/lastName'] = last
-    Firebase.database().ref().update(updates).then(() => {
+    dbRef.update(updates).then(() => {
       // Success
       resolve()
     }, (error) => {
@@ -364,7 +371,7 @@ function displayName (name) {
     let updates = {}
     updates['user/' + uid + '/displayName'] = name
     updates['profile/' + uid + '/displayName'] = name
-    Firebase.database().ref().update(updates).then(() => {
+    dbRef.update(updates).then(() => {
       // Success
       // === Add display name to account
       user.updateProfile({
@@ -412,7 +419,7 @@ function profilePicture (imageData) {
       let updates = {}
       updates['user/' + uid + '/pictureURL'] = downloadURL
       updates['profile/' + uid + '/pictureURL'] = downloadURL
-      Firebase.database().ref().update(updates).then(() => {
+      dbRef.update(updates).then(() => {
         // Success
         resolve()
       }, (error) => {
@@ -455,7 +462,7 @@ function nameBirthdaySex (first, last, birthday, sex) {
     updates['user/' + uid + '/birthday'] = birthday
     updates['profile/' + uid + '/age'] = _calculateAge(birthday)
     // TODO: user/birthday && profile/age
-    Firebase.database().ref().update(updates).then(() => {
+    dbRef.update(updates).then(() => {
       // Success
       // === Add display name to account
       user.updateProfile({

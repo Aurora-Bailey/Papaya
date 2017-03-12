@@ -69,19 +69,6 @@
         }
       }
     },
-    "userLocation": {
-      "$uid": {
-        ".read": "auth.uid == $uid",
-
-        // Acceptable values
-        "name": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isString() && newData.val().length <= 120" },
-        "lng": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isNumber() && newData.val() <= 180 && newData.val() >= -180" },
-        "lat": { ".write": "auth.uid == $uid && newData.exists()", ".validate": "newData.isNumber() && newData.val() <= 90 && newData.val() >= -90" },
-
-        // Reject all other data
-        "$other": { ".validate": false }
-      }
-    },
     // User sets a task to find something
     // Task will dump the results here
     // User will be watching here
@@ -115,6 +102,46 @@
       "$tagId": {
         ".write": "auth.uid != null",
         ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 10000000000 && $tagId.length < 120"
+      }
+    },
+    // GeoFire
+    "geofire": {
+      // Don't let anyone to read the GeoFire index
+      ".read": false,
+
+      // Index each location's geohash for faster querying
+      ".indexOn": ["g"],
+
+      // Schema validation
+      "$key": {
+        // Allow any authentication user to add or update keys in the GeoFire index
+        ".write": "auth.uid === $key && newData.exists()",
+
+        // Key validation
+        ".validate": "newData.hasChildren(['g', 'l']) && newData.getPriority().length <= 22 && newData.getPriority().length > 0",
+
+        // Geohash validation
+        "g": {
+          ".validate": "newData.val() == newData.parent().getPriority()"
+        },
+
+        // Location coordinates validation
+        "l": {
+          "0" : {
+            ".validate": "newData.isNumber() && newData.val() >= -90 && newData.val() <= 90"
+          },
+          "1" : {
+            ".validate": "newData.isNumber() && newData.val() >= -180 && newData.val() <= 180"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+
+        // Don't allow any other keys to be written
+        "$other": {
+          ".validate": false
+        }
       }
     },
 
