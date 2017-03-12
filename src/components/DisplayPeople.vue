@@ -1,18 +1,18 @@
 <template>
   <div class="display-people">
     <md-whiteframe md-elevation="1dp" class="person" v-for="person in people">
-      <div class="person-profile"><router-link to="/profile"><img :src="person.profile" alt=""></router-link></div>
+      <div class="person-profile"><router-link :to="'/profile/' + person.uid"><img :src="person.pictureURL" alt=""></router-link></div>
 
       <div class="person-text-content">
-        <div class="person-name">{{person.name}}</div>
+        <div class="person-name">{{person.displayName}}</div>
         <div class="person-age">{{person.age}}</div>
-        <div class="person-location">{{person.location}}</div>
+        <div class="person-location">{{person.locationName}}</div>
         <div class="person-bio">{{person.bio}}</div>
       </div>
-      
-      <div class="person-likeness"><md-spinner :md-size="100" :md-progress="person.likeness"></md-spinner><div class="spinner-percent">{{person.likeness}}</div></div>
 
-      <md-button class="md-fab md-mini" :class="{'md-clean': !person.following}" @click.native="followPerson(person.userID)">
+      <div class="person-likeness"><md-spinner :md-size="100" :md-progress="person.weight"></md-spinner><div class="spinner-percent">{{person.weight}}</div></div>
+
+      <md-button class="md-fab md-mini" :class="{'md-clean': !person.following}" @click.native="followPerson(person.uid)">
         <md-icon>star</md-icon>
       </md-button>
     </md-whiteframe>

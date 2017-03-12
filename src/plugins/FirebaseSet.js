@@ -1,8 +1,10 @@
 import Firebase from 'firebase'
-var dbRef = Firebase.database().ref()
 import GeoFire from 'geofire'
-var geofire = new GeoFire(dbRef.child('geofire'))
 import _ from 'lodash'
+
+// Setup Refs
+var dbRef = Firebase.database().ref()
+var geoFire = new GeoFire(dbRef.child('geofire'))
 
 function findPeopleTask () {
   return new Promise((resolve, reject) => {
@@ -277,7 +279,7 @@ function location (lat, lng, name) {
     var uid = user.uid
 
     // Set GeoLocation
-    geofire.set(uid, [lat, lng]).then(() => {
+    geoFire.set(uid, [lat, lng]).then(() => {
       // Success
       // Set user location
       let updates = {}

@@ -2,7 +2,7 @@
   <div class="find-people using-sidebar">
     <div class="gl-narrow-wrapper-840">
       {{findPeople}}
-      <display-people :people="people" @follow="followPerson"></display-people>
+      <display-people :people="findPeople" @follow="followPerson"></display-people>
     </div>
   </div>
 </template>
@@ -10,6 +10,7 @@
 import DisplayPeople from '../components/DisplayPeople'
 import FirebaseSet from '../plugins/FirebaseSet'
 import Firebase from 'firebase'
+import _ from 'lodash'
 
 export default {
   name: 'find-people',
@@ -17,28 +18,35 @@ export default {
     DisplayPeople
   },
   mounted () {
-    this.findPeopleTask()
+    if (this.$root.uid) this.findPeopleTask()
   },
   watch: {
     '$root.uid': function () {
       this.findPeopleTask()
     }
   },
+  beforeDestroy () {
+    Firebase.database().ref('profile').off()
+  },
   methods: {
     findPeopleTask () {
       FirebaseSet.findPeopleTask()
       .then(watching => {
-        console.log(watching)
-        // Bind to the watching location
-        // Remove any old bindings
-        if (this.$firebaseRefs && this.$firebaseRefs['findPeople']) this.$unbind('findPeople')
-        // Set new bindings
         let uid = this.$root.uid
-        if (uid) {
-          this.$bindAsArray('findPeople', Firebase.database().ref('findPeople/' + uid + '/' + watching))
-        } else {
-          this.findPeople = []
-        }
+        let watchRef = Firebase.database().ref('findPeople/' + uid + '/' + watching)
+        watchRef.on('value', snap => {
+          let list = snap.val()
+          if (list !== null) {
+            watchRef.off()
+            this.$set(this, 'findPeople', list)
+            list.forEach((e, i) => {
+              Firebase.database().ref('profile/' + e.uid)
+              .once('value', snap => {
+                this.$set(this.findPeople, i, _.assign(this.findPeople[i], snap.val()))
+              })
+            })
+          }
+        })
         // End bind
       }, error => {
         console.error(error)
