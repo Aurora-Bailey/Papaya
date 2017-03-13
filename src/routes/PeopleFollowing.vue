@@ -1,117 +1,67 @@
 <template>
   <div class="people-following using-sidebar">
     <div class="gl-narrow-wrapper-840">
-      <display-people :people="people" @follow="followPerson"></display-people>
+      <display-people :people="listPeople"></display-people>
+      <div class="gl-large-center-text" v-if="emptyTask">
+        <md-icon>search</md-icon>
+        <span>We've searched, but found nothing!</span>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import DisplayPeople from '../components/DisplayPeople'
+import FirebaseSet from '../plugins/FirebaseSet'
+import Firebase from 'firebase'
+import _ from 'lodash'
 
 export default {
   name: 'people-following',
   components: {
     DisplayPeople
   },
+  mounted () {
+    if (this.$root.uid) this.profilePeopleTask()
+  },
+  watch: {
+    '$root.userFollowing': function () {
+      if (this.$root.userFollowing['.key']) this.profilePeopleTask()
+    }
+  },
   methods: {
-    followPerson (id) {
-      this.people[id].following = !this.people[id].following
+    profilePeopleTask () {
+      FirebaseSet.profilePeopleTask(_.keys(_.omit(this.$root.userFollowing, ['.key', '.value'])))
+      .then(watching => {
+        let uid = this.$root.uid
+        let watchRef = Firebase.database().ref('computed/' + uid + '/' + watching)
+        watchRef.on('value', snap => {
+          let list = snap.val()
+          if (list !== null) {
+            watchRef.off()
+            this.emptyTask = false
+            if (list === 'empty') {
+              this.emptyTask = true
+              return false
+            }
+            this.$set(this, 'listPeople', list)
+            list.forEach((e, i) => {
+              Firebase.database().ref('profile/' + e.uid)
+              .once('value', snap => {
+                this.$set(this.listPeople, i, _.assign(this.listPeople[i], snap.val()))
+              })
+            })
+          }
+        })
+        // End bind
+      }, error => {
+        console.error(error)
+      })
     }
   },
   data () {
     return {
-      people: [
-        {
-          userID: 0,
-          name: 'Baz Hamilton',
-          age: '65',
-          location: 'San Francisco, CA',
-          profile: 'https://placeimg.com/200/200/people/3',
-          bio: 'Lorem ipsum dolor sit amet.',
-          following: true,
-          likeness: 70
-        },
-        {
-          userID: 1,
-          name: 'Baz Hamilton',
-          age: '65',
-          location: 'San Francisco, CA',
-          profile: 'https://placeimg.com/200/200/people/4',
-          bio: 'Lorem ipsum dolor sit amet.',
-          following: true,
-          likeness: 60
-        },
-        {
-          userID: 2,
-          name: 'Thomas Pesquet',
-          age: '65',
-          location: 'San Francisco, CA',
-          profile: 'https://pbs.twimg.com/profile_images/831136830745636865/PR5Py0ZR_400x400.jpg',
-          bio: 'Européen Français, pilote de vaisseau spatial à l\'ESA en mission pour six mois sur l\'ISS / Euro-French spacecraft pilot at ESA, now on 6-month ISS mission',
-          following: true,
-          likeness: 70
-        },
-        {
-          userID: 3,
-          name: 'Baz Hamilton',
-          age: '65',
-          location: 'San Francisco, CA',
-          profile: 'https://placeimg.com/200/200/people/5',
-          bio: 'Lorem ipsum dolor sit amet.',
-          following: true,
-          likeness: 40
-        },
-        {
-          userID: 4,
-          name: 'Baz Hamilton',
-          age: '65',
-          location: 'San Francisco, CA',
-          profile: 'https://placeimg.com/200/200/people/6',
-          bio: 'Lorem ipsum dolor sit amet.',
-          following: true,
-          likeness: 9
-        },
-        {
-          userID: 5,
-          name: 'Dmitrii Abramov',
-          age: '32',
-          location: 'Silicon Valley, CA',
-          profile: 'https://pbs.twimg.com/profile_images/644529861004931072/ItiZQelK_400x400.jpg',
-          bio: 'front-end engineer @facebook, musician, husband, christian. I build things together with @cpojer and play metal when i\'m not coding',
-          following: true,
-          likeness: 90
-        },
-        {
-          userID: 6,
-          name: 'Baz Hamilton',
-          age: '65',
-          location: 'San Francisco, CA',
-          profile: 'https://placeimg.com/200/200/people/7',
-          bio: 'Lorem ipsum dolor sit amet.',
-          following: true,
-          likeness: 45
-        },
-        {
-          userID: 7,
-          name: 'Baz Hamilton',
-          age: '65',
-          location: 'San Francisco, CA',
-          profile: 'https://placeimg.com/200/200/people/8',
-          bio: 'Lorem ipsum dolor sit amet.',
-          following: true,
-          likeness: 31
-        },
-        {
-          userID: 8,
-          name: 'Baz Hamilton',
-          age: '65',
-          location: 'San Francisco, CA',
-          profile: 'https://placeimg.com/200/200/people/9',
-          bio: 'Lorem ipsum dolor sit amet.',
-          following: true,
-          likeness: 4
-        }
-      ]
+      listPeople: [],
+      emptyTask: false
     }
   },
   beforeRouteEnter (to, from, next) {

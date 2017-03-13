@@ -101,6 +101,11 @@ export default {
           let list = snap.val()
           if (list !== null) {
             watchRef.off()
+            this.emptyTask = false
+            if (list === 'empty') {
+              this.emptyTask = true
+              return false
+            }
             this.$set(this, 'profileData', list)
             list.forEach((e, i) => {
               Firebase.database().ref('profile/' + e.uid)
@@ -138,6 +143,7 @@ export default {
   data () {
     return {
       profileData: [], // Profile is pulled as an array to allow for the underlying function to pull multiple users
+      emptyTask: false,
       showAllTags: false
     }
   },

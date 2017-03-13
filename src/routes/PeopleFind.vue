@@ -2,6 +2,10 @@
   <div class="find-people using-sidebar">
     <div class="gl-narrow-wrapper-840">
       <display-people :people="findPeople"></display-people>
+      <div class="gl-large-center-text" v-if="emptyTask">
+        <md-icon>search</md-icon>
+        <span>We've searched, but found nothing!</span>
+      </div>
     </div>
   </div>
 </template>
@@ -24,9 +28,6 @@ export default {
       this.findPeopleTask()
     }
   },
-  beforeDestroy () {
-    Firebase.database().ref('profile').off()
-  },
   methods: {
     findPeopleTask () {
       FirebaseSet.findPeopleTask()
@@ -37,6 +38,11 @@ export default {
           let list = snap.val()
           if (list !== null) {
             watchRef.off()
+            this.emptyTask = false
+            if (list === 'empty') {
+              this.emptyTask = true
+              return false
+            }
             this.$set(this, 'findPeople', list)
             list.forEach((e, i) => {
               Firebase.database().ref('profile/' + e.uid)
@@ -54,7 +60,8 @@ export default {
   },
   data () {
     return {
-      findPeople: []
+      findPeople: [],
+      emptyTask: false
     }
   },
   beforeRouteEnter (to, from, next) {
