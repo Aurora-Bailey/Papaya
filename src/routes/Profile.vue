@@ -104,6 +104,7 @@ export default {
             this.emptyTask = false
             if (list === 'empty') {
               this.emptyTask = true
+              this.$set(this, 'profileData', [])
               return false
             }
             this.$set(this, 'profileData', list)
