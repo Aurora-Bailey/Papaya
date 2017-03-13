@@ -179,10 +179,16 @@ $sidebar-stay-open: 1281px;
   line-height: 32px;
   white-space: nowrap;
   background-color: rgba(0, 0, 0, .12);
-  cursor: pointer;
 
   animation-name: gl-chip-enter;
   animation-duration: .4s;
+
+  &.chip-clickable {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 
   .chip-text, .chip-highlight-red-text, .chip-button {
     font-size: 13px; // Reset the space hide thing

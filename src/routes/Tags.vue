@@ -9,7 +9,7 @@
         </md-input-container>
         <auto-complete :search="addTagInput" @submit="val => { addTag(val) }"></auto-complete>
         <div class="tag-container">
-          <div v-for="(tag, index) in $root.userTags" class="gl-chip" :class="{'chip-highlight-red': tag.level === 1, 'chip-highlight-blue': tag.level === 2, 'chip-highlight-purple': tag.level === 3}" @click="openTag(index)">
+          <div v-for="(tag, index) in $root.userTags" class="gl-chip chip-clickable" :class="{'chip-highlight-red': tag.level === 1, 'chip-highlight-blue': tag.level === 2, 'chip-highlight-purple': tag.level === 3}" @click="openTag(index)">
             <span class="chip-text">{{tag.name}} {{tag.weight}}</span>
             <span class="chip-text chip-new" v-if="tagsJustAdded[tag.name]">(New)</span>
           </div>
@@ -45,10 +45,10 @@
         <div class="tag-highlight">
           <div>Highlight</div>
           <div class="tag-highlight-content">
-            <div class="gl-chip" @click="setTagHighlight(tagOpen, 0)"><span class="chip-text">None</span></div>
-            <div class="gl-chip chip-highlight-red" @click="setTagHighlight(tagOpen, 1)"><span class="chip-text">Passion</span></div>
-            <div class="gl-chip chip-highlight-blue" @click="setTagHighlight(tagOpen, 2)"><span class="chip-text">Expert</span></div>
-            <div class="gl-chip chip-highlight-purple" @click="setTagHighlight(tagOpen, 3)"><span class="chip-text">Lifeblood</span></div>
+            <div class="gl-chip chip-clickable" @click="setTagHighlight(tagOpen, 0)"><span class="chip-text">None</span></div>
+            <div class="gl-chip chip-clickable chip-highlight-red" @click="setTagHighlight(tagOpen, 1)"><span class="chip-text">Passion</span></div>
+            <div class="gl-chip chip-clickable chip-highlight-blue" @click="setTagHighlight(tagOpen, 2)"><span class="chip-text">Expert</span></div>
+            <div class="gl-chip chip-clickable chip-highlight-purple" @click="setTagHighlight(tagOpen, 3)"><span class="chip-text">Lifeblood</span></div>
           </div>
         </div>
       </md-dialog-content>
