@@ -27,6 +27,27 @@ function findPeopleTask () {
     })
   })
 }
+function profilePeopleTask (peopleArray) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
+
+    let watching = Date.now()
+
+    dbRef.child('queue').child('tasks').push({'_state': 'profile_people', '_uid': uid, 'watching': watching, 'list': peopleArray.join(',')})
+    .then(() => {
+      // Success
+      resolve(watching)
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
 function newUser (newUser) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
@@ -503,7 +524,8 @@ export default {
   removeTag,
   newProfile,
   newUser,
-  findPeopleTask
+  findPeopleTask,
+  profilePeopleTask
 }
 
 function _calculateAge (birthday) { // birthday is a date
