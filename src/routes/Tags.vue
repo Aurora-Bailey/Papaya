@@ -10,7 +10,7 @@
         <auto-complete :search="addTagInput" @submit="val => { addTag(val) }"></auto-complete>
         <div class="tag-container">
           <div v-for="(tag, index) in $root.userTags" class="gl-chip" :class="{'chip-highlight-red': tag.level === 1, 'chip-highlight-blue': tag.level === 2, 'chip-highlight-purple': tag.level === 3}" @click="openTag(index)">
-            <span class="chip-text">{{tag.name}}</span>
+            <span class="chip-text">{{tag.name}} {{tag.weight}}</span>
             <span class="chip-text chip-new" v-if="tagsJustAdded[tag.name]">(New)</span>
           </div>
         </div>
@@ -23,7 +23,7 @@
           <div>Tag</div>
           <div class="tag-preview-content">
             <div class="gl-chip" :class="{'chip-highlight-red': $root.userTags[tagOpen].level === 1, 'chip-highlight-blue': $root.userTags[tagOpen].level === 2, 'chip-highlight-purple': $root.userTags[tagOpen].level === 3}">
-              <span class="chip-text">{{$root.userTags[tagOpen].name}}</span>
+              <span class="chip-text">{{$root.userTags[tagOpen].name}} {{$root.userTags[tagOpen].weight}}</span>
               <span class="chip-text chip-new" v-if="tagsJustAdded[$root.userTags[tagOpen].name]">(New)</span>
             </div>
             <md-button class="md-warn md-raised md-icon-button md-dense" @click.native="removeTag(tagOpen); $refs['ref-tag-dialog'].close()">
