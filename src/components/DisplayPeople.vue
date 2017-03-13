@@ -27,6 +27,9 @@
     </md-whiteframe>
 
     <md-dialog class="mod-md-full-dialog viewtags-dialog" ref="ref-viewtags-dialog" @close="onCloseTags()">
+      <md-dialog-title>
+        <h2 class="md-title gl-no-margin">Matching Tags</h2>
+      </md-dialog-title>
       <md-dialog-content>
         <div class="dialog-tag-container">
           <div class="gl-chip" v-for="tag in tagsInDialog" :class="{'chip-highlight-red': tag.l === 1, 'chip-highlight-blue': tag.l === 2, 'chip-highlight-purple': tag.l === 3}">

@@ -32,7 +32,7 @@ export default {
       FirebaseSet.findPeopleTask()
       .then(watching => {
         let uid = this.$root.uid
-        let watchRef = Firebase.database().ref('findPeople/' + uid + '/' + watching)
+        let watchRef = Firebase.database().ref('computed/' + uid + '/' + watching)
         watchRef.on('value', snap => {
           let list = snap.val()
           if (list !== null) {

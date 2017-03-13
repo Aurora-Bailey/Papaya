@@ -72,7 +72,7 @@
     // User sets a task to find something
     // Task will dump the results here
     // User will be watching here
-    "findPeople": {
+    "computed": {
       "$uid": {
         ".read": "auth.uid == $uid",
         ".write": false
