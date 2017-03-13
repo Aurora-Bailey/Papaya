@@ -69,6 +69,24 @@
         }
       }
     },
+    "userFollowing": {
+      "$uid": {
+        ".read": "auth.uid == $uid",
+        "$followId": {
+          ".write": "auth.uid == $uid",
+          ".validate": "newData.isBoolean() && root.child('user').child($followId).exists()"
+        }
+      }
+    },
+    "userFollowers": {
+      "$uid": {
+        ".read": "auth.uid == $uid",
+        "$followId": {
+          ".write": "auth.uid == $followId",
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    },
     // User sets a task to find something
     // Task will dump the results here
     // User will be watching here

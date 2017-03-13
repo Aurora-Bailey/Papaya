@@ -5,6 +5,17 @@
         <div class="profile-content">
           <div class="profile-pic">
             <img :src="profile.pictureURL" alt="">
+            <div class="profile-likeness">
+              <span class="person-weight my-weight">
+                {{profile.mw}}
+                <md-tooltip md-direction="bottom">Weight I gave to matching tags</md-tooltip>
+              </span>
+              /
+              <span class="person-weight your-weight">
+                {{profile.yw}}
+                <md-tooltip md-direction="bottom">Weight {{profile.displayName}} gave to matching tags</md-tooltip>
+              </span>
+            </div>
           </div>
           <div class="profile-info">
             <div class="profile-follow">
@@ -203,8 +214,8 @@ export default {
 .profile-pic {
   width: 200px;
   min-width: 200px;
-  height: 200px;
-  min-height: 200px;
+  height: 240px; // Hack job for likeness padding
+  min-height: 240px; // Hack job for likeness padding
   margin: auto;
   position: relative;
   user-select: none;
@@ -244,6 +255,24 @@ export default {
   .md-icon {
     pointer-events: none;
     user-select: none;
+  }
+}
+.profile-likeness {
+  margin: 12px auto;
+  color: rgba(0,0,0,0.54);
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .person-weight {
+    font-size: 24px;
+    padding: 5px;
+    font-weight: bold;
+
+    &.your-weight {
+      font-size: 18px;
+    }
   }
 }
 </style>
