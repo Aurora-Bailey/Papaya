@@ -1,7 +1,7 @@
 <template>
   <div class="find-people using-sidebar">
     <div class="gl-narrow-wrapper-840">
-      <display-people :people="findPeople" @follow="followPerson"></display-people>
+      <display-people :people="findPeople"></display-people>
     </div>
   </div>
 </template>
@@ -50,9 +50,6 @@ export default {
       }, error => {
         console.error(error)
       })
-    },
-    followPerson (id) {
-      this.people[id].following = !this.people[id].following
     }
   },
   data () {

@@ -215,6 +215,27 @@ function countTag (tag, add) {
     return (tagRef || 0) + add
   })
 }
+function followPerson (uidFollow, follow) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
+
+    let updates = {}
+    updates['userFollowing/' + uid + '/' + uidFollow] = follow || null
+    updates['userFollowers/' + uidFollow + '/' + uid] = follow || null
+    dbRef.update(updates).then(() => {
+      // Success
+      resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
 function verifyEmail () {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
@@ -525,7 +546,8 @@ export default {
   newProfile,
   newUser,
   findPeopleTask,
-  profilePeopleTask
+  profilePeopleTask,
+  followPerson
 }
 
 function _calculateAge (birthday) { // birthday is a date

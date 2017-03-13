@@ -21,7 +21,7 @@
         </span>
       </div>
 
-      <md-button class="md-fab md-mini" :class="{'md-clean': !person.following}" @click.native="followPerson(person.uid)">
+      <md-button class="md-fab md-mini" :class="{'md-clean': !$root.userFollowing[person.uid]}" @click.native="followPerson(person.uid)">
         <md-icon>star</md-icon>
       </md-button>
     </md-whiteframe>
@@ -44,6 +44,8 @@
   </div>
 </template>
 <script>
+import FirebaseSet from '../plugins/FirebaseSet'
+
 export default {
   props: ['people'],
   name: 'display-people',
@@ -59,8 +61,13 @@ export default {
       this.tagsInDialog = []
     },
 
-    followPerson (id) {
-      this.$emit('follow', id)
+    followPerson (uid) {
+      FirebaseSet.followPerson(uid, !this.$root.userFollowing[uid])
+      .then(() => {
+
+      }, error => {
+        console.error(error)
+      })
     }
   },
   data () {

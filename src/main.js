@@ -35,12 +35,18 @@ new Vue({
       if (auth) {
         if (!this.$firebaseRefs || !this.$firebaseRefs['user']) this.$bindAsObject('user', Firebase.database().ref('user/' + auth.uid))
         if (!this.$firebaseRefs || !this.$firebaseRefs['userTags']) this.$bindAsArray('userTags', Firebase.database().ref('userTags/' + auth.uid))
+        if (!this.$firebaseRefs || !this.$firebaseRefs['userFollowing']) this.$bindAsObject('userFollowing', Firebase.database().ref('userFollowing/' + auth.uid))
+        if (!this.$firebaseRefs || !this.$firebaseRefs['userFollowers']) this.$bindAsObject('userFollowers', Firebase.database().ref('userFollowers/' + auth.uid))
       } else {
         // Remove any old bindings
         if (this.$firebaseRefs && this.$firebaseRefs['user']) this.$unbind('user')
         if (this.$firebaseRefs && this.$firebaseRefs['userTags']) this.$unbind('userTags')
+        if (this.$firebaseRefs && this.$firebaseRefs['userFollowing']) this.$unbind('userFollowing')
+        if (this.$firebaseRefs && this.$firebaseRefs['userFollowers']) this.$unbind('userFollowers')
         this.user = this.setUser()
         this.userTags = []
+        this.userFollowing = {}
+        this.userFollowers = {}
       }
 
       // TODO: Splash screen whie loading
@@ -72,7 +78,9 @@ new Vue({
       uid: null,
       emailVerified: false,
       user: this.setUser(),
-      userTags: []
+      userTags: [],
+      userFollowing: {},
+      userFollowers: {}
     }
   },
   methods: {

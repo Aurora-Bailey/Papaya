@@ -24,9 +24,9 @@
                   <md-icon>mail</md-icon>
                 </md-button>
               </router-link>
-              <md-button class="md-raised" :class="{'md-accent': person.following}" @click.native="person.following=!person.following">
-                <span v-if="person.following">Following</span>
-                <span v-if="!person.following">Follow</span>
+              <md-button class="md-raised" :class="{'md-accent': !$root.userFollowing[profile.uid]}" @click.native="followPerson(profile.uid)">
+                <span v-if="!$root.userFollowing[profile.uid]">Follow</span>
+                <span v-else>Un-Follow</span>
               </md-button>
             </div>
             <div class="profile-person">
@@ -82,6 +82,14 @@ export default {
     }
   },
   methods: {
+    followPerson (uid) {
+      FirebaseSet.followPerson(uid, !this.$root.userFollowing[uid])
+      .then(() => {
+
+      }, error => {
+        console.error(error)
+      })
+    },
     profileUpdate () {
       let profileuid = this.$root.uid
       if (this.$route.params.uid) profileuid = this.$route.params.uid
@@ -130,10 +138,7 @@ export default {
   data () {
     return {
       profileData: [], // Profile is pulled as an array to allow for the underlying function to pull multiple users
-      showAllTags: false,
-      person: { // Following button still pulls from this
-        following: false
-      }
+      showAllTags: false
     }
   },
   beforeRouteEnter (to, from, next) {
