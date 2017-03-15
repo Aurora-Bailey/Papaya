@@ -5,6 +5,7 @@ import _ from 'lodash'
 // Setup Refs
 var dbRef = Firebase.database().ref()
 var geoFireUser = new GeoFire(dbRef.child('geofireUser'))
+var geoFireEvent = new GeoFire(dbRef.child('geofireEvent'))
 
 function findPeopleTask () {
   return new Promise((resolve, reject) => {
@@ -92,6 +93,43 @@ function newProfile (newProfile) {
     dbRef.update(updates).then(() => {
       // Success
       resolve()
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
+function newEvent (eventObject, locationObject) {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
+    let pushRef = dbRef.child('event').push()
+    let newKey = pushRef.key
+
+    let deepCopyEvent = JSON.parse(JSON.stringify(eventObject))
+    let deepCopyLoc = JSON.parse(JSON.stringify(locationObject))
+
+    // Inject into event
+    deepCopyEvent.uid = uid
+    deepCopyEvent.locationPublic = deepCopyLoc.name
+    deepCopyEvent.close = parseInt(deepCopyEvent.close) || 0
+
+    // Firebase
+    console.log('set event', JSON.stringify(deepCopyEvent))
+    pushRef.set(deepCopyEvent).then(() => {
+      // Success
+      // Set GeoLocation
+      console.log('set geo', newKey, [deepCopyLoc.lat, deepCopyLoc.lng])
+      geoFireEvent.set(newKey, [deepCopyLoc.lat, deepCopyLoc.lng]).then(() => {
+        // Success
+        resolve()
+      }, error => {
+        reject(error)
+      })
     }, (error) => {
       // Fail
       reject(error)
@@ -547,7 +585,8 @@ export default {
   newUser,
   findPeopleTask,
   profilePeopleTask,
-  followPerson
+  followPerson,
+  newEvent
 }
 
 function _calculateAge (birthday) { // birthday is a date

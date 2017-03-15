@@ -87,25 +87,26 @@
         }
       }
     },
-    "userEvents": {
-      "$uid": {
-        "$eventId": {
-          ".read": "true",
-          ".write": "auth.uid == $uid",
+    "event": {
+      "$eventId": {
+        ".read": "true",
+        // Write new data OR overwrite your own data
+        ".write": "!data.exists() && newData.hasChild('uid') && $eventId.length < 120 || data.child('uid').val() === auth.uid",
 
-          "title": { ".validate": "newData.isString() && newData.val().length <= 120" },
-          "description": { ".validate": "newData.isString() && newData.val().length <= 500" },
-          "openings": { ".validate": "newData.isNumber() && newData.val() <= 20 && newData.val() >= 2" },
-          "close": { ".validate": "newData.isNumber() && newData.val() <= 100000000000000 && newData.val() > 0" },
-          "requireTag": { ".validate": "newData.isString() && newData.val().length <= 60" },
-          "moderate": { ".validate": "newData.isBoolean()" },
-          "locationPublic":  { ".validate": "newData.isString() && newData.val().length <= 120" },
-          "locationPrivate":  { ".validate": "newData.isString() && newData.val().length <= 120" },
-          "detailsPrivate": { ".validate": "newData.isString() && newData.val().length <= 500" },
+        "uid": { ".validate": "newData.val() === auth.uid"},
+        "title": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "description": { ".validate": "newData.isString() && newData.val().length <= 500" },
+        "openings": { ".validate": "newData.isNumber() && newData.val() <= 20 && newData.val() >= 2" },
+        "close": { ".validate": "newData.isNumber() && newData.val() <= 100000000000000 && newData.val() > -100000000000000" },
+        "requireTag": { ".validate": "newData.isString() && newData.val().length <= 60" },
+        "moderate": { ".validate": "newData.isBoolean()" },
+        "locationPublic":  { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "locationPrivate":  { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "detailsPrivate": { ".validate": "newData.isString() && newData.val().length <= 500" },
+        // users in group
 
-          "$other": {
-            ".validate": false
-          }
+        "$other": {
+          ".validate": false
         }
       }
     },
@@ -188,8 +189,8 @@
 
       // Schema validation
       "$key": {
-        // Allow any authentication user to add or update keys in the GeoFire index
-        ".write": "auth.uid === $key && newData.exists()",
+        // Must me string under 120char
+        ".write": "root.child('event').child($key).exists() && newData.exists()",
 
         // Key validation
         ".validate": "newData.hasChildren(['g', 'l']) && newData.getPriority().length <= 22 && newData.getPriority().length > 0",

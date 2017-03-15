@@ -38,7 +38,7 @@
             <md-input v-model="create.close" ref="pick-date"></md-input>
           </md-input-container>
 
-          <md-input-container v-if="create.showRequireTag">
+          <md-input-container v-if="showRequireTag">
             <md-icon></md-icon>
             <label>Require Tag</label>
             <md-input v-model="create.requireTag"></md-input>
@@ -46,8 +46,8 @@
 
           <div class="toggle-container">
             <md-icon>loyalty</md-icon>
-            <md-switch v-model="create.showRequireTag" class="md-primary icon-offset">
-              <span v-if="create.showRequireTag">Anyone with a "{{create.requireTag}}" tag can see this.</span>
+            <md-switch v-model="showRequireTag" class="md-primary icon-offset">
+              <span v-if="showRequireTag">Anyone with a "{{create.requireTag}}" tag can see this.</span>
               <span v-else>Anyone can see this event.</span>
             </md-switch>
           </div>
@@ -77,7 +77,7 @@
           </md-input-container>
 
           <div class="gl-center-button">
-            <md-button class="md-raised md-primary mod-md-text-white" @click.native="submit">Create Event</md-button>
+            <md-button class="md-raised md-primary mod-md-text-white" @click.native="createEvent">Create Event</md-button>
           </div>
 
         </form>
@@ -99,8 +99,26 @@ export default {
     }, 300)
   },
   methods: {
-    submit () {
-      this.$router.push('/events/find')
+    createEvent (e) {
+      // Build location object
+      let locObj = {}
+      locObj.name = this.$root.user.locationName
+      locObj.lat = this.$root.user.locationLat
+      locObj.lng = this.$root.user.locationLong
+
+      // Tewak event Object
+      if (!this.showRequireTag) this.create.requireTag = '' // reset require tag
+
+      // Firebase
+      FirebaseSet.newEvent(this.create, locObj)
+      .then(() => {
+        // validate inputs
+        // lock submit button while processing
+        // reroute to find events on success
+        console.log('done')
+      }, error => {
+        console.error(error)
+      })
     }
   },
   mounted () {
@@ -120,9 +138,9 @@ export default {
         openings: 5,
         close: '',
         moderate: false,
-        requireTag: '',
-        showRequireTag: false
-      }
+        requireTag: ''
+      },
+      showRequireTag: false
     }
   },
   beforeRouteEnter (to, from, next) {
