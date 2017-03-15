@@ -21,7 +21,7 @@
           <md-input-container>
             <md-icon>location_on</md-icon>
             <label>Location Public</label>
-            <md-input v-model="create.locationPublic"></md-input>
+            <md-input :value="$root.user.locationName" disabled></md-input>
           </md-input-container>
 
           <md-input-container>
@@ -38,11 +38,26 @@
             <md-input v-model="create.close" ref="pick-date"></md-input>
           </md-input-container>
 
+          <md-input-container v-if="create.showRequireTag">
+            <md-icon></md-icon>
+            <label>Require Tag</label>
+            <md-input v-model="create.requireTag"></md-input>
+          </md-input-container>
+
           <div class="toggle-container">
-            <md-icon>lock</md-icon>
+            <md-icon>loyalty</md-icon>
+            <md-switch v-model="create.showRequireTag" class="md-primary icon-offset">
+              <span v-if="create.showRequireTag">Anyone with a "{{create.requireTag}}" tag can see this.</span>
+              <span v-else>Anyone can see this event.</span>
+            </md-switch>
+          </div>
+
+          <div class="toggle-container">
+            <md-icon v-if="create.moderate">lock_outline</md-icon>
+            <md-icon v-else>lock_open</md-icon>
             <md-switch v-model="create.moderate" class="md-primary icon-offset">
               <span v-if="create.moderate">Only people you accept can join.</span>
-              <span v-if="!create.moderate">Anyone can join.</span>
+              <span v-else>Anyone can join.</span>
             </md-switch>
           </div>
 
@@ -71,11 +86,18 @@
   </div>
 </template>
 <script>
+import FirebaseSet from '../plugins/FirebaseSet'
+import _ from 'lodash'
 import Flatpickr from 'flatpickr'
 let fp = null
-console.log(fp)
 export default {
   name: 'create-events',
+  watch: {
+    'create.requireTag': _.debounce(function () {
+      // Snap the input back to a sanitized format
+      this.create.requireTag = FirebaseSet.tagSanitize(this.create.requireTag)
+    }, 300)
+  },
   methods: {
     submit () {
       this.$router.push('/events/find')
@@ -93,11 +115,13 @@ export default {
         title: '',
         description: '',
         detailsPrivate: '',
-        locationPublic: this.$root.user.locationName,
+        // Pull location from user
         locationPrivate: '',
         openings: 5,
         close: '',
-        moderate: false
+        moderate: false,
+        requireTag: '',
+        showRequireTag: false
       }
     }
   },

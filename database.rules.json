@@ -87,6 +87,28 @@
         }
       }
     },
+    "userEvents": {
+      "$uid": {
+        "$eventId": {
+          ".read": "true",
+          ".write": "auth.uid == $uid",
+
+          "title": { ".validate": "newData.isString() && newData.val().length <= 120" },
+          "description": { ".validate": "newData.isString() && newData.val().length <= 500" },
+          "openings": { ".validate": "newData.isNumber() && newData.val() <= 20 && newData.val() >= 2" },
+          "close": { ".validate": "newData.isNumber() && newData.val() <= 100000000000000 && newData.val() > 0" },
+          "requireTag": { ".validate": "newData.isString() && newData.val().length <= 60" },
+          "moderate": { ".validate": "newData.isBoolean()" },
+          "locationPublic":  { ".validate": "newData.isString() && newData.val().length <= 120" },
+          "locationPrivate":  { ".validate": "newData.isString() && newData.val().length <= 120" },
+          "detailsPrivate": { ".validate": "newData.isString() && newData.val().length <= 500" },
+
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
     // User sets a task to find something
     // Task will dump the results here
     // User will be watching here
