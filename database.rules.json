@@ -139,7 +139,47 @@
       }
     },
     // GeoFire
-    "geofire": {
+    "geofireUser": {
+      // Don't let anyone to read the GeoFire index
+      ".read": false,
+
+      // Index each location's geohash for faster querying
+      ".indexOn": ["g"],
+
+      // Schema validation
+      "$key": {
+        // Allow any authentication user to add or update keys in the GeoFire index
+        ".write": "auth.uid === $key && newData.exists()",
+
+        // Key validation
+        ".validate": "newData.hasChildren(['g', 'l']) && newData.getPriority().length <= 22 && newData.getPriority().length > 0",
+
+        // Geohash validation
+        "g": {
+          ".validate": "newData.val() == newData.parent().getPriority()"
+        },
+
+        // Location coordinates validation
+        "l": {
+          "0" : {
+            ".validate": "newData.isNumber() && newData.val() >= -90 && newData.val() <= 90"
+          },
+          "1" : {
+            ".validate": "newData.isNumber() && newData.val() >= -180 && newData.val() <= 180"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+
+        // Don't allow any other keys to be written
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    // GeoFire
+    "geofireEvent": {
       // Don't let anyone to read the GeoFire index
       ".read": false,
 
