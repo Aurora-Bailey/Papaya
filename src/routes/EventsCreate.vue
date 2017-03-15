@@ -9,33 +9,33 @@
           <md-input-container>
             <md-icon>title</md-icon>
             <label>Title</label>
-            <md-input></md-input>
+            <md-input v-model="create.title"></md-input>
           </md-input-container>
 
           <md-input-container>
             <md-icon>description</md-icon>
             <label>Description</label>
-            <md-textarea></md-textarea>
+            <md-textarea v-model="create.description"></md-textarea>
           </md-input-container>
 
           <md-input-container>
             <md-icon>location_on</md-icon>
             <label>Location Public</label>
-            <md-input></md-input>
+            <md-input v-model="create.locationPublic"></md-input>
           </md-input-container>
 
           <md-input-container>
             <md-icon>event_seat</md-icon>
             <label>Number of Openings</label>
-            <md-select v-model="create.limit" class="icon-offset">
+            <md-select v-model="create.openings" class="icon-offset">
               <md-option v-for="i in 19" :value="i+1">{{i+1}}</md-option>
             </md-select>
           </md-input-container>
 
           <md-input-container>
             <md-icon>date_range</md-icon>
-            <label>Close in {{create.close}} hours</label>
-            <md-input v-model="create.close" type="number" min="1" max="72"></md-input>
+            <label>Close in {{create.close | timetill}}</label>
+            <md-input v-model="create.close" ref="pick-date"></md-input>
           </md-input-container>
 
           <div class="toggle-container">
@@ -52,13 +52,13 @@
           <md-input-container>
             <md-icon>location_on</md-icon>
             <label>Location Private</label>
-            <md-input></md-input>
+            <md-input v-model="create.locationPrivate"></md-input>
           </md-input-container>
 
           <md-input-container>
             <md-icon>description</md-icon>
             <label>Details Private</label>
-            <md-input></md-input>
+            <md-input v-model="create.detailsPrivate"></md-input>
           </md-input-container>
 
           <div class="gl-center-button">
@@ -71,6 +71,9 @@
   </div>
 </template>
 <script>
+import Flatpickr from 'flatpickr'
+let fp = null
+console.log(fp)
 export default {
   name: 'create-events',
   methods: {
@@ -78,12 +81,23 @@ export default {
       this.$router.push('/events/find')
     }
   },
+  mounted () {
+    fp = new Flatpickr(this.$refs['pick-date'].$el, {dateFormat: 'U000', enableTime: true, altInput: true})
+  },
+  beforeDestroy () {
+    fp.destroy()
+  },
   data () {
     return {
       create: {
-        limit: 5,
-        moderate: false,
-        close: 3
+        title: '',
+        description: '',
+        detailsPrivate: '',
+        locationPublic: this.$root.user.locationName,
+        locationPrivate: '',
+        openings: 5,
+        close: '',
+        moderate: false
       }
     }
   },

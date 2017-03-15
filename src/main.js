@@ -12,6 +12,7 @@ import './plugins/Material'
 import './plugins/Resource'
 import './plugins/Filters'
 import './plugins/Style.scss'
+import 'flatpickr/dist/themes/material_red.css'
 import 'cropperjs/dist/cropper.min.css'
 import 'cropperjs/dist/cropper.min.js'
 
