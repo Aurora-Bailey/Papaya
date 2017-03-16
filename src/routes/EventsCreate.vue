@@ -2,20 +2,20 @@
   <div class="create-events using-sidebar">
     <div class="gl-narrow-wrapper-480">
       <md-whiteframe class="create-card">
-        <form novalidate @submit.stop.prevent="">
+        <form @submit.stop.prevent="createEvent">
           <h2 class="md-title">Public</h2>
           <md-subheader>Anyone can see this.</md-subheader>
 
           <md-input-container>
             <md-icon>title</md-icon>
             <label>Title</label>
-            <md-input v-model="create.title"></md-input>
+            <md-input required v-model="create.title" maxlength="120"></md-input>
           </md-input-container>
 
           <md-input-container>
             <md-icon>description</md-icon>
             <label>Description</label>
-            <md-textarea v-model="create.description"></md-textarea>
+            <md-textarea required v-model="create.description" maxlength="500"></md-textarea>
           </md-input-container>
 
           <md-input-container>
@@ -35,7 +35,7 @@
           <md-input-container>
             <md-icon>date_range</md-icon>
             <label>Close in {{create.close | timetill}}</label>
-            <md-input v-model="create.close" ref="pick-date"></md-input>
+            <md-input required v-model="create.close" ref="pick-date"></md-input>
           </md-input-container>
 
           <md-input-container v-if="showRequireTag">
@@ -67,17 +67,23 @@
           <md-input-container>
             <md-icon>location_on</md-icon>
             <label>Location Private</label>
-            <md-input v-model="create.locationPrivate"></md-input>
+            <md-input v-model="create.locationPrivate" maxlength="120"></md-input>
           </md-input-container>
 
           <md-input-container>
             <md-icon>description</md-icon>
             <label>Details Private</label>
-            <md-input v-model="create.detailsPrivate"></md-input>
+            <md-input v-model="create.detailsPrivate" maxlength="500"></md-input>
           </md-input-container>
 
+          <div class="gl-alert-text" v-if="fail">
+            <md-icon>warning</md-icon>
+            <span>{{fail}}</span>
+          </div>
+
           <div class="gl-center-button">
-            <md-button class="md-raised md-primary mod-md-text-white" @click.native="createEvent">Create Event</md-button>
+            <md-button v-if="!processing" class="md-raised md-primary mod-md-text-white" type="submit">Create Event</md-button>
+            <md-spinner v-else md-indeterminate></md-spinner>
           </div>
 
         </form>
@@ -100,6 +106,9 @@ export default {
   },
   methods: {
     createEvent (e) {
+      // remove all error
+      this.fail = false
+      this.processing = true
       // Build location object
       let locObj = {}
       locObj.name = this.$root.user.locationName
@@ -112,17 +121,19 @@ export default {
       // Firebase
       FirebaseSet.newEvent(this.create, locObj)
       .then(() => {
-        // validate inputs
-        // lock submit button while processing
-        // reroute to find events on success
-        console.log('done')
+        setTimeout(() => {
+          this.processing = false
+          this.$router.push('/events/find')
+        }, 1000)
       }, error => {
+        this.processing = false
+        if (error.message) this.fail = error.message
         console.error(error)
       })
     }
   },
   mounted () {
-    fp = new Flatpickr(this.$refs['pick-date'].$el, {dateFormat: 'U000', enableTime: true, altInput: true})
+    fp = new Flatpickr(this.$refs['pick-date'].$el, {dateFormat: 'U000', enableTime: true, altInput: true, defaultDate: Date.now() + 86400000, minDate: Date.now()})
   },
   beforeDestroy () {
     fp.destroy()
@@ -136,10 +147,12 @@ export default {
         // Pull location from user
         locationPrivate: '',
         openings: 5,
-        close: '',
+        close: '' + (Date.now() + 86400000),
         moderate: false,
         requireTag: ''
       },
+      fail: false,
+      processing: false,
       showRequireTag: false
     }
   },
