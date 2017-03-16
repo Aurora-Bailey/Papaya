@@ -6,7 +6,7 @@
     </div>
     <div class="gl-narrow-wrapper-600">
       <md-whiteframe md-elevation="4dp" class="event" v-for="event in findEvents">
-        <div class="event-likeness"><md-spinner :md-size="100" :md-progress="25"></md-spinner><div class="spinner-percent">{{25}}</div></div>
+        <div class="event-likeness"><md-spinner :md-size="100" :md-progress="event.mw"></md-spinner><div class="spinner-percent">{{event.mw}}</div></div>
         <div class="event-title">
           {{event.title}}
         </div>
@@ -17,16 +17,16 @@
         <div class="event-description">
           {{event.description}}
         </div>
-        <!-- <div class="event-gorup">
-          <div class="event-person" v-for="person in event.peopleInGroup">
-            <div class="person-open" v-if="person.open">
+        <div class="event-gorup">
+          <div class="event-person" v-for="(seat, index) in event.openings">
+            <div class="person-open" v-if="event.ppl === 'empty' || !event.ppl[index]">
             </div>
-            <router-link to="/profile" class="person-avatar" v-if="!person.open">
-              <img :src="person.profile" alt="person.name">
-              <md-tooltip md-direction="bottom">{{person.name}}</md-tooltip>
+            <router-link :to="'/profile/' + event.ppl[index].uid" class="person-avatar" v-else>
+              <img :src="event.ppl[index].pic">
+              <md-tooltip md-direction="bottom">{{event.ppl[index].name}} {{event.ppl[index].mw}}/{{event.ppl[index].yw}}</md-tooltip>
             </router-link>
           </div>
-        </div> -->
+        </div>
         <div class="event-action">
           <md-button class="md-raised md-primary mod-md-text-white" @click.native="sendJoinRequest(event.eid)" v-if="!event.moderate">Join</md-button>
           <md-button class="md-raised md-primary mod-md-text-white" @click.native="openRequestDialog(event.eid)" v-if="event.moderate"><md-icon>lock</md-icon> Request Join</md-button>
