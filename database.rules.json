@@ -101,12 +101,35 @@
         "requireTag": { ".validate": "newData.isString() && newData.val().length <= 60" },
         "moderate": { ".validate": "newData.isBoolean()" },
         "locationPublic":  { ".validate": "newData.isString() && newData.val().length <= 120" },
+
+        // TODO Put these in a separate private node
         "locationPrivate":  { ".validate": "newData.isString() && newData.val().length <= 120" },
         "detailsPrivate": { ".validate": "newData.isString() && newData.val().length <= 500" },
-        // users in group
 
         "$other": {
           ".validate": false
+        }
+      }
+    },
+    "eventAuth": {
+      "$eventId": {
+        "auth": {
+          ".read": "true",
+          "$uid": {
+            // Anyone can write if moderate is false, Otherwise only the owner can write
+            ".write": "root.child('event').child($eventId).child('moderate').val() === false && $uid === auth.uid || root.child('event').child($eventId).child('uid').val() === auth.uid",
+            ".validate": "newData.isBoolean()"
+          }
+        },
+        "unAuth": {
+          // Only the event owner can read
+          ".read": "root.child('event').child($eventId).child('uid').val() === auth.uid",
+          // uid 'message'
+          "$uid": {
+            // Anyone can write if the event exists and newData exists. Owner can do anything
+            ".write": "root.child('event').child($eventId).exists() && newData.exists() && $uid === auth.uid || root.child('event').child($eventId).child('uid').val() === auth.uid",
+            ".validate": "newData.isString() && newData.val().length <= 250"
+          }
         }
       }
     },

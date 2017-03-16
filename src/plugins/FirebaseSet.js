@@ -28,6 +28,27 @@ function findPeopleTask () {
     })
   })
 }
+function findEventsTask () {
+  return new Promise((resolve, reject) => {
+    let user = Firebase.auth().currentUser
+    if (!user) {
+      reject({code: 'auth/null-user', message: 'User not found!'})
+      return false
+    }
+    var uid = user.uid
+
+    let watching = Date.now()
+
+    dbRef.child('queue').child('tasks').push({'_state': 'find_events', '_uid': uid, 'watching': watching})
+    .then(() => {
+      // Success
+      resolve(watching)
+    }, (error) => {
+      // Fail
+      reject(error)
+    })
+  })
+}
 function profilePeopleTask (peopleArray) {
   return new Promise((resolve, reject) => {
     let user = Firebase.auth().currentUser
@@ -119,11 +140,9 @@ function newEvent (eventObject, locationObject) {
     deepCopyEvent.close = parseInt(deepCopyEvent.close) || 0
 
     // Firebase
-    console.log('set event', JSON.stringify(deepCopyEvent))
     pushRef.set(deepCopyEvent).then(() => {
       // Success
       // Set GeoLocation
-      console.log('set geo', newKey, [deepCopyLoc.lat, deepCopyLoc.lng])
       geoFireEvent.set(newKey, [deepCopyLoc.lat, deepCopyLoc.lng]).then(() => {
         // Success
         resolve()
@@ -583,6 +602,7 @@ export default {
   removeTag,
   newProfile,
   newUser,
+  findEventsTask,
   findPeopleTask,
   profilePeopleTask,
   followPerson,

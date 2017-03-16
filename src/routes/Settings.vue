@@ -56,7 +56,7 @@
             <md-ink-ripple />
             <md-icon class="md-primary" id="edit-distance">directions_run</md-icon>
             <div class="md-list-text-container">
-              <span>~{{$root.$data.user.distance}} Miles</span>
+              <span>{{$root.$data.user.distance}} Miles</span>
               <span>Search Radius</span>
             </div>
             <md-divider class="md-inset"></md-divider>
@@ -274,11 +274,13 @@
           <span>{{edit.distance.fail}}</span>
         </div>
         <div class="gl-center-button">
-          <md-button class="md-raised" :class="{'md-primary': edit.distance.distance == 5}" @click.native="edit.distance.distance = 5">~5 Miles</md-button>
+          <md-button class="md-raised" :class="{'md-primary': edit.distance.distance == 5}" @click.native="edit.distance.distance = 5">5 Miles</md-button>
           <br>
-          <md-button class="md-raised" :class="{'md-primary': edit.distance.distance == 20}" @click.native="edit.distance.distance = 20">~20 Miles</md-button>
+          <md-button class="md-raised" :class="{'md-primary': edit.distance.distance == 20}" @click.native="edit.distance.distance = 20">20 Miles</md-button>
           <br>
-          <md-button class="md-raised" :class="{'md-primary': edit.distance.distance == 50}" @click.native="edit.distance.distance = 50">~50 Miles</md-button>
+          <md-button class="md-raised" :class="{'md-primary': edit.distance.distance == 50}" @click.native="edit.distance.distance = 50">50 Miles</md-button>
+          <br>
+          <md-button class="md-raised" :class="{'md-primary': edit.distance.distance == 100}" @click.native="edit.distance.distance = 100">100 Miles</md-button>
         </div>
       </md-dialog-content>
 

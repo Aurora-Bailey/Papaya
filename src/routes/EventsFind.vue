@@ -1,19 +1,19 @@
 <template>
   <div class="find-events using-sidebar">
     <div class="gl-narrow-wrapper-600">
-      <md-whiteframe md-elevation="4dp" class="event" v-for="event in events">
-        <div class="event-likeness"><md-spinner :md-size="100" :md-progress="event.likeness"></md-spinner><div class="spinner-percent">{{event.likeness}}</div></div>
+      <md-whiteframe md-elevation="4dp" class="event" v-for="event in findEvents">
+        <div class="event-likeness"><md-spinner :md-size="100" :md-progress="25"></md-spinner><div class="spinner-percent">{{25}}</div></div>
         <div class="event-title">
           {{event.title}}
         </div>
         <div class="event-logistics">
           {{event.locationPublic}}
-          {{event.closeDate | datetime}}
+          {{event.close | datetime}}
         </div>
         <div class="event-description">
           {{event.description}}
         </div>
-        <div class="event-gorup">
+        <!-- <div class="event-gorup">
           <div class="event-person" v-for="person in event.peopleInGroup">
             <div class="person-open" v-if="person.open">
             </div>
@@ -22,10 +22,10 @@
               <md-tooltip md-direction="bottom">{{person.name}}</md-tooltip>
             </router-link>
           </div>
-        </div>
+        </div> -->
         <div class="event-action">
-          <md-button class="md-raised md-primary mod-md-text-white" @click.native="sendJoinRequest(event.eventID)" v-if="!event.moderate">Join</md-button>
-          <md-button class="md-raised md-primary mod-md-text-white" @click.native="openRequestDialog(event.eventID)" v-if="event.moderate"><md-icon>lock</md-icon> Request Join</md-button>
+          <md-button class="md-raised md-primary mod-md-text-white" @click.native="sendJoinRequest(event.eid)" v-if="!event.moderate">Join</md-button>
+          <md-button class="md-raised md-primary mod-md-text-white" @click.native="openRequestDialog(event.eid)" v-if="event.moderate"><md-icon>lock</md-icon> Request Join</md-button>
         </div>
       </md-whiteframe>
     </div>
@@ -51,9 +51,50 @@
   </div>
 </template>
 <script>
+import FirebaseSet from '../plugins/FirebaseSet'
+import Firebase from 'firebase'
+import _ from 'lodash'
+
 export default {
   name: 'find-events',
+  mounted () {
+    if (this.$root.uid) this.findEventsTask()
+  },
+  watch: {
+    '$root.uid': function () {
+      this.findEventsTask()
+    }
+  },
   methods: {
+    findEventsTask () {
+      FirebaseSet.findEventsTask()
+      .then(watching => {
+        let uid = this.$root.uid
+        let watchRef = Firebase.database().ref('computed/' + uid + '/' + watching)
+        watchRef.on('value', snap => {
+          let list = snap.val()
+          if (list !== null) {
+            watchRef.off()
+            this.emptyTask = false
+            if (list === 'empty') {
+              this.emptyTask = true
+              this.$set(this, 'findEvents', [])
+              return false
+            }
+            this.$set(this, 'findEvents', list)
+            list.forEach((e, i) => {
+              Firebase.database().ref('event/' + e.eid)
+              .once('value', snap => {
+                this.$set(this.findEvents, i, _.assign(this.findEvents[i], snap.val()))
+              })
+            })
+          }
+        })
+        // End bind
+      }, error => {
+        console.error(error)
+      })
+    },
     openRequestDialog (eventID) {
       this.request.eventID = eventID
       this.request.input = ''
@@ -78,121 +119,12 @@ export default {
   },
   data () {
     return {
+      findEvents: [],
+      emptyTask: false,
       request: {
         eventID: null,
         input: ''
-      },
-      events: [
-        {
-          eventID: 0,
-          ownerID: 3,
-          postDate: 1487008034000,
-          closeDate: Date.now() + 100000000,
-          title: 'Chillin and playing DOTA2',
-          description: 'Mini LAN at Johns house. Bring your own computer. Also feel free to bring any snacks or food :)',
-          locationPublic: 'Logan, UT',
-          moderate: false,
-          likeness: 95,
-          peopleInGroup: [
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/1'},
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/2'},
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/3'},
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/4'},
-            {open: true}
-          ]
-        },
-        {
-          eventID: 1,
-          ownerID: 3,
-          postDate: 1487008034000,
-          closeDate: Date.now() + 100000000,
-          title: 'Maroon 5 Concert',
-          description: 'We are planning on going to the Maroon 5 concert this weekend. Our car fits 7, we have 5 open seats. Note: You will need your own ticket.',
-          locationPublic: 'Logan, UT',
-          moderate: true,
-          likeness: 20,
-          peopleInGroup: [
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/8'},
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/7'},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true}
-          ]
-        },
-        {
-          eventID: 2,
-          ownerID: 3,
-          postDate: 1487008034000,
-          closeDate: Date.now() + 100000000,
-          title: 'Lorem ipsum dolor sit amet',
-          description: 'Suspendisse ultricies sed lorem non posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra.',
-          locationPublic: 'Logan, UT',
-          moderate: true,
-          likeness: 19,
-          peopleInGroup: [
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/8'},
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/7'},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true}
-          ]
-        },
-        {
-          eventID: 3,
-          ownerID: 3,
-          postDate: 1487008034000,
-          closeDate: Date.now() + 100000000,
-          title: 'Lorem ipsum dolor sit amet',
-          description: 'Suspendisse ultricies sed lorem non posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra.',
-          locationPublic: 'Logan, UT',
-          moderate: false,
-          likeness: 16,
-          peopleInGroup: [
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/8'},
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/7'},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true}
-          ]
-        },
-        {
-          eventID: 4,
-          ownerID: 3,
-          postDate: 1487008034000,
-          closeDate: Date.now() + 100000000,
-          title: 'Lorem ipsum dolor sit amet',
-          description: 'Suspendisse ultricies sed lorem non posuere. Class aptent taciti sociosqu ad litora torquent per conubia nostra.',
-          locationPublic: 'Logan, UT',
-          moderate: true,
-          likeness: 5,
-          peopleInGroup: [
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/8'},
-            {open: false, userID: 1, name: 'Baz Hamilton', profile: 'https://placeimg.com/36/36/people/7'},
-            {open: true},
-            {open: true},
-            {open: true},
-            {open: true}
-          ]
-        }
-      ]
+      }
     }
   },
   beforeRouteEnter (to, from, next) {
