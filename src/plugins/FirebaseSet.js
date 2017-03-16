@@ -139,18 +139,21 @@ function newEvent (eventObject, locationObject) {
     deepCopyEvent.locationPublic = deepCopyLoc.name
     deepCopyEvent.close = parseInt(deepCopyEvent.close) || 0
 
-    // Firebase
+    // Firebase, set event
     pushRef.set(deepCopyEvent).then(() => {
-      // Success
-      // Set GeoLocation
-      geoFireEvent.set(newKey, [deepCopyLoc.lat, deepCopyLoc.lng]).then(() => {
-        // Success
-        resolve()
+      // Success, set auth
+      dbRef.child('eventAuth').child(newKey).child('auth').child(uid).set(true).then(() => {
+        // success, set geolocation
+        geoFireEvent.set(newKey, [deepCopyLoc.lat, deepCopyLoc.lng]).then(() => {
+          // Success
+          resolve()
+        }, error => {
+          reject(error)
+        })
       }, error => {
         reject(error)
       })
     }, (error) => {
-      // Fail
       reject(error)
     })
   })

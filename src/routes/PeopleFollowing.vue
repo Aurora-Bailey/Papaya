@@ -1,11 +1,11 @@
 <template>
   <div class="people-following using-sidebar">
+    <div class="gl-large-center-text" v-if="emptyTask">
+      <md-icon>search</md-icon>
+      <span>We've searched, but found nothing!</span>
+    </div>
     <div class="gl-narrow-wrapper-840">
       <display-people :people="listPeople"></display-people>
-      <div class="gl-large-center-text" v-if="emptyTask">
-        <md-icon>search</md-icon>
-        <span>We've searched, but found nothing!</span>
-      </div>
     </div>
   </div>
 </template>

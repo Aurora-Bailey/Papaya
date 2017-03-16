@@ -19,8 +19,6 @@ export default {
 
 <style lang="scss" scoped>
 .not-found {
-  padding: 20px 0;
-  text-align: center;
 }
 </style>
 

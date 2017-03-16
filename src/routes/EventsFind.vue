@@ -1,5 +1,9 @@
 <template>
   <div class="find-events using-sidebar">
+    <div class="gl-large-center-text extra-padding" v-if="emptyTask">
+      <md-icon>search</md-icon>
+      <span>We've searched, but found nothing!</span>
+    </div>
     <div class="gl-narrow-wrapper-600">
       <md-whiteframe md-elevation="4dp" class="event" v-for="event in findEvents">
         <div class="event-likeness"><md-spinner :md-size="100" :md-progress="25"></md-spinner><div class="spinner-percent">{{25}}</div></div>
